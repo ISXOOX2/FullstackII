@@ -1,0 +1,43 @@
+{
+  "name": "trazo-fino",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Trazo Fino - Estudio de tatuajes: tienda y agendamiento de citas (React + Bootstrap). Evaluacion Parcial 2 - DSY1104",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "karma start karma.conf.cjs --single-run",
+    "test:watch": "karma start karma.conf.cjs --no-single-run"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/jost": "^5.3.0",
+    "bootstrap": "^5.3.8",
+    "react": "^19.3.0",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.7",
+    "@babel/preset-env": "^8.0.7",
+    "@babel/preset-react": "^8.0.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "babel-loader": "^10.1.1",
+    "babel-plugin-istanbul": "^8.0.0",
+    "jasmine-core": "^4.6.1",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-coverage": "^2.2.1",
+    "karma-jasmine": "^5.1.0",
+    "karma-spec-reporter": "^0.0.37",
+    "karma-webpack": "^5.0.1",
+    "vite": "^8.3.4",
+    "webpack": "^5.111.1",
+    "webpack-cli": "^7.2.3"
+  }
+}
