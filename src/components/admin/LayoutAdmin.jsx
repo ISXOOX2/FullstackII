@@ -43,7 +43,7 @@ export default function LayoutAdmin() {
               <Nav.Link as={NavLink} to="/">Ir a la tienda</Nav.Link>
             </Nav>
           </Col>
-          <Col lg={10} className="py-4 px-lg-4">
+          <Col xs={12} lg={10} className="py-4 px-lg-4">
             <Outlet />
           </Col>
         </Row>

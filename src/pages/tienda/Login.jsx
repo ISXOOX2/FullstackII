@@ -35,7 +35,7 @@ export default function Login() {
             <Card.Body>
               <Card.Title as="h2" className="h6 text-uppercase">Cuentas de demostración</Card.Title>
               <Card.Text className="small text-muted">Para revisar el proyecto sin registrarte:</Card.Text>
-              <Table size="sm" className="mb-0 small">
+              <Table responsive size="sm" className="mb-0 small">
                 <thead><tr><th>Rol</th><th>Correo</th><th>Clave</th></tr></thead>
                 <tbody>
                   {CUENTAS_DEMO.map((c) => (

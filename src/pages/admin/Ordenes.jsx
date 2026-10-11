@@ -28,7 +28,7 @@ export default function Ordenes() {
         <div className="table-responsive">
           <Table hover size="sm" className="align-middle">
             <thead>
-              <tr><th scope="col">N° orden</th><th scope="col">Emitida</th><th scope="col">Cliente</th><th scope="col">Cita</th><th scope="col">Tatuador/a</th><th scope="col" className="text-end">Total</th><th scope="col">Estado</th><th scope="col"><span className="visually-hidden">Detalle</span></th></tr>
+              <tr><th scope="col">N° orden</th><th scope="col">Emitida</th><th scope="col">Cliente</th><th scope="col">Cita</th><th scope="col">Tatuador/a</th><th scope="col" className="text-end">Total</th><th scope="col">Estado</th><th scope="col" className="position-relative"><span className="visually-hidden">Detalle</span></th></tr>
             </thead>
             <tbody>
               {ordenes.map((o) => (
