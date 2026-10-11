@@ -1,0 +1,244 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for src/data/blogs.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/data</a> blogs.js</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>3/3</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>2/2</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>2/2</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">100% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>2/2</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line high'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Contenido del blog (noticias y datos curiosos). Son contenidos fijos, por eso no
+// están en la "base de datos" sino en este arreglo.
+&nbsp;
+export const BLOGS = [
+  {
+    id: 1,
+    titulo: 'Cuidados después de tatuarte: guía de las primeras cuatro semanas',
+    resumen:
+      'Lo que haces los primeros días decide cómo queda el tatuaje para siempre. Te contamos paso a paso cómo cuidarlo.',
+    imagen: 'img/blog/cuidados.svg',
+    fecha: '2026-09-18',
+    autor: 'Equipo Trazo Fino',
+    etiqueta: 'Cuidados',
+    contenido: [
+      { tipo: 'p', texto: 'Un tatuaje es una herida controlada: la piel necesita entre dos y cuatro semanas para cerrar por completo. Seguir una rutina simple de cuidado marca la diferencia entre una línea nítida y un trazo borroso.' },
+      { tipo: 'h', texto: 'Las primeras horas' },
+      { tipo: 'p', texto: 'Tu tatuador cubrirá la zona con un film o apósito. Déjalo puesto el tiempo que él te indique (normalmente entre dos y cuatro horas). Cuando lo retires, lava con agua tibia y jabón neutro sin perfume, con las manos limpias, y seca con toques suaves usando una toalla de papel.' },
+      { tipo: 'h', texto: 'Los primeros días' },
+      { tipo: 'p', texto: 'Aplica una capa muy fina de crema hidratante sin perfume, dos o tres veces al día. Menos es más: una capa gruesa impide que la piel respire. Usa ropa holgada y evita que el roce irrite la zona.' },
+      { tipo: 'h', texto: 'Qué evitar durante tres semanas' },
+      { tipo: 'p', texto: 'No expongas el tatuaje al sol directo, la piscina, el mar ni las saunas. Tampoco te rasques ni arranques las costritas: aunque piquen, deben caerse solas. Si el picor molesta, un golpecito suave sobre la zona ayuda.' },
+      { tipo: 'h', texto: 'Cuándo consultar' },
+      { tipo: 'p', texto: 'Si notas enrojecimiento que se extiende, calor intenso, pus o fiebre, consulta con un profesional de salud. Y recuerda: estas recomendaciones son generales; siempre prevalecen las indicaciones de tu tatuador.' },
+    ],
+  },
+  {
+    id: 2,
+    titulo: 'Cómo elegir tu primer tatuaje sin arrepentirte',
+    resumen:
+      'Estilo, tamaño, ubicación y presupuesto: cinco preguntas que conviene responder antes de sentarte en la camilla.',
+    imagen: 'img/blog/primer-tatuaje.svg',
+    fecha: '2026-09-30',
+    autor: 'Equipo Trazo Fino',
+    etiqueta: 'Guía',
+    contenido: [
+      { tipo: 'p', texto: 'Elegir el primer tatuaje da vértigo, y es normal. La buena noticia es que casi todas las decisiones se pueden ordenar con unas pocas preguntas.' },
+      { tipo: 'h', texto: '1. ¿Qué significa para ti?' },
+      { tipo: 'p', texto: 'No hace falta que tenga una gran historia, pero sí que te represente hoy y dentro de diez años. Haz una lista corta de tres ideas y déjala reposar una semana: si sigues pensando en la misma, es una buena señal.' },
+      { tipo: 'h', texto: '2. ¿Qué estilo va con la idea?' },
+      { tipo: 'p', texto: 'El fineline es delicado y muy popular en piezas pequeñas; el geométrico y el dotwork piden simetría y orden; el botánico funciona en casi cualquier zona. Revisa el portafolio del tatuador antes de reservar.' },
+      { tipo: 'h', texto: '3. Tamaño y ubicación' },
+      { tipo: 'p', texto: 'Los detalles muy finos pierden definición si el tatuaje es demasiado pequeño. Además, el dolor cambia según la zona: antebrazo y hombro suelen ser más llevaderos que costillas o pies.' },
+      { tipo: 'h', texto: '4. Higiene y seguridad' },
+      { tipo: 'p', texto: 'Exige agujas nuevas y selladas, guantes, superficies protegidas y un estudio que te explique los cuidados posteriores. Si algo te hace dudar, puedes irte: nunca es tarde para cambiar de opinión.' },
+      { tipo: 'h', texto: '5. Presupuesto' },
+      { tipo: 'p', texto: 'Un buen tatuaje no es barato, y uno barato rara vez es bueno. Reserva con tiempo, pregunta qué incluye el precio y deja un margen para eventuales retoques.' },
+    ],
+  },
+];
+&nbsp;
+export function obtenerBlog(id) {
+  return BLOGS.find((b) =&gt; b.id === Number(id)) || null;
+}
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-10-11T17:57:04.244Z
+            </div>
+        <script src="../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
+    </body>
+</html>
+    
