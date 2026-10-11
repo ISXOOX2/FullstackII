@@ -69,12 +69,14 @@ a { text-underline-offset: 3px; }
 
 /* ---- Carrusel de portada ---- */
 .carrusel-portada { background: var(--tf-crema); }
-.carrusel-portada .carousel-caption { left: 9%; right: auto; bottom: 50%; transform: translateY(50%); max-width: 44%; color: var(--tf-tinta); text-align: left; }
+.carrusel-portada .carousel-caption { left: 12%; right: auto; bottom: 50%; transform: translateY(50%); max-width: 42%; color: var(--tf-tinta); text-align: left; }
 .carrusel-portada .carousel-caption h2 { font-size: clamp(1.4rem, 3vw, 2.6rem); }
 .carrusel-portada .carousel-control-prev-icon, .carrusel-portada .carousel-control-next-icon { filter: invert(1); }
 .carrusel-portada .carousel-indicators [data-bs-target] { background-color: var(--tf-tinta); }
 @media (max-width: 767.98px) {
   .carrusel-portada .carousel-caption { position: static; transform: none; max-width: none; padding: 1rem 1.25rem 2.5rem; background: var(--tf-crema); }
+  /* Bajo md el texto va debajo de la imagen (3:1): las flechas se limitan a la altura de la imagen para no tapar el título. */
+  .carrusel-portada .carousel-control-prev, .carrusel-portada .carousel-control-next { bottom: auto; height: 33.333vw; }
 }
 
 /* ---- Tarjetas ---- */
