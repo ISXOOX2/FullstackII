@@ -21,6 +21,15 @@ npm test             # corre las pruebas (Karma + Jasmine) y genera el informe e
 > `npm test` usa Chrome sin ventana (ChromeHeadless). Si Chrome no está en la ruta habitual,
 > indica el ejecutable con la variable `CHROME_BIN` (ej. `CHROME_BIN=/usr/bin/chromium npm test`).
 
+### ¿Y con "Open with Live Server" de VS Code?
+
+El `index.html` de la raíz es código fuente (JSX): un servidor estático no puede ejecutarlo y por eso
+saldría en blanco. Por eso el repo incluye la carpeta **`dist/`** (la versión ya compilada) y el archivo
+`.vscode/settings.json`, que le indica a Live Server que sirva `dist/`. Así, clic derecho en `index.html`
+→ *Open with Live Server* muestra la tienda sin instalar nada.
+
+Si cambias el código, vuelve a compilar con `npm run build` para actualizar `dist/`.
+
 ## Cuentas de demostración
 
 | Rol | Correo | Contraseña |
