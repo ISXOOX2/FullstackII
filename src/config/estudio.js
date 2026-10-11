@@ -22,8 +22,8 @@ export const DIAS_MAXIMOS_AGENDA = 180;
 
 // Personas que desarrollan el proyecto (se muestran en la página "Nosotros").
 export const EQUIPO_DESARROLLO = [
-  { nombre: 'Isabel Cántaro', rol: 'Desarrollo frontend y pruebas unitarias' },
-  { nombre: 'Valentine', rol: 'Desarrollo frontend y diseño' },
+  { nombre: 'Isabel Cántaro', rol: 'Tienda, carrito y agendamiento de citas' },
+  { nombre: 'Valentine Gaete', rol: 'Administración, usuarios y diseño visual' },
 ];
 
 // Credenciales de demostración (también están en el README).

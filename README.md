@@ -30,6 +30,16 @@ saldría en blanco. Por eso el repo incluye la carpeta **`dist/`** (la versión 
 
 Si cambias el código, vuelve a compilar con `npm run build` para actualizar `dist/`.
 
+## Equipo y reparto de responsabilidades
+
+| Integrante | Lidera |
+|---|---|
+| **Isabel Cántaro** | Tienda y agendamiento: catálogo, carrito, checkout con agenda, pago simulado, órdenes y reglas de la agenda. |
+| **Valentine Gaete** | Administración, usuarios y diseño: panel admin, roles y sesión, base de datos simulada, validaciones y estilos. |
+
+Ambas explican todo el proyecto en la presentación; el detalle por archivo y por prueba está en
+`docs/Guia_Defensa_Presentacion.docx` (sección 1.1).
+
 ## Cuentas de demostración
 
 | Rol | Correo | Contraseña |
