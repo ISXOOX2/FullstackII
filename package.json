@@ -1,8 +1,8 @@
 {
-  "name": "trazo-fino",
+  "name": "forever-ink",
   "private": true,
   "version": "2.0.0",
-  "description": "Trazo Fino - Estudio de tatuajes: tienda y agendamiento de citas (React + Bootstrap). Evaluacion Parcial 2 - DSY1104",
+  "description": "Forever Ink - Estudio de tatuajes: tienda y agendamiento de citas (React + Bootstrap). Evaluacion Parcial 2 - DSY1104",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -2,13 +2,13 @@
 // datos de contacto, basta con editar ESTE archivo: todo el sitio se actualiza solo.
 
 export const ESTUDIO = {
-  nombre: 'Trazo Fino',
+  nombre: 'Forever Ink',
   eslogan: 'Tatuajes de línea fina y diseño minimalista',
   direccion: 'Av. Providencia 1234, Providencia, Santiago',
   telefono: '+56 9 1234 5678',
-  correo: 'hola@trazofino.cl',
+  correo: 'hola@foreverink.cl',
   horario: 'Martes a sábado · 11:00 a 19:00 hrs',
-  instagram: '@trazofino.studio',
+  instagram: '@foreverink.studio',
 };
 
 // Bloques horarios en los que se puede reservar una sesión.
@@ -28,7 +28,7 @@ export const EQUIPO_DESARROLLO = [
 
 // Credenciales de demostración (también están en el README).
 export const CUENTAS_DEMO = [
-  { rol: 'Administrador', correo: 'admin.trazofino@gmail.com', password: 'Admin#123' },
-  { rol: 'Vendedor', correo: 'vendedor.trazofino@gmail.com', password: 'Venta#123' },
+  { rol: 'Administrador', correo: 'admin.foreverink@gmail.com', password: 'Admin#123' },
+  { rol: 'Vendedor', correo: 'vendedor.foreverink@gmail.com', password: 'Venta#123' },
   { rol: 'Cliente', correo: 'cliente.demo@gmail.com', password: 'Cliente#1' },
 ];

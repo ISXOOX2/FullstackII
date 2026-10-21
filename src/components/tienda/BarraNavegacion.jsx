@@ -40,7 +40,7 @@ export default function BarraNavegacion() {
   return (
     <header className="barra-tienda">
       <Container className="barra-superior d-flex flex-wrap align-items-center gap-3 py-3">
-        <Link to="/" className="text-decoration-none text-dark me-lg-3" aria-label="Trazo Fino, ir al inicio">
+        <Link to="/" className="text-decoration-none text-dark me-lg-3" aria-label="Forever Ink, ir al inicio">
           <Logo />
         </Link>
 

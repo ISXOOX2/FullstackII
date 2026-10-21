@@ -157,10 +157,10 @@ describe('Usuarios, categorías y reportes', () => {
   beforeEach(reiniciarTodo);
 
   it('autenticar devuelve el usuario sin contraseña si las credenciales son correctas', () => {
-    const usuario = autenticar('ADMIN.trazofino@gmail.com', 'Admin#123');
+    const usuario = autenticar('ADMIN.foreverink@gmail.com', 'Admin#123');
     expect(usuario.tipo).toBe('Administrador');
     expect(usuario.password).toBeUndefined();
-    expect(autenticar('admin.trazofino@gmail.com', 'incorrecta')).toBeNull();
+    expect(autenticar('admin.foreverink@gmail.com', 'incorrecta')).toBeNull();
   });
 
   it('registrarCliente crea un Cliente y rechaza un correo repetido', () => {

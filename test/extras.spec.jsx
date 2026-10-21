@@ -141,7 +141,7 @@ describe('Más pantallas del panel de administración', () => {
     conectarComo(...ADMIN);
     renderConApp(<Rutas />, { ruta: '/admin/usuarios' });
     expect(screen.getAllByRole('row').length).toBe(listarUsuarios().length + 1);
-    const fila = screen.getByText('admin.trazofino@gmail.com').closest('tr');
+    const fila = screen.getByText('admin.foreverink@gmail.com').closest('tr');
     fireEvent.click(within(fila).getByText('Eliminar'));
     fireEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Eliminar' }));
     expect(await screen.findByText('No puedes eliminar tu propia cuenta.')).toBeTruthy();

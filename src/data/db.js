@@ -17,7 +17,7 @@
 import { SEMILLA } from './seed.js';
 
 // Si algún día cambia la estructura de los datos, basta con subir el número de versión.
-export const CLAVE_BD = 'trazoFino_bd_v1';
+export const CLAVE_BD = 'foreverInk_bd_v1';
 
 function clonar(objeto) {
   return JSON.parse(JSON.stringify(objeto));

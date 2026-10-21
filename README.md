@@ -1,4 +1,4 @@
-# Trazo Fino · Estudio de tatuajes (tienda + agendamiento de citas)
+# Forever Ink · Estudio de tatuajes (tienda + agendamiento de citas)
 
 Proyecto de la asignatura **Desarrollo Fullstack II (DSY1104)** · DuocUC · Evaluación Parcial 2.
 Sitio web de un estudio de tatuajes minimalista: el cliente elige diseños del catálogo, agenda su cita
@@ -45,8 +45,8 @@ Ambas explican todo el proyecto en la presentación; el detalle por archivo y po
 
 | Rol | Correo | Contraseña |
 |---|---|---|
-| Administrador | admin.trazofino@gmail.com | Admin#123 |
-| Vendedor | vendedor.trazofino@gmail.com | Venta#123 |
+| Administrador | admin.foreverink@gmail.com | Admin#123 |
+| Vendedor | vendedor.foreverink@gmail.com | Venta#123 |
 | Cliente | cliente.demo@gmail.com | Cliente#1 |
 
 El **Vendedor** solo ve Órdenes y Productos (productos en modo lectura). El **Administrador** ve todo.

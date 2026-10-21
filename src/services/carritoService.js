@@ -17,7 +17,7 @@
  */
 import { precioFinal } from './productosService.js';
 
-export const CLAVE_CARRITO = 'trazoFino_carrito';
+export const CLAVE_CARRITO = 'foreverInk_carrito';
 export const MAXIMO_POR_ITEM = 5;
 
 /** Cantidad máxima que se puede reservar de un producto. */

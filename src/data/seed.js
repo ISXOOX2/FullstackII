@@ -155,14 +155,14 @@ const PRODUCTOS = [
 // ----------------------------------------------------------------------------
 const USUARIOS = [
   {
-    id: 1, run: '123456785', nombre: 'Administrador', apellidos: 'Trazo Fino',
-    correo: 'admin.trazofino@gmail.com', password: 'Admin#123', telefono: '+56912345678',
+    id: 1, run: '123456785', nombre: 'Administrador', apellidos: 'Forever Ink',
+    correo: 'admin.foreverink@gmail.com', password: 'Admin#123', telefono: '+56912345678',
     fechaNacimiento: '1990-05-12', tipo: 'Administrador',
     region: 'Metropolitana de Santiago', comuna: 'Providencia', direccion: 'Av. Providencia 1234',
   },
   {
     id: 2, run: '111111111', nombre: 'Vendedor', apellidos: 'Recepción',
-    correo: 'vendedor.trazofino@gmail.com', password: 'Venta#123', telefono: '',
+    correo: 'vendedor.foreverink@gmail.com', password: 'Venta#123', telefono: '',
     fechaNacimiento: '1995-03-02', tipo: 'Vendedor',
     region: 'Metropolitana de Santiago', comuna: 'Providencia', direccion: 'Av. Providencia 1234',
   },

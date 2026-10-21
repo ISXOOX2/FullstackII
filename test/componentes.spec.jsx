@@ -280,7 +280,7 @@ describe('Contextos y rutas protegidas', () => {
     fireEvent.click(screen.getByTestId('saludo'));
     fireEvent.click(screen.getByText('Cerrar sesión'));
     expect(screen.getByText('Iniciar sesión')).toBeTruthy();
-    expect(sessionStorage.getItem('trazoFino_sesion')).toBeNull();
+    expect(sessionStorage.getItem('foreverInk_sesion')).toBeNull();
   });
 
   const montarRutaProtegida = (roles) => (

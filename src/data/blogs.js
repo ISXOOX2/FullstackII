@@ -9,7 +9,7 @@ export const BLOGS = [
       'Lo que haces los primeros días decide cómo queda el tatuaje para siempre. Te contamos paso a paso cómo cuidarlo.',
     imagen: 'img/blog/cuidados.svg',
     fecha: '2026-09-18',
-    autor: 'Equipo Trazo Fino',
+    autor: 'Equipo Forever Ink',
     etiqueta: 'Cuidados',
     contenido: [
       { tipo: 'p', texto: 'Un tatuaje es una herida controlada: la piel necesita entre dos y cuatro semanas para cerrar por completo. Seguir una rutina simple de cuidado marca la diferencia entre una línea nítida y un trazo borroso.' },
@@ -30,7 +30,7 @@ export const BLOGS = [
       'Estilo, tamaño, ubicación y presupuesto: cinco preguntas que conviene responder antes de sentarte en la camilla.',
     imagen: 'img/blog/primer-tatuaje.svg',
     fecha: '2026-09-30',
-    autor: 'Equipo Trazo Fino',
+    autor: 'Equipo Forever Ink',
     etiqueta: 'Guía',
     contenido: [
       { tipo: 'p', texto: 'Elegir el primer tatuaje da vértigo, y es normal. La buena noticia es que casi todas las decisiones se pueden ordenar con unas pocas preguntas.' },

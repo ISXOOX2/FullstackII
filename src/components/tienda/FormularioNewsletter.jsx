@@ -16,7 +16,7 @@ export default function FormularioNewsletter() {
   const enviar = (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    mostrar('¡Listo! Te suscribiste al boletín de Trazo Fino.');
+    mostrar('¡Listo! Te suscribiste al boletín de Forever Ink.');
     f.reiniciar();
   };
 

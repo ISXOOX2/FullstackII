@@ -22,8 +22,8 @@ export function conectarComo(correo, password) {
   guardarSesion(autenticar(correo, password));
 }
 
-export const ADMIN = ['admin.trazofino@gmail.com', 'Admin#123'];
-export const VENDEDOR = ['vendedor.trazofino@gmail.com', 'Venta#123'];
+export const ADMIN = ['admin.foreverink@gmail.com', 'Admin#123'];
+export const VENDEDOR = ['vendedor.foreverink@gmail.com', 'Venta#123'];
 export const CLIENTE = ['cliente.demo@gmail.com', 'Cliente#1'];
 
 /** Renderiza un componente con el enrutador y los tres contextos de la aplicación. */
