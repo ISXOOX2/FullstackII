@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.65% </span>
+                <span class="strong">52.17% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/23</span>
+                <span class='fraction'>12/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">57.14% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>4/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">55% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>20/20</span>
+                <span class='fraction'>11/20</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -135,39 +135,39 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">71x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">71x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">71x</span>
-<span class="cline-any cline-yes">71x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">71x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">168x</span>
-<span class="cline-any cline-yes">168x</span>
-<span class="cline-any cline-yes">168x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
 // • Mismo patrón que el carrito: Context para que el menú, el checkout y el panel admin sepan
@@ -190,23 +190,23 @@ export function SesionProvider({ children }) {
   // Estado: el usuario activo (se recupera de sessionStorage al recargar la página).
   const [usuario, setUsuario] = useState(() =&gt; leerSesion());
 &nbsp;
-  const iniciarSesion = useCallback((correo, password) =&gt; {
-    const encontrado = autenticar(correo, password);
-    if (!encontrado) return { ok: false, error: 'Correo o contraseña incorrectos.' };
-    guardarSesion(encontrado);
-    setUsuario(encontrado);
-    return { ok: true, usuario: encontrado };
+  const iniciarSesion = useCallback(<span class="fstat-no" title="function not covered" >(c</span>orreo, password) =&gt; {
+    const encontrado = <span class="cstat-no" title="statement not covered" >autenticar(correo, password);</span>
+<span class="cstat-no" title="statement not covered" >    if (!encontrado) <span class="cstat-no" title="statement not covered" >return { ok: false, error: 'Correo o contraseña incorrectos.' };</span></span>
+<span class="cstat-no" title="statement not covered" >    guardarSesion(encontrado);</span>
+<span class="cstat-no" title="statement not covered" >    setUsuario(encontrado);</span>
+<span class="cstat-no" title="statement not covered" >    return { ok: true, usuario: encontrado };</span>
   }, []);
 &nbsp;
-  const cerrarSesion = useCallback(() =&gt; {
-    borrarSesion();
-    setUsuario(null);
+  const cerrarSesion = useCallback(<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >    borrarSesion();</span>
+<span class="cstat-no" title="statement not covered" >    setUsuario(null);</span>
   }, []);
 &nbsp;
   /** Se usa cuando el usuario edita su perfil, para que la sesión muestre los datos nuevos. */
-  const actualizarSesion = useCallback((usuarioActualizado) =&gt; {
-    guardarSesion(usuarioActualizado);
-    setUsuario(usuarioActualizado);
+  const actualizarSesion = useCallback(<span class="fstat-no" title="function not covered" >(u</span>suarioActualizado) =&gt; {
+<span class="cstat-no" title="statement not covered" >    guardarSesion(usuarioActualizado);</span>
+<span class="cstat-no" title="statement not covered" >    setUsuario(usuarioActualizado);</span>
   }, []);
 &nbsp;
   const valor = useMemo(
@@ -229,7 +229,7 @@ export function useSesion() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

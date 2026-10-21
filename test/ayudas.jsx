@@ -6,27 +6,17 @@ import { SesionProvider } from '../src/context/SesionContext.jsx';
 import { CarritoProvider } from '../src/context/CarritoContext.jsx';
 import { reiniciarBD } from '../src/data/db.js';
 import { CLAVE_CARRITO } from '../src/services/carritoService.js';
-import { CLAVE_SESION, guardarSesion } from '../src/services/sesionService.js';
-import { autenticar } from '../src/services/usuariosService.js';
+import { CLAVE_SESION } from '../src/services/sesionService.js';
 import { obtenerProducto } from '../src/services/productosService.js';
 
-/** Deja el navegador "de fábrica": base de datos sembrada, sin carrito y sin sesión. */
+/** Deja el navegador "de fábrica": base de datos inicial, sin carrito y sin sesión. */
 export function reiniciarTodo() {
   reiniciarBD();
   localStorage.removeItem(CLAVE_CARRITO);
   sessionStorage.removeItem(CLAVE_SESION);
 }
 
-/** Inicia sesión "por detrás" (sin pasar por el formulario) con una de las cuentas de la semilla. */
-export function conectarComo(correo, password) {
-  guardarSesion(autenticar(correo, password));
-}
-
-export const ADMIN = ['admin.foreverink@gmail.com', 'Admin#123'];
-export const VENDEDOR = ['vendedor.foreverink@gmail.com', 'Venta#123'];
-export const CLIENTE = ['cliente.demo@gmail.com', 'Cliente#1'];
-
-/** Renderiza un componente con el enrutador y los tres contextos de la aplicación. */
+/** Dibuja un componente dentro del enrutador y de los tres contextos de la aplicación. */
 export function renderConApp(ui, { ruta = '/' } = {}) {
   return render(
     <MemoryRouter initialEntries={[ruta]}>
@@ -39,5 +29,5 @@ export function renderConApp(ui, { ruta = '/' } = {}) {
   );
 }
 
-/** Producto real de la semilla (por id) para usar en las pruebas. */
+/** Un diseño real de los datos iniciales (por id) para usar en las pruebas. */
 export const productoDePrueba = (id) => obtenerProducto(id);

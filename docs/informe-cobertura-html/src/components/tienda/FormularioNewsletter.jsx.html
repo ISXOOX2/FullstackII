@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">58.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/12</span>
+                <span class='fraction'>7/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>2/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">63.63% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>7/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -111,23 +111,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">38x</span>
-<span class="cline-any cline-yes">38x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">38x</span>
-<span class="cline-any cline-yes">38x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">38x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">38x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -154,7 +154,7 @@ import { useAvisos } from '../../context/AvisosContext.jsx';
 &nbsp;
 const validar = (datos) =&gt; {
   const error = validarCorreo(datos.correo);
-  return error ? { correo: error } : {};
+  return error ? { correo: error } : <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
 };
 &nbsp;
 /** Suscripción al boletín (solo valida el correo y muestra un aviso; no envía nada). */
@@ -162,11 +162,11 @@ export default function FormularioNewsletter() {
   const f = useFormulario({ correo: '' }, validar);
   const { mostrar } = useAvisos();
 &nbsp;
-  const enviar = (evento) =&gt; {
-    evento.preventDefault();
-    if (!f.intentarEnviar()) return;
-    mostrar('¡Listo! Te suscribiste al boletín de Forever Ink.');
-    f.reiniciar();
+  const enviar = <span class="fstat-no" title="function not covered" >(e</span>vento) =&gt; {
+<span class="cstat-no" title="statement not covered" >    evento.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >    if (!f.intentarEnviar()) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    mostrar('¡Listo! Te suscribiste al boletín de Forever Ink.');</span>
+<span class="cstat-no" title="statement not covered" >    f.reiniciar();</span>
   };
 &nbsp;
   return (
@@ -184,7 +184,7 @@ export default function FormularioNewsletter() {
           isInvalid={Boolean(f.visibles.correo)}
         /&gt;
         &lt;Button type="submit" variant="dark"&gt;Suscribirme&lt;/Button&gt;
-        {f.visibles.correo &amp;&amp; &lt;Form.Control.Feedback type="invalid"&gt;{f.visibles.correo}&lt;/Form.Control.Feedback&gt;}
+        {f.visibles.correo &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;Form.Control.Feedback type="invalid"&gt;{f.visibles.correo}&lt;/Form.Control.Feedback&gt;}</span>
       &lt;/InputGroup&gt;
     &lt;/Form&gt;
   );
@@ -196,7 +196,7 @@ export default function FormularioNewsletter() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

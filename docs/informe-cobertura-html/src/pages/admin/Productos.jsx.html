@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/18</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.23% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/17</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -160,23 +160,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -195,7 +195,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">60x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -211,7 +211,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -243,24 +243,24 @@ import { nombreCategoria } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 &nbsp;
 /** Mantenedor de productos. El vendedor solo puede ver (sin crear, editar ni eliminar). */
-export default function Productos() {
-  const { usuario } = useSesion();
-  const { mostrar } = useAvisos();
-  const puedeEditar = usuario.tipo === 'Administrador';
-  const [version, setVersion] = useState(0); // al cambiar, la lista se vuelve a leer de la base
-  const [soloCriticos, setSoloCriticos] = useState(false);
-  const [aEliminar, setAEliminar] = useState(null);
+export default function <span class="fstat-no" title="function not covered" >Productos(</span>) {
+  const { usuario } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
+  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
+  const puedeEditar = <span class="cstat-no" title="statement not covered" >usuario.tipo === 'Administrador';</span>
+  const [version, setVersion] = <span class="cstat-no" title="statement not covered" >useState(0);</span> // al cambiar, la lista se vuelve a leer de la base
+  const [soloCriticos, setSoloCriticos] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+  const [aEliminar, setAEliminar] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
 &nbsp;
-  const productos = listarProductos().filter((p) =&gt; !soloCriticos || <span class="branch-1 cbranch-no" title="branch not covered" >esStockCritico(p))</span>;
+  const productos = <span class="cstat-no" title="statement not covered" >listarProductos().filter(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >!soloCriticos || esStockCritico(p))</span>;</span>
 &nbsp;
-  const confirmarEliminar = () =&gt; {
-    eliminarProducto(aEliminar.id);
-    mostrar(`«${aEliminar.nombre}» fue eliminado.`, 'secondary');
-    setAEliminar(null);
-    setVersion(version + 1);
+  const confirmarEliminar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    eliminarProducto(aEliminar.id);</span>
+<span class="cstat-no" title="statement not covered" >    mostrar(`«${aEliminar.nombre}» fue eliminado.`, 'secondary');</span>
+<span class="cstat-no" title="statement not covered" >    setAEliminar(null);</span>
+<span class="cstat-no" title="statement not covered" >    setVersion(version + 1);</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
       &lt;div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3"&gt;
         &lt;h1 className="titulo-seccion mb-0"&gt;Productos&lt;/h1&gt;
@@ -278,8 +278,8 @@ export default function Productos() {
             &lt;tr&gt;&lt;th scope="col"&gt;Código&lt;/th&gt;&lt;th scope="col"&gt;Diseño&lt;/th&gt;&lt;th scope="col"&gt;Estilo&lt;/th&gt;&lt;th scope="col" className="text-end"&gt;Precio&lt;/th&gt;&lt;th scope="col" className="text-center"&gt;Stock&lt;/th&gt;&lt;th scope="col"&gt;Acciones&lt;/th&gt;&lt;/tr&gt;
           &lt;/thead&gt;
           &lt;tbody&gt;
-            {productos.map((p) =&gt; (
-              &lt;tr key={p.id} className={esStockCritico(p) ? 'fila-critica' : ''}&gt;
+            {productos.map(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; (
+<span class="cstat-no" title="statement not covered" >              &lt;tr key={p.id} className={esStockCritico(p) ? 'fila-critica' : ''}&gt;</span>
                 &lt;td&gt;{p.codigo}&lt;/td&gt;
                 &lt;td&gt;
                   &lt;img src={p.imagen} alt="" width="36" height="36" className="miniatura me-2" /&gt;
@@ -295,7 +295,7 @@ export default function Productos() {
                   {puedeEditar &amp;&amp; (
                     &lt;&gt;
                       &lt;Link to={`/admin/productos/${p.id}/editar`} className="me-3"&gt;Editar&lt;/Link&gt;
-                      &lt;Button variant="link" className="text-danger p-0 align-baseline" onClick={() =&gt; setAEliminar(p)}&gt;Eliminar&lt;/Button&gt;
+                      &lt;Button variant="link" className="text-danger p-0 align-baseline" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setAEliminar(p)}</span>&gt;Eliminar&lt;/Button&gt;
                     &lt;/&gt;
                   )}
                 &lt;/td&gt;
@@ -322,7 +322,7 @@ export default function Productos() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

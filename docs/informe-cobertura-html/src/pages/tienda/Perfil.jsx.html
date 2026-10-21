@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -143,23 +143,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -175,7 +173,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -209,22 +209,22 @@ import { actualizarUsuario, historialDeCompras, obtenerUsuario, usuarioPublico }
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 &nbsp;
 /** Mi perfil: editar mis datos e ver el historial de mis reservas. */
-export default function Perfil() {
-  const { usuario, actualizarSesion } = useSesion();
-  const { mostrar } = useAvisos();
-  const [ordenVista, setOrdenVista] = useState(null);
-  const completo = obtenerUsuario(usuario.id);
-  const historial = historialDeCompras(usuario.id);
+export default function <span class="fstat-no" title="function not covered" >Perfil(</span>) {
+  const { usuario, actualizarSesion } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
+  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
+  const [ordenVista, setOrdenVista] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
+  const completo = <span class="cstat-no" title="statement not covered" >obtenerUsuario(usuario.id);</span>
+  const historial = <span class="cstat-no" title="statement not covered" >historialDeCompras(usuario.id);</span>
 &nbsp;
-  const guardar = (datos) =&gt; {
-    const resultado = actualizarUsuario(usuario.id, { ...datos, tipo: usuario.tipo });
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span>
-    actualizarSesion(usuarioPublico(resultado.usuario));
-    mostrar('Tus datos se actualizaron correctamente.');
-    return '';
+  const guardar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>atos) =&gt; {</span>
+    const resultado = <span class="cstat-no" title="statement not covered" >actualizarUsuario(usuario.id, { ...datos, tipo: usuario.tipo });</span>
+<span class="cstat-no" title="statement not covered" >    if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span></span>
+<span class="cstat-no" title="statement not covered" >    actualizarSesion(usuarioPublico(resultado.usuario));</span>
+<span class="cstat-no" title="statement not covered" >    mostrar('Tus datos se actualizaron correctamente.');</span>
+<span class="cstat-no" title="statement not covered" >    return '';</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Container className="py-4"&gt;
       &lt;h1 className="titulo-seccion"&gt;Mi perfil&lt;/h1&gt;
       &lt;Row className="g-5"&gt;
@@ -235,14 +235,14 @@ export default function Perfil() {
         &lt;Col lg={6}&gt;
           &lt;h2 className="h5 mb-3"&gt;Mis reservas&lt;/h2&gt;
           {historial.length === 0 ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >            &lt;MensajeVacio titulo="Aún no tienes reservas" texto="Cuando agendes una cita aparecerá aquí." /&gt;</span>
+            &lt;MensajeVacio titulo="Aún no tienes reservas" texto="Cuando agendes una cita aparecerá aquí." /&gt;
           ) : (
             &lt;div className="table-responsive"&gt;
               &lt;Table size="sm" className="align-middle"&gt;
                 &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;N° orden&lt;/th&gt;&lt;th scope="col"&gt;Cita&lt;/th&gt;&lt;th scope="col" className="text-end"&gt;Total&lt;/th&gt;&lt;th scope="col"&gt;Estado&lt;/th&gt;&lt;th scope="col"&gt;&lt;span className="visually-hidden"&gt;Ver&lt;/span&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
                 &lt;tbody&gt;
-                  {historial.map((o) =&gt; (
-                    &lt;tr key={o.id}&gt;
+                  {historial.map(<span class="fstat-no" title="function not covered" >(o</span>) =&gt; (
+<span class="cstat-no" title="statement not covered" >                    &lt;tr key={o.id}&gt;</span>
                       &lt;td&gt;{o.numero}&lt;/td&gt;
                       &lt;td&gt;{formatoFecha(o.cita.fecha)} {o.cita.hora}&lt;/td&gt;
                       &lt;td className="text-end"&gt;{formatoCLP(o.total)}&lt;/td&gt;
@@ -259,7 +259,7 @@ export default function Perfil() {
 &nbsp;
       &lt;Modal show={Boolean(ordenVista)} onHide={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setOrdenVista(null)}</span> size="lg" centered&gt;
         &lt;Modal.Header closeButton&gt;&lt;Modal.Title as="h2" className="h5"&gt;Detalle de la reserva&lt;/Modal.Title&gt;&lt;/Modal.Header&gt;
-        &lt;Modal.Body&gt;{ordenVista &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;Boleta orden={ordenVista} /&gt;}</span>&lt;/Modal.Body&gt;
+        &lt;Modal.Body&gt;{ordenVista &amp;&amp; &lt;Boleta orden={ordenVista} /&gt;}&lt;/Modal.Body&gt;
       &lt;/Modal&gt;
     &lt;/Container&gt;
   );
@@ -271,7 +271,7 @@ export default function Perfil() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

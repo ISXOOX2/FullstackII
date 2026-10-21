@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.68% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/19</span>
+                <span class='fraction'>0/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.85% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>13/14</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.47% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/17</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -143,24 +143,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -171,7 +171,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">36x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -180,7 +180,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,25 +213,25 @@ import { useSesion } from '../../context/SesionContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { eliminarUsuario, listarUsuarios } from '../../services/usuariosService.js';
 &nbsp;
-export default function Usuarios() {
-  const { usuario: actual } = useSesion();
-  const { mostrar } = useAvisos();
-  const [, setVersion] = useState(0);
-  const [aEliminar, setAEliminar] = useState(null);
-  const [errorEliminar, setErrorEliminar] = useState('');
+export default function <span class="fstat-no" title="function not covered" >Usuarios(</span>) {
+  const { usuario: actual } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
+  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
+  const [, setVersion] = <span class="cstat-no" title="statement not covered" >useState(0);</span>
+  const [aEliminar, setAEliminar] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
+  const [errorEliminar, setErrorEliminar] = <span class="cstat-no" title="statement not covered" >useState('');</span>
 &nbsp;
-  const confirmar = () =&gt; {
-    const resultado = eliminarUsuario(aEliminar.id, actual.id);
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (!resultado.ok) {
-      setErrorEliminar(resultado.error);
-      return;
+  const confirmar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+    const resultado = <span class="cstat-no" title="statement not covered" >eliminarUsuario(aEliminar.id, actual.id);</span>
+<span class="cstat-no" title="statement not covered" >    if (!resultado.ok) {</span>
+<span class="cstat-no" title="statement not covered" >      setErrorEliminar(resultado.error);</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
     }
 <span class="cstat-no" title="statement not covered" >    mostrar('Usuario eliminado.', 'secondary');</span>
 <span class="cstat-no" title="statement not covered" >    setAEliminar(null);</span>
 <span class="cstat-no" title="statement not covered" >    setVersion(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >v + 1)</span>;</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
       &lt;div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3"&gt;
         &lt;h1 className="titulo-seccion mb-0"&gt;Usuarios&lt;/h1&gt;
@@ -241,8 +241,8 @@ export default function Usuarios() {
         &lt;Table hover size="sm" className="align-middle"&gt;
           &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;RUN&lt;/th&gt;&lt;th scope="col"&gt;Nombre&lt;/th&gt;&lt;th scope="col"&gt;Correo&lt;/th&gt;&lt;th scope="col"&gt;Tipo&lt;/th&gt;&lt;th scope="col"&gt;Comuna&lt;/th&gt;&lt;th scope="col"&gt;Acciones&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
           &lt;tbody&gt;
-            {listarUsuarios().map((u) =&gt; (
-              &lt;tr key={u.id}&gt;
+            {listarUsuarios().map(<span class="fstat-no" title="function not covered" >(u</span>) =&gt; (
+<span class="cstat-no" title="statement not covered" >              &lt;tr key={u.id}&gt;</span>
                 &lt;td&gt;{u.run}&lt;/td&gt;
                 &lt;td&gt;{u.nombre} {u.apellidos}&lt;/td&gt;
                 &lt;td&gt;{u.correo}&lt;/td&gt;
@@ -251,7 +251,7 @@ export default function Usuarios() {
                 &lt;td className="text-nowrap"&gt;
                   &lt;Link to={`/admin/usuarios/${u.id}/editar`} className="me-3"&gt;Editar&lt;/Link&gt;
                   {u.tipo === 'Cliente' &amp;&amp; &lt;Link to={`/admin/usuarios/${u.id}/historial`} className="me-3"&gt;Historial&lt;/Link&gt;}
-                  &lt;Button variant="link" className="text-danger p-0 align-baseline" onClick={() =&gt; { setErrorEliminar(''); setAEliminar(u); }}&gt;Eliminar&lt;/Button&gt;
+                  &lt;Button variant="link" className="text-danger p-0 align-baseline" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; { <span class="cstat-no" title="statement not covered" >setErrorEliminar(''); <span class="cstat-no" title="statement not covered" ></span>setAEliminar(u); </span>}}&gt;Eliminar&lt;/Button&gt;
                 &lt;/td&gt;
               &lt;/tr&gt;
             ))}
@@ -283,7 +283,7 @@ export default function Usuarios() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

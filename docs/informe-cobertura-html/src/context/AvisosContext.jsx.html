@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.47% </span>
+                <span class="strong">52.94% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/17</span>
+                <span class='fraction'>9/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/5</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">27.27% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/11</span>
+                <span class='fraction'>3/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.61% </span>
+                <span class="strong">61.53% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/13</span>
+                <span class='fraction'>8/13</span>
             </div>
         
             
@@ -118,25 +118,25 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">79x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -155,9 +155,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">91x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
@@ -172,9 +172,9 @@ export function AvisosProvider({ children }) {
 <span class="cstat-no" title="statement not covered" >    setAvisos(<span class="fstat-no" title="function not covered" >(a</span>ctuales) =&gt; <span class="cstat-no" title="statement not covered" >actuales.filter(<span class="fstat-no" title="function not covered" >(a</span>) =&gt; <span class="cstat-no" title="statement not covered" >a.id !== id)</span>)</span>;</span>
   }, []);
 &nbsp;
-  const mostrar = useCallback((mensaje, variante = 'dark') =&gt; {
-    const id = Date.now() + Math.random();
-    setAvisos((actuales) =&gt; [...actuales, { id, mensaje, variante }]);
+  const mostrar = useCallback(<span class="fstat-no" title="function not covered" >(m</span>ensaje, variante = <span class="branch-0 cbranch-no" title="branch not covered" >'dark')</span> =&gt; {
+    const id = <span class="cstat-no" title="statement not covered" >Date.now() + Math.random();</span>
+<span class="cstat-no" title="statement not covered" >    setAvisos(<span class="fstat-no" title="function not covered" >(a</span>ctuales) =&gt; <span class="cstat-no" title="statement not covered" >[...actuales, { id, mensaje, variante }])</span>;</span>
   }, []);
 &nbsp;
   const valor = useMemo(() =&gt; ({ mostrar }), [mostrar]);
@@ -183,8 +183,8 @@ export function AvisosProvider({ children }) {
     &lt;AvisosContext.Provider value={valor}&gt;
       {children}
       &lt;ToastContainer position="bottom-end" className="p-3 position-fixed" style={{ zIndex: 2000 }}&gt;
-        {avisos.map((aviso) =&gt; (
-          &lt;Toast
+        {avisos.map(<span class="fstat-no" title="function not covered" >(a</span>viso) =&gt; (
+<span class="cstat-no" title="statement not covered" >          &lt;Toast</span>
             key={aviso.id}
             onClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >cerrar(aviso.id)}</span>
             autohide
@@ -192,7 +192,7 @@ export function AvisosProvider({ children }) {
             bg={aviso.variante}
             className="aviso-toast"
           &gt;
-            &lt;Toast.Body className={aviso.variante === 'light' ? <span class="branch-0 cbranch-no" title="branch not covered" >'' </span>: 'text-white'} role="status"&gt;
+            &lt;Toast.Body className={aviso.variante === 'light' ? '' : 'text-white'} role="status"&gt;
               {aviso.mensaje}
             &lt;/Toast.Body&gt;
           &lt;/Toast&gt;
@@ -214,7 +214,7 @@ export function useAvisos() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

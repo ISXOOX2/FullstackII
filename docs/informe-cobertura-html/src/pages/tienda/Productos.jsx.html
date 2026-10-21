@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">84.21% </span>
+                <span class="strong">5.26% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/19</span>
+                <span class='fraction'>1/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">86.66% </span>
+                <span class="strong">6.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/15</span>
+                <span class='fraction'>1/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -121,27 +121,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,28 +164,28 @@ import { listarCategorias } from '../../services/categoriasService.js';
 const FILTROS_VACIOS = { texto: '', categoriaId: '', precioMax: '', soloOfertas: false, orden: 'relevancia' };
 &nbsp;
 /** Catálogo completo con filtros. La búsqueda de la barra llega por la URL (?q=texto). */
-export default function Productos() {
-  const [parametros, setParametros] = useSearchParams();
-  const textoUrl = parametros.get('q') || '';
-  const [filtros, setFiltros] = useState({ ...FILTROS_VACIOS, texto: textoUrl });
-  const [ultimoTextoUrl, setUltimoTextoUrl] = useState(textoUrl);
-  const agregar = useAgregarAlCarrito();
+export default function <span class="fstat-no" title="function not covered" >Productos(</span>) {
+  const [parametros, setParametros] = <span class="cstat-no" title="statement not covered" >useSearchParams();</span>
+  const textoUrl = <span class="cstat-no" title="statement not covered" >parametros.get('q') || '';</span>
+  const [filtros, setFiltros] = <span class="cstat-no" title="statement not covered" >useState({ ...FILTROS_VACIOS, texto: textoUrl });</span>
+  const [ultimoTextoUrl, setUltimoTextoUrl] = <span class="cstat-no" title="statement not covered" >useState(textoUrl);</span>
+  const agregar = <span class="cstat-no" title="statement not covered" >useAgregarAlCarrito();</span>
 &nbsp;
   // Si el usuario busca de nuevo desde la barra, la URL cambia y el filtro de texto se actualiza.
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (textoUrl !== ultimoTextoUrl) {
+<span class="cstat-no" title="statement not covered" >  if (textoUrl !== ultimoTextoUrl) {</span>
 <span class="cstat-no" title="statement not covered" >    setUltimoTextoUrl(textoUrl);</span>
 <span class="cstat-no" title="statement not covered" >    setFiltros(<span class="fstat-no" title="function not covered" >(a</span>ctuales) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...actuales, texto: textoUrl })</span>);</span>
   }
 &nbsp;
-  const productos = useMemo(() =&gt; buscarProductos(filtros), [filtros]);
+  const productos = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >buscarProductos(filtros),</span> [filtros]);</span>
 &nbsp;
-  const cambiar = (campo, valor) =&gt; setFiltros((actuales) =&gt; ({ ...actuales, [campo]: valor }));
-  const limpiar = () =&gt; {
-    setFiltros(FILTROS_VACIOS);
-    setParametros({});
+  const cambiar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>ampo, valor) =&gt; <span class="cstat-no" title="statement not covered" >setFiltros(<span class="fstat-no" title="function not covered" >(a</span>ctuales) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...actuales, [campo]: valor })</span>);</span></span>
+  const limpiar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setFiltros(FILTROS_VACIOS);</span>
+<span class="cstat-no" title="statement not covered" >    setParametros({});</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Container className="py-4"&gt;
       &lt;Migas items={[{ texto: 'Home', to: '/' }, { texto: 'Diseños' }]} /&gt;
       &lt;h1 className="titulo-seccion"&gt;Todos los diseños&lt;/h1&gt;
@@ -202,7 +202,7 @@ export default function Productos() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

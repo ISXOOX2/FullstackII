@@ -15,8 +15,7 @@ npm install          # instala las dependencias (una sola vez)
 npm run dev          # servidor de desarrollo -> http://localhost:5173
 npm run build        # genera la versión final en /dist
 npm run preview      # sirve /dist para revisarla
-npm test             # corre las 132 pruebas (Karma + Jasmine) y genera el informe en /coverage
-npm run test:defensa # corre solo las 10 pruebas que se muestran en la presentación
+npm test             # corre las 10 pruebas (Karma + Jasmine) y genera el informe en /coverage
 ```
 
 > `npm test` usa Chrome sin ventana (ChromeHeadless). Si Chrome no está en la ruta habitual,
@@ -68,8 +67,8 @@ src/
     admin/                 Componentes del panel (layout, formularios, alertas)
   pages/tienda, pages/admin  Una página por ruta
   styles/tema.css          Tema minimalista (sobre Bootstrap)
-test/                      Pruebas Jasmine (*.spec.jsx) + ayudas.jsx
-docs/                      ERS, documento de cobertura de testing y guía de defensa
+test/                      10 pruebas Jasmine: logica, componentes y checkout (*.spec.jsx) + ayudas.jsx
+docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de 2 días
 ```
 
 ## Persistencia simulada
@@ -90,13 +89,3 @@ el almacenamiento del sitio en el navegador (o llamar a `reiniciarBD()`).
 - Sin backend: las contraseñas de los usuarios de ejemplo se guardan en texto plano en `localStorage`.
   En un sistema real se almacenarían cifradas en un servidor.
 - El pago es una **simulación** (`pagosService`): no se cobra dinero real ni se envían correos reales.
-
-## Correr solo algunas pruebas (útil en una demostración)
-
-```bash
-PRUEBAS="RUN" npm test              # solo las pruebas cuyo nombre contenga "RUN"
-PRUEBAS="pago RECHAZADO" npm test   # solo la prueba del pago rechazado
-```
-
-> Ojo: una corrida parcial deja el informe de `coverage/` incompleto. Antes de entregar o presentar,
-> vuelve a correr `npm test` completo.

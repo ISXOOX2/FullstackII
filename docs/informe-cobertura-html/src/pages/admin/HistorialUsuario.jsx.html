@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -119,17 +119,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,7 +140,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,29 +165,29 @@ import { historialDeCompras, obtenerUsuario } from '../../services/usuariosServi
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 &nbsp;
 /** Historial de compras (reservas) de un cliente, visto por el administrador. */
-export default function HistorialUsuario() {
-  const { id } = useParams();
-  const usuario = obtenerUsuario(id);
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (!usuario) {
+export default function <span class="fstat-no" title="function not covered" >HistorialUsuario(</span>) {
+  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
+  const usuario = <span class="cstat-no" title="statement not covered" >obtenerUsuario(id);</span>
+<span class="cstat-no" title="statement not covered" >  if (!usuario) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;MensajeVacio titulo="Ese usuario no existe"&gt;
         &lt;Link to="/admin/usuarios" className="btn btn-dark"&gt;Volver&lt;/Link&gt;
       &lt;/MensajeVacio&gt;
     );
   }
-  const historial = historialDeCompras(usuario.id);
-  return (
+  const historial = <span class="cstat-no" title="statement not covered" >historialDeCompras(usuario.id);</span>
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
       &lt;h1 className="titulo-seccion"&gt;Historial de {usuario.nombre} {usuario.apellidos}&lt;/h1&gt;
       {historial.length === 0 ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >        &lt;MensajeVacio titulo="Este cliente aún no tiene reservas" /&gt;</span>
+        &lt;MensajeVacio titulo="Este cliente aún no tiene reservas" /&gt;
       ) : (
         &lt;div className="table-responsive"&gt;
           &lt;Table hover size="sm" className="align-middle"&gt;
             &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;N° orden&lt;/th&gt;&lt;th scope="col"&gt;Emitida&lt;/th&gt;&lt;th scope="col"&gt;Cita&lt;/th&gt;&lt;th scope="col" className="text-end"&gt;Total&lt;/th&gt;&lt;th scope="col"&gt;Estado&lt;/th&gt;&lt;th scope="col"&gt;&lt;span className="visually-hidden"&gt;Detalle&lt;/span&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
             &lt;tbody&gt;
-              {historial.map((o) =&gt; (
-                &lt;tr key={o.id}&gt;
+              {historial.map(<span class="fstat-no" title="function not covered" >(o</span>) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;tr key={o.id}&gt;</span>
                   &lt;td&gt;{o.numero}&lt;/td&gt;
                   &lt;td&gt;{formatoFecha(o.fecha)}&lt;/td&gt;
                   &lt;td&gt;{formatoFecha(o.cita.fecha)} {o.cita.hora}&lt;/td&gt;
@@ -211,7 +211,7 @@ export default function HistorialUsuario() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

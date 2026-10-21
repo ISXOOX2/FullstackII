@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/14</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/14</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.3% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -109,12 +109,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -122,15 +122,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -145,13 +145,13 @@ import { listarCategorias } from '../../services/categoriasService.js';
 import { actualizarProducto, crearProducto, obtenerProducto } from '../../services/productosService.js';
 &nbsp;
 /** Página para crear (/admin/productos/nuevo) o editar (/admin/productos/:id/editar) un diseño. */
-export default function FormularioProductoPagina() {
-  const { id } = useParams();
-  const navegar = useNavigate();
-  const { mostrar } = useAvisos();
-  const existente = id ? <span class="branch-0 cbranch-no" title="branch not covered" >obtenerProducto(id) </span>: null;
+export default function <span class="fstat-no" title="function not covered" >FormularioProductoPagina(</span>) {
+  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
+  const navegar = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
+  const existente = <span class="cstat-no" title="statement not covered" >id ? obtenerProducto(id) : null;</span>
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (id &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!existente)</span> {
+<span class="cstat-no" title="statement not covered" >  if (id &amp;&amp; !existente) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;MensajeVacio titulo="Ese diseño no existe"&gt;
         &lt;Link to="/admin/productos" className="btn btn-dark"&gt;Volver&lt;/Link&gt;
@@ -159,17 +159,17 @@ export default function FormularioProductoPagina() {
     );
   }
 &nbsp;
-  const guardar = (valores) =&gt; {
-    const resultado = existente ? <span class="branch-0 cbranch-no" title="branch not covered" >actualizarProducto(existente.id, valores) </span>: crearProducto(valores);
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span>
-    mostrar(existente ? <span class="branch-0 cbranch-no" title="branch not covered" >'Diseño actualizado.' </span>: 'Diseño creado.');
-    navegar('/admin/productos');
-    return '';
+  const guardar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(v</span>alores) =&gt; {</span>
+    const resultado = <span class="cstat-no" title="statement not covered" >existente ? actualizarProducto(existente.id, valores) : crearProducto(valores);</span>
+<span class="cstat-no" title="statement not covered" >    if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span></span>
+<span class="cstat-no" title="statement not covered" >    mostrar(existente ? 'Diseño actualizado.' : 'Diseño creado.');</span>
+<span class="cstat-no" title="statement not covered" >    navegar('/admin/productos');</span>
+<span class="cstat-no" title="statement not covered" >    return '';</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
-      &lt;h1 className="titulo-seccion"&gt;{existente ? <span class="branch-0 cbranch-no" title="branch not covered" >`Editar «${existente.nombre}»` </span>: 'Nuevo diseño'}&lt;/h1&gt;
+      &lt;h1 className="titulo-seccion"&gt;{existente ? `Editar «${existente.nombre}»` : 'Nuevo diseño'}&lt;/h1&gt;
       &lt;FormularioProducto inicial={existente} categorias={listarCategorias()} onEnviar={guardar} /&gt;
     &lt;/&gt;
   );
@@ -181,7 +181,7 @@ export default function FormularioProductoPagina() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

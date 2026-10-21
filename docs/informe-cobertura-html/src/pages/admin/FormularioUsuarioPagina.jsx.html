@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.35% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/17</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>17/20</span>
+                <span class='fraction'>0/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -112,13 +112,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -126,17 +126,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,14 +151,14 @@ import { useSesion } from '../../context/SesionContext.jsx';
 import { actualizarUsuario, crearUsuario, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';
 &nbsp;
 /** Crear (/admin/usuarios/nuevo) o editar (/admin/usuarios/:id/editar) un usuario. */
-export default function FormularioUsuarioPagina() {
-  const { id } = useParams();
-  const navegar = useNavigate();
-  const { mostrar } = useAvisos();
-  const { usuario: sesion, actualizarSesion } = useSesion();
-  const existente = id ? obtenerUsuario(id) : null;
+export default function <span class="fstat-no" title="function not covered" >FormularioUsuarioPagina(</span>) {
+  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
+  const navegar = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
+  const { usuario: sesion, actualizarSesion } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
+  const existente = <span class="cstat-no" title="statement not covered" >id ? obtenerUsuario(id) : null;</span>
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (id &amp;&amp; !existente) {
+<span class="cstat-no" title="statement not covered" >  if (id &amp;&amp; !existente) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;MensajeVacio titulo="Ese usuario no existe"&gt;
         &lt;Link to="/admin/usuarios" className="btn btn-dark"&gt;Volver&lt;/Link&gt;
@@ -166,17 +166,17 @@ export default function FormularioUsuarioPagina() {
     );
   }
 &nbsp;
-  const guardar = (datos) =&gt; {
-    const resultado = existente ? actualizarUsuario(existente.id, datos) : crearUsuario(datos);
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span>
+  const guardar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>atos) =&gt; {</span>
+    const resultado = <span class="cstat-no" title="statement not covered" >existente ? actualizarUsuario(existente.id, datos) : crearUsuario(datos);</span>
+<span class="cstat-no" title="statement not covered" >    if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span></span>
     // Si el administrador se edita a sí mismo, la sesión debe reflejar los cambios.
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (existente &amp;&amp; existente.id === sesion.id) <span class="cstat-no" title="statement not covered" >actualizarSesion(usuarioPublico(resultado.usuario));</span>
-    mostrar(existente ? 'Usuario actualizado.' : 'Usuario creado.');
-    navegar('/admin/usuarios');
-    return '';
+<span class="cstat-no" title="statement not covered" >    if (existente &amp;&amp; existente.id === sesion.id) <span class="cstat-no" title="statement not covered" >actualizarSesion(usuarioPublico(resultado.usuario));</span></span>
+<span class="cstat-no" title="statement not covered" >    mostrar(existente ? 'Usuario actualizado.' : 'Usuario creado.');</span>
+<span class="cstat-no" title="statement not covered" >    navegar('/admin/usuarios');</span>
+<span class="cstat-no" title="statement not covered" >    return '';</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
       &lt;h1 className="titulo-seccion"&gt;{existente ? 'Editar usuario' : 'Nuevo usuario'}&lt;/h1&gt;
       &lt;FormularioUsuario modo={existente ? 'admin-editar' : 'admin-nuevo'} inicial={existente} onEnviar={guardar} /&gt;
@@ -190,7 +190,7 @@ export default function FormularioUsuarioPagina() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

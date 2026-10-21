@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -125,19 +125,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,7 +147,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,23 +176,23 @@ import { ESTADOS, listarOrdenes } from '../../services/ordenesService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 &nbsp;
-export default function Ordenes() {
-  const [estado, setEstado] = useState('');
-  const ordenes = listarOrdenes().filter((o) =&gt; !estado || o.estado === estado);
+export default function <span class="fstat-no" title="function not covered" >Ordenes(</span>) {
+  const [estado, setEstado] = <span class="cstat-no" title="statement not covered" >useState('');</span>
+  const ordenes = <span class="cstat-no" title="statement not covered" >listarOrdenes().filter(<span class="fstat-no" title="function not covered" >(o</span>) =&gt; <span class="cstat-no" title="statement not covered" >!estado || o.estado === estado)</span>;</span>
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
       &lt;h1 className="titulo-seccion"&gt;Órdenes&lt;/h1&gt;
       &lt;Form.Group controlId="filtro-estado" className="mb-3" style={{ maxWidth: 260 }}&gt;
         &lt;Form.Label className="etiqueta-campo"&gt;Filtrar por estado&lt;/Form.Label&gt;
-        &lt;Form.Select value={estado} onChange={(e) =&gt; setEstado(e.target.value)}&gt;
+        &lt;Form.Select value={estado} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setEstado(e.target.value)}</span>&gt;
           &lt;option value=""&gt;Todos&lt;/option&gt;
-          {Object.values(ESTADOS).map((e) =&gt; &lt;option key={e} value={e}&gt;{e}&lt;/option&gt;)}
+          {Object.values(ESTADOS).map(<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >&lt;option key={e} value={e}&gt;{e}&lt;/option&gt;)</span>}
         &lt;/Form.Select&gt;
       &lt;/Form.Group&gt;
 &nbsp;
       {ordenes.length === 0 ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >        &lt;MensajeVacio titulo="No hay órdenes con ese estado" /&gt;</span>
+        &lt;MensajeVacio titulo="No hay órdenes con ese estado" /&gt;
       ) : (
         &lt;div className="table-responsive"&gt;
           &lt;Table hover size="sm" className="align-middle"&gt;
@@ -200,8 +200,8 @@ export default function Ordenes() {
               &lt;tr&gt;&lt;th scope="col"&gt;N° orden&lt;/th&gt;&lt;th scope="col"&gt;Emitida&lt;/th&gt;&lt;th scope="col"&gt;Cliente&lt;/th&gt;&lt;th scope="col"&gt;Cita&lt;/th&gt;&lt;th scope="col"&gt;Tatuador/a&lt;/th&gt;&lt;th scope="col" className="text-end"&gt;Total&lt;/th&gt;&lt;th scope="col"&gt;Estado&lt;/th&gt;&lt;th scope="col"&gt;&lt;span className="visually-hidden"&gt;Detalle&lt;/span&gt;&lt;/th&gt;&lt;/tr&gt;
             &lt;/thead&gt;
             &lt;tbody&gt;
-              {ordenes.map((o) =&gt; (
-                &lt;tr key={o.id}&gt;
+              {ordenes.map(<span class="fstat-no" title="function not covered" >(o</span>) =&gt; (
+<span class="cstat-no" title="statement not covered" >                &lt;tr key={o.id}&gt;</span>
                   &lt;td&gt;{o.numero}&lt;/td&gt;
                   &lt;td&gt;{formatoFecha(o.fecha)}&lt;/td&gt;
                   &lt;td&gt;{o.cliente.nombre} {o.cliente.apellidos}&lt;/td&gt;
@@ -226,7 +226,7 @@ export default function Ordenes() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -131,7 +131,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -141,30 +141,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -173,11 +164,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -191,8 +191,8 @@
  * Panel de filtros del catálogo. Es un componente "controlado": no guarda estado propio,
  * recibe los valores por props y avisa los cambios con onCambiar(campo, valor).
  */
-export default function FiltrosProductos({ filtros, categorias, onCambiar, onLimpiar }) {
-  return (
+export default function <span class="fstat-no" title="function not covered" >FiltrosProductos(</span>{ filtros, categorias, onCambiar, onLimpiar }) {
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Form className="filtros-productos mb-4" aria-label="Filtros de diseños" onSubmit={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >e.preventDefault()}</span>&gt;
       &lt;Row className="g-3 align-items-end"&gt;
         &lt;Col md={6} lg={3}&gt;
@@ -202,21 +202,21 @@ export default function FiltrosProductos({ filtros, categorias, onCambiar, onLim
             type="search"
             placeholder="Nombre, zona, tamaño…"
             value={filtros.texto}
-            onChange={(e) =&gt; onCambiar('texto', e.target.value)}
+            onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >onCambiar('texto', e.target.value)}</span>
           /&gt;
         &lt;/Col&gt;
         &lt;Col md={6} lg={2}&gt;
           &lt;Form.Label htmlFor="f-categoria" className="etiqueta-campo"&gt;Estilo&lt;/Form.Label&gt;
-          &lt;Form.Select id="f-categoria" value={filtros.categoriaId} onChange={(e) =&gt; onCambiar('categoriaId', e.target.value)}&gt;
+          &lt;Form.Select id="f-categoria" value={filtros.categoriaId} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >onCambiar('categoriaId', e.target.value)}</span>&gt;
             &lt;option value=""&gt;Todos&lt;/option&gt;
-            {categorias.map((c) =&gt; (
-              &lt;option key={c.id} value={c.id}&gt;{c.nombre}&lt;/option&gt;
+            {categorias.map(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; (
+<span class="cstat-no" title="statement not covered" >              &lt;option key={c.id} value={c.id}&gt;{c.nombre}&lt;/option&gt;</span>
             ))}
           &lt;/Form.Select&gt;
         &lt;/Col&gt;
         &lt;Col md={6} lg={2}&gt;
           &lt;Form.Label htmlFor="f-precio" className="etiqueta-campo"&gt;Precio máximo&lt;/Form.Label&gt;
-          &lt;Form.Select id="f-precio" value={filtros.precioMax} onChange={(e) =&gt; onCambiar('precioMax', e.target.value)}&gt;
+          &lt;Form.Select id="f-precio" value={filtros.precioMax} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >onCambiar('precioMax', e.target.value)}</span>&gt;
             &lt;option value=""&gt;Sin límite&lt;/option&gt;
             &lt;option value="70000"&gt;Hasta $70.000&lt;/option&gt;
             &lt;option value="100000"&gt;Hasta $100.000&lt;/option&gt;
@@ -225,7 +225,7 @@ export default function FiltrosProductos({ filtros, categorias, onCambiar, onLim
         &lt;/Col&gt;
         &lt;Col md={6} lg={2}&gt;
           &lt;Form.Label htmlFor="f-orden" className="etiqueta-campo"&gt;Ordenar por&lt;/Form.Label&gt;
-          &lt;Form.Select id="f-orden" value={filtros.orden} onChange={(e) =&gt; onCambiar('orden', e.target.value)}&gt;
+          &lt;Form.Select id="f-orden" value={filtros.orden} onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >onCambiar('orden', e.target.value)}</span>&gt;
             &lt;option value="relevancia"&gt;Relevancia&lt;/option&gt;
             &lt;option value="precio-asc"&gt;Precio: menor a mayor&lt;/option&gt;
             &lt;option value="precio-desc"&gt;Precio: mayor a menor&lt;/option&gt;
@@ -238,7 +238,7 @@ export default function FiltrosProductos({ filtros, categorias, onCambiar, onLim
             type="switch"
             label="Solo ofertas"
             checked={filtros.soloOfertas}
-            onChange={(e) =&gt; onCambiar('soloOfertas', e.target.checked)}
+            onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >onCambiar('soloOfertas', e.target.checked)}</span>
           /&gt;
           &lt;Button variant="outline-dark" size="sm" onClick={onLimpiar}&gt;Limpiar&lt;/Button&gt;
         &lt;/Col&gt;
@@ -253,7 +253,7 @@ export default function FiltrosProductos({ filtros, categorias, onCambiar, onLim
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/14</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -123,26 +123,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,7 +153,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">18x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,24 +174,24 @@ import { useSesion } from '../../context/SesionContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { CUENTAS_DEMO } from '../../config/estudio.js';
 &nbsp;
-export default function Login() {
-  const { iniciarSesion } = useSesion();
-  const { mostrar } = useAvisos();
-  const navegar = useNavigate();
-  const ubicacion = useLocation();
+export default function <span class="fstat-no" title="function not covered" >Login(</span>) {
+  const { iniciarSesion } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
+  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
+  const navegar = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+  const ubicacion = <span class="cstat-no" title="statement not covered" >useLocation();</span>
 &nbsp;
   /** Devuelve '' si el ingreso fue correcto, o el mensaje de error para el formulario. */
-  const ingresar = ({ correo, password }) =&gt; {
-    const resultado = iniciarSesion(correo, password);
-    if (!resultado.ok) return resultado.error;
-    mostrar(`¡Bienvenido/a, ${resultado.usuario.nombre}!`);
+  const ingresar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> correo, password }) =&gt; {</span>
+    const resultado = <span class="cstat-no" title="statement not covered" >iniciarSesion(correo, password);</span>
+<span class="cstat-no" title="statement not covered" >    if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span></span>
+<span class="cstat-no" title="statement not covered" >    mostrar(`¡Bienvenido/a, ${resultado.usuario.nombre}!`);</span>
     // Admin y vendedor van al panel; el cliente vuelve a donde estaba (o al inicio).
-    const destino = ubicacion.state?.desde || (resultado.usuario.tipo === 'Cliente' ? '/' : '/admin');
-    navegar(destino, { replace: true });
-    return '';
+    const destino = <span class="cstat-no" title="statement not covered" >ubicacion.state?.desde || (resultado.usuario.tipo === 'Cliente' ? '/' : '/admin');</span>
+<span class="cstat-no" title="statement not covered" >    navegar(destino, { replace: true });</span>
+<span class="cstat-no" title="statement not covered" >    return '';</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Container className="py-5"&gt;
       &lt;Row className="justify-content-center g-4"&gt;
         &lt;Col md={6} lg={5}&gt;
@@ -207,8 +207,8 @@ export default function Login() {
               &lt;Table size="sm" className="mb-0 small"&gt;
                 &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Rol&lt;/th&gt;&lt;th&gt;Correo&lt;/th&gt;&lt;th&gt;Clave&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
                 &lt;tbody&gt;
-                  {CUENTAS_DEMO.map((c) =&gt; (
-                    &lt;tr key={c.rol}&gt;&lt;td&gt;{c.rol}&lt;/td&gt;&lt;td&gt;{c.correo}&lt;/td&gt;&lt;td&gt;&lt;code&gt;{c.password}&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;
+                  {CUENTAS_DEMO.map(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; (
+<span class="cstat-no" title="statement not covered" >                    &lt;tr key={c.rol}&gt;&lt;td&gt;{c.rol}&lt;/td&gt;&lt;td&gt;{c.correo}&lt;/td&gt;&lt;td&gt;&lt;code&gt;{c.password}&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;</span>
                   ))}
                 &lt;/tbody&gt;
               &lt;/Table&gt;
@@ -226,7 +226,7 @@ export default function Login() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.92% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -109,19 +109,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -146,22 +146,22 @@ import useFormulario from '../../hooks/useFormulario.js';
 import { validarFormularioCategoria } from '../../utils/validaciones.js';
 &nbsp;
 /** Formulario de categoría (estilo). onEnviar(valores) -&gt; '' o mensaje de error. */
-export default function FormularioCategoria({ inicial = <span class="branch-0 cbranch-no" title="branch not covered" >null,</span> onEnviar, onCancelar }) {
-  const f = useFormulario(
+export default function <span class="fstat-no" title="function not covered" >FormularioCategoria(</span>{ inicial = <span class="branch-0 cbranch-no" title="branch not covered" >null,</span> onEnviar, onCancelar }) {
+  const f = <span class="cstat-no" title="statement not covered" >useFormulario(</span>
     { nombre: inicial?.nombre ?? '', descripcion: inicial?.descripcion ?? '' },
     validarFormularioCategoria,
   );
-  const [errorGeneral, setErrorGeneral] = useState('');
+  const [errorGeneral, setErrorGeneral] = <span class="cstat-no" title="statement not covered" >useState('');</span>
 &nbsp;
-  const enviar = (evento) =&gt; {
-    evento.preventDefault();
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!f.intentarEnviar()) <span class="cstat-no" title="statement not covered" >return;</span>
-    setErrorGeneral(onEnviar(f.valores) || '');
+  const enviar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>vento) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    evento.preventDefault();</span>
+<span class="cstat-no" title="statement not covered" >    if (!f.intentarEnviar()) <span class="cstat-no" title="statement not covered" >return;</span></span>
+<span class="cstat-no" title="statement not covered" >    setErrorGeneral(onEnviar(f.valores) || '');</span>
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Form onSubmit={enviar} noValidate aria-label="Formulario de categoría"&gt;
-      {errorGeneral &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;Alert variant="danger" role="alert"&gt;{errorGeneral}&lt;/Alert&gt;}</span>
+      {errorGeneral &amp;&amp; &lt;Alert variant="danger" role="alert"&gt;{errorGeneral}&lt;/Alert&gt;}
       &lt;CampoFormulario
         id="cat-nombre" etiqueta="Nombre" name="nombre" maxLength={50}
         value={f.valores.nombre} onChange={f.manejarCambio} onBlur={f.manejarBlur} error={f.visibles.nombre}
@@ -184,7 +184,7 @@ export default function FormularioCategoria({ inicial = <span class="branch-0 cb
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

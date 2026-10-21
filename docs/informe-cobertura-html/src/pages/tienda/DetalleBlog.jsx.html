@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -107,20 +107,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -128,7 +119,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -142,12 +142,12 @@ import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
 import { obtenerBlog } from '../../data/blogs.js';
 import { formatoFechaLarga } from '../../utils/formato.js';
 &nbsp;
-export default function DetalleBlog() {
-  const { id } = useParams();
-  const blog = obtenerBlog(id);
+export default function <span class="fstat-no" title="function not covered" >DetalleBlog(</span>) {
+  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
+  const blog = <span class="cstat-no" title="statement not covered" >obtenerBlog(id);</span>
 &nbsp;
-  if (!blog) {
-    return (
+<span class="cstat-no" title="statement not covered" >  if (!blog) {</span>
+<span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;Container className="py-5"&gt;
         &lt;MensajeVacio titulo="Ese artículo no existe"&gt;
           &lt;Link to="/blogs" className="btn btn-dark"&gt;Volver al blog&lt;/Link&gt;
@@ -156,15 +156,15 @@ export default function DetalleBlog() {
     );
   }
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Container className="py-4" style={{ maxWidth: 780 }}&gt;
       &lt;Migas items={[{ texto: 'Home', to: '/' }, { texto: 'Blog', to: '/blogs' }, { texto: blog.etiqueta }]} /&gt;
       &lt;article&gt;
         &lt;h1 className="titulo-seccion"&gt;{blog.titulo}&lt;/h1&gt;
         &lt;p className="text-muted"&gt;{formatoFechaLarga(blog.fecha)} · {blog.autor}&lt;/p&gt;
         &lt;img src={blog.imagen} alt="" className="img-fluid mb-4 imagen-blog" /&gt;
-        {blog.contenido.map((bloque, i) =&gt;
-          bloque.tipo === 'h' ? &lt;h2 key={i} className="h4 mt-4"&gt;{bloque.texto}&lt;/h2&gt; : &lt;p key={i}&gt;{bloque.texto}&lt;/p&gt;,
+        {blog.contenido.map(<span class="fstat-no" title="function not covered" >(b</span>loque, i) =&gt;
+<span class="cstat-no" title="statement not covered" >          bloque.tipo === 'h' ? &lt;h2 key={i} className="h4 mt-4"&gt;{bloque.texto}&lt;/h2&gt; : &lt;p key={i}&gt;{bloque.texto}&lt;/p&gt;,</span>
         )}
       &lt;/article&gt;
       &lt;Link to="/blogs" className="enlace-sutil"&gt;← Volver al blog&lt;/Link&gt;
@@ -178,7 +178,7 @@ export default function DetalleBlog() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:03:05.100Z
+                at 2026-10-21T17:05:49.873Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
