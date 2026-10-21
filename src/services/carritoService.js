@@ -1,3 +1,8 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • Aquí viven las REGLAS DE NEGOCIO del carrito, en funciones normales (sin React).
+// • Son "puras": reciben el carrito y devuelven uno NUEVO, sin modificar el original.
+// • Por eso son fáciles de probar con Jasmine: entrada -> salida (prueba 2 de la defensa).
+// ───────────────────────────────────────────────────────────────────────────
 /**
  * Reglas del carrito de compras (reserva).
  *

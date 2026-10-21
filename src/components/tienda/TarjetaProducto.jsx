@@ -1,3 +1,10 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • Es un COMPONENTE: una función que devuelve JSX (HTML dentro de JavaScript).
+// • Recibe PROPS (producto, onAgregar): datos que le pasa el padre. Es de solo lectura.
+// • No guarda estado: solo dibuja. Cuando el cliente hace clic, llama a onAgregar y el padre decide.
+// • Renderizado condicional: `{oferta && ...}` muestra el cartel solo si hay oferta.
+// • Bootstrap: Card y Button (react-bootstrap) dan el diseño sin escribir CSS.
+// ───────────────────────────────────────────────────────────────────────────
 import { Link } from 'react-router-dom';
 import { Badge, Button, Card } from 'react-bootstrap';
 import { estaEnOferta, esStockCritico, precioFinal } from '../../services/productosService.js';

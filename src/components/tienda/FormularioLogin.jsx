@@ -1,3 +1,10 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • Cada <input> es CONTROLADO: su value viene del estado (f.valores) y onChange lo actualiza.
+// • useFormulario es un HOOK PERSONALIZADO (src/hooks): guarda valores, errores y qué campos tocó.
+// • Los errores aparecen en tiempo real: al escribir o al salir del campo (onBlur).
+// • Al enviar: preventDefault() evita recargar la página; si hay errores no se envía.
+// • onEnviar llega por PROPS: este componente no sabe cómo se inicia sesión, solo avisa al padre.
+// ───────────────────────────────────────────────────────────────────────────
 import { useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
 import CampoFormulario from '../comunes/CampoFormulario.jsx';

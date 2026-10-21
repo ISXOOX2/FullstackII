@@ -1,3 +1,10 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • Recibe una lista por props y la dibuja con .map(): una tarjeta por cada diseño.
+// • `key={producto.id}`: identifica cada elemento para que React solo actualice lo que cambia.
+// • Si la lista está vacía (if) muestra un mensaje en vez de una grilla vacía.
+// • DISEÑO RESPONSIVO: <Row xs={1} sm={2} lg={3} xl={4}> = 1 columna en celular, 2 en tablet,
+//   3 en notebook y 4 en pantalla grande (Bootstrap usa 12 columnas).
+// ───────────────────────────────────────────────────────────────────────────
 import { Col, Row } from 'react-bootstrap';
 import TarjetaProducto from './TarjetaProducto.jsx';
 import MensajeVacio from '../comunes/MensajeVacio.jsx';

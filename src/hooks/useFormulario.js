@@ -1,3 +1,9 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • Un hook personalizado es una función que empieza con "use" y reúne useState para reutilizarlos.
+// • Así los 7 formularios del proyecto (login, registro, checkout...) no repiten el mismo código.
+// • Tres estados: valores (lo que escribe), tocados (campos que ya visitó) e intentoEnvio.
+// • visibles = errores que se muestran: solo de campos tocados, o todos si ya intentó enviar.
+// ───────────────────────────────────────────────────────────────────────────
 import { useState } from 'react';
 
 /**

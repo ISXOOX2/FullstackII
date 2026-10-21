@@ -1,3 +1,9 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • Mismo patrón que el carrito: Context para que el menú, el checkout y el panel admin sepan
+//   quién inició sesión sin pasar `usuario` por props.
+// • El estado es `usuario` (null = nadie). iniciarSesion y cerrarSesion lo cambian.
+// • Se guarda en sessionStorage para que no se pierda al recargar la página.
+// ───────────────────────────────────────────────────────────────────────────
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { autenticar } from '../services/usuariosService.js';
 import { borrarSesion, guardarSesion, leerSesion } from '../services/sesionService.js';

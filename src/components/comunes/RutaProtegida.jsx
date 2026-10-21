@@ -1,3 +1,8 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • Es el "guardia" del panel admin: lee la sesión con useSesion() (Context).
+// • Sin sesión -> <Navigate> al login. Con sesión pero rol equivocado -> al inicio.
+// • Roles del proyecto: Administrador, Vendedor y Cliente.
+// ───────────────────────────────────────────────────────────────────────────
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSesion } from '../../context/SesionContext.jsx';
 

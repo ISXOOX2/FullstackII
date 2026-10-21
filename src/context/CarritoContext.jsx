@@ -1,3 +1,10 @@
+// ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
+// • CONTEXT API: comparte el carrito con toda la app sin pasarlo por props nivel a nivel.
+//   Tres piezas: createContext (crea), <Provider value=...> (entrega) y useContext (lee).
+// • useState guarda los items; useEffect los copia a localStorage cada vez que cambian.
+// • Las reglas (máx. 5, stock) NO están aquí: están en services/carritoService.js, para poder
+//   probarlas sin React.
+// ───────────────────────────────────────────────────────────────────────────
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   agregarItem,

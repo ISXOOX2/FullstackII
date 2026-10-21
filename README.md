@@ -15,7 +15,8 @@ npm install          # instala las dependencias (una sola vez)
 npm run dev          # servidor de desarrollo -> http://localhost:5173
 npm run build        # genera la versión final en /dist
 npm run preview      # sirve /dist para revisarla
-npm test             # corre las pruebas (Karma + Jasmine) y genera el informe en /coverage
+npm test             # corre las 132 pruebas (Karma + Jasmine) y genera el informe en /coverage
+npm run test:defensa # corre solo las 10 pruebas que se muestran en la presentación
 ```
 
 > `npm test` usa Chrome sin ventana (ChromeHeadless). Si Chrome no está en la ruta habitual,
