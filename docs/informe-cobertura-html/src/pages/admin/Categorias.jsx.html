@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">30.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/33</span>
+                <span class='fraction'>10/33</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>3/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">16.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>2/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">34.48% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/29</span>
+                <span class='fraction'>10/29</span>
             </div>
         
             
@@ -164,8 +164,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -174,24 +189,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,7 +202,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -245,23 +245,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
-import FormularioCategoria from '../../components/admin/FormularioCategoria.jsx';
-import ModalConfirmacion from '../../components/comunes/ModalConfirmacion.jsx';
+import FormularioCategoria from '../../components/organismos/FormularioCategoria.jsx';
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import {
   actualizarCategoria, contarProductosDeCategoria, crearCategoria, eliminarCategoria, listarCategorias,
 } from '../../services/categoriasService.js';
 &nbsp;
 /** Mantenedor de categorías (estilos). El formulario se abre en una ventana modal. */
-export default function <span class="fstat-no" title="function not covered" >Categorias(</span>) {
-  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
-  const [, setVersion] = <span class="cstat-no" title="statement not covered" >useState(0);</span>
-  const refrescar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setVersion(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >v + 1)</span>;</span></span>
-  const [editando, setEditando] = <span class="cstat-no" title="statement not covered" >useState(null);</span> // null = cerrado, {} = nueva, {id,...} = editar
-  const [aEliminar, setAEliminar] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
-  const [errorEliminar, setErrorEliminar] = <span class="cstat-no" title="statement not covered" >useState('');</span>
+export default function Categorias() {
+  const { mostrar } = useAvisos();
+  const [, setVersion] = useState(0);
+  const refrescar = <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setVersion(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >v + 1)</span>;</span>
+  const [editando, setEditando] = useState(null); // null = cerrado, {} = nueva, {id,...} = editar
+  const [aEliminar, setAEliminar] = useState(null);
+  const [errorEliminar, setErrorEliminar] = useState('');
 &nbsp;
-  const guardar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(v</span>alores) =&gt; {</span>
+  const guardar = <span class="fstat-no" title="function not covered" >(v</span>alores) =&gt; {
     const resultado = <span class="cstat-no" title="statement not covered" >editando.id ? actualizarCategoria(editando.id, valores) : crearCategoria(valores);</span>
 <span class="cstat-no" title="statement not covered" >    if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span></span>
 <span class="cstat-no" title="statement not covered" >    mostrar(editando.id ? 'Categoría actualizada.' : 'Categoría creada.');</span>
@@ -270,7 +270,7 @@ export default function <span class="fstat-no" title="function not covered" >Cat
 <span class="cstat-no" title="statement not covered" >    return '';</span>
   };
 &nbsp;
-  const confirmarEliminar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+  const confirmarEliminar = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
     const resultado = <span class="cstat-no" title="statement not covered" >eliminarCategoria(aEliminar.id);</span>
 <span class="cstat-no" title="statement not covered" >    if (!resultado.ok) {</span>
 <span class="cstat-no" title="statement not covered" >      setErrorEliminar(resultado.error);</span>
@@ -281,7 +281,7 @@ export default function <span class="fstat-no" title="function not covered" >Cat
 <span class="cstat-no" title="statement not covered" >    refrescar();</span>
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;&gt;
       &lt;div className="d-flex justify-content-between align-items-center mb-3"&gt;
         &lt;h1 className="titulo-seccion mb-0"&gt;Categorías&lt;/h1&gt;
@@ -291,8 +291,8 @@ export default function <span class="fstat-no" title="function not covered" >Cat
         &lt;Table hover size="sm" className="align-middle"&gt;
           &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;Nombre&lt;/th&gt;&lt;th scope="col"&gt;Descripción&lt;/th&gt;&lt;th scope="col" className="text-center"&gt;Diseños&lt;/th&gt;&lt;th scope="col"&gt;Acciones&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
           &lt;tbody&gt;
-            {listarCategorias().map(<span class="fstat-no" title="function not covered" >(c</span>) =&gt; (
-<span class="cstat-no" title="statement not covered" >              &lt;tr key={c.id}&gt;</span>
+            {listarCategorias().map((c) =&gt; (
+              &lt;tr key={c.id}&gt;
                 &lt;td&gt;{c.nombre}&lt;/td&gt;
                 &lt;td&gt;{c.descripcion}&lt;/td&gt;
                 &lt;td className="text-center"&gt;{contarProductosDeCategoria(c.id)}&lt;/td&gt;
@@ -308,10 +308,10 @@ export default function <span class="fstat-no" title="function not covered" >Cat
 &nbsp;
       &lt;Modal show={Boolean(editando)} onHide={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setEditando(null)}</span> centered&gt;
         &lt;Modal.Header closeButton&gt;
-          &lt;Modal.Title as="h2" className="h5"&gt;{editando?.id ? 'Editar categoría' : 'Nueva categoría'}&lt;/Modal.Title&gt;
+          &lt;Modal.Title as="h2" className="h5"&gt;{editando?.id ? <span class="branch-0 cbranch-no" title="branch not covered" >'Editar categoría' </span>: 'Nueva categoría'}&lt;/Modal.Title&gt;
         &lt;/Modal.Header&gt;
         &lt;Modal.Body&gt;
-          {editando &amp;&amp; &lt;FormularioCategoria inicial={editando.id ? editando : null} onEnviar={guardar} onCancelar={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setEditando(null)}</span> /&gt;}
+          {editando &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;FormularioCategoria inicial={editando.id ? editando : null} onEnviar={guardar} onCancelar={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setEditando(null)}</span> /&gt;}</span>
         &lt;/Modal.Body&gt;
       &lt;/Modal&gt;
 &nbsp;
@@ -320,7 +320,7 @@ export default function <span class="fstat-no" title="function not covered" >Cat
         titulo="Eliminar categoría"
         mensaje={
           aEliminar &amp;&amp; (
-            &lt;&gt;
+<span class="branch-1 cbranch-no" title="branch not covered" >            &lt;&gt;</span>
               &lt;p className="mb-2"&gt;¿Seguro que quieres eliminar «{aEliminar.nombre}»?&lt;/p&gt;
               {errorEliminar &amp;&amp; &lt;p className="text-danger mb-0" role="alert"&gt;{errorEliminar}&lt;/p&gt;}
             &lt;/&gt;
@@ -340,7 +340,7 @@ export default function <span class="fstat-no" title="function not covered" >Cat
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

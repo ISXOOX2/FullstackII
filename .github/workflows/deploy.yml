@@ -26,7 +26,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm test
+      - run: npm test -- --browsers=ChromeHeadlessCI
       # El sitio vive en https://<usuario>.github.io/FullstackII/ : se compila con esa base.
       - run: npm run build -- --base=/FullstackII/
       # BrowserRouter: GitHub Pages no conoce rutas como /productos/3 y respondería 404.

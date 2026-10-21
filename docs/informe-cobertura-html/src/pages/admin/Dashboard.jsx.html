@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -126,16 +126,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,7 +149,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,24 +167,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link, Navigate } from 'react-router-dom';
 import { Col, Row, Table } from 'react-bootstrap';
-import TarjetaResumen from '../../components/admin/TarjetaResumen.jsx';
-import AlertaStockCritico from '../../components/admin/AlertaStockCritico.jsx';
-import InsigniaEstado from '../../components/comunes/InsigniaEstado.jsx';
+import TarjetaResumen from '../../components/moleculas/TarjetaResumen.jsx';
+import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.jsx';
+import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { resumenGeneral } from '../../services/reportesService.js';
 import { productosCriticos } from '../../services/productosService.js';
 import { listarOrdenes } from '../../services/ordenesService.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >Dashboard(</span>) {
-  const { usuario } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
+export default function Dashboard() {
+  const { usuario } = useSesion();
   // El vendedor no ve el dashboard: va directo a las órdenes.
-<span class="cstat-no" title="statement not covered" >  if (usuario.tipo === 'Vendedor') <span class="cstat-no" title="statement not covered" >return &lt;Navigate to="/admin/ordenes" replace /&gt;;</span></span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (usuario.tipo === 'Vendedor') <span class="cstat-no" title="statement not covered" >return &lt;Navigate to="/admin/ordenes" replace /&gt;;</span>
 &nbsp;
-  const resumen = <span class="cstat-no" title="statement not covered" >resumenGeneral();</span>
-  const ultimas = <span class="cstat-no" title="statement not covered" >listarOrdenes().slice(0, 5);</span>
+  const resumen = resumenGeneral();
+  const ultimas = listarOrdenes().slice(0, 5);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;&gt;
       &lt;h1 className="titulo-seccion"&gt;Dashboard&lt;/h1&gt;
       &lt;AlertaStockCritico productos={productosCriticos()} puedeEditar /&gt;
@@ -201,8 +201,8 @@ export default function <span class="fstat-no" title="function not covered" >Das
         &lt;Table hover size="sm" className="align-middle"&gt;
           &lt;thead&gt;&lt;tr&gt;&lt;th scope="col"&gt;N° orden&lt;/th&gt;&lt;th scope="col"&gt;Fecha&lt;/th&gt;&lt;th scope="col"&gt;Cliente&lt;/th&gt;&lt;th scope="col" className="text-end"&gt;Total&lt;/th&gt;&lt;th scope="col"&gt;Estado&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
           &lt;tbody&gt;
-            {ultimas.map(<span class="fstat-no" title="function not covered" >(o</span>) =&gt; (
-<span class="cstat-no" title="statement not covered" >              &lt;tr key={o.id}&gt;</span>
+            {ultimas.map((o) =&gt; (
+              &lt;tr key={o.id}&gt;
                 &lt;td&gt;&lt;Link to={`/admin/ordenes/${o.id}`}&gt;{o.numero}&lt;/Link&gt;&lt;/td&gt;
                 &lt;td&gt;{formatoFecha(o.fecha)}&lt;/td&gt;
                 &lt;td&gt;{o.cliente.nombre} {o.cliente.apellidos}&lt;/td&gt;
@@ -223,7 +223,7 @@ export default function <span class="fstat-no" title="function not covered" >Das
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

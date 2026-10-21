@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -143,7 +143,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -176,7 +176,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -195,7 +195,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -210,17 +210,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Card, Col, Container, Row } from 'react-bootstrap';
-import Migas from '../../components/comunes/Migas.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import { ESTUDIO, EQUIPO_DESARROLLO } from '../../config/estudio.js';
 import { TATUADORES } from '../../data/tatuadores.js';
 import { inicial } from '../../utils/formato.js';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >Nosotros(</span>) {
-<span class="cstat-no" title="statement not covered" >  return (</span>
+export default function Nosotros() {
+  return (
     &lt;Container className="py-4"&gt;
       &lt;Migas items={[{ texto: 'Home', to: '/' }, { texto: 'Nosotros' }]} /&gt;
       &lt;h1 className="titulo-seccion"&gt;Sobre {ESTUDIO.nombre}&lt;/h1&gt;
-      &lt;Row className="g-5 mb-5"&gt;
+      &lt;Row className="g-4 g-md-5 mb-5"&gt;
         &lt;Col md={7}&gt;
           &lt;p className="lead"&gt;
             Somos un estudio pequeño de Providencia que cree en los tatuajes de línea fina: pocos trazos, bien pensados, hechos para durar.
@@ -248,8 +248,8 @@ export default function <span class="fstat-no" title="function not covered" >Nos
       &lt;section aria-labelledby="titulo-equipo" className="mb-5"&gt;
         &lt;h2 id="titulo-equipo" className="titulo-seccion"&gt;Nuestro equipo&lt;/h2&gt;
         &lt;Row xs={1} md={3} className="g-4"&gt;
-          {TATUADORES.map(<span class="fstat-no" title="function not covered" >(t</span>) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;Col key={t.id}&gt;</span>
+          {TATUADORES.map((t) =&gt; (
+            &lt;Col key={t.id}&gt;
               &lt;Card className="h-100 tarjeta-persona"&gt;
                 &lt;Card.Body&gt;
                   &lt;span className="avatar" aria-hidden="true"&gt;{inicial(t)}&lt;/span&gt;
@@ -264,11 +264,11 @@ export default function <span class="fstat-no" title="function not covered" >Nos
       &lt;/section&gt;
 &nbsp;
       &lt;section aria-labelledby="titulo-desarrolladores"&gt;
-        &lt;h2 id="titulo-desarrolladores" className="titulo-seccion"&gt;Desarrolladoras del sitio&lt;/h2&gt;
+        &lt;h2 id="titulo-desarrolladores" className="titulo-seccion"&gt;Desarrollo del sitio&lt;/h2&gt;
         &lt;p className="text-muted"&gt;Proyecto de la asignatura Desarrollo Fullstack II (DSY1104) · DuocUC.&lt;/p&gt;
         &lt;Row xs={1} md={2} className="g-4"&gt;
-          {EQUIPO_DESARROLLO.map(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; (
-<span class="cstat-no" title="statement not covered" >            &lt;Col key={p.nombre}&gt;</span>
+          {EQUIPO_DESARROLLO.map((p) =&gt; (
+            &lt;Col key={p.nombre}&gt;
               &lt;Card className="h-100 tarjeta-persona"&gt;
                 &lt;Card.Body&gt;
                   &lt;Card.Title as="h3" className="h5"&gt;{p.nombre}&lt;/Card.Title&gt;
@@ -289,7 +289,7 @@ export default function <span class="fstat-no" title="function not covered" >Nos
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.52% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/21</span>
+                <span class='fraction'>7/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">4.76% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>1/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/10</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">33.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/18</span>
+                <span class='fraction'>6/18</span>
             </div>
         
             
@@ -124,20 +124,20 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">29x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">56x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">55x</span>
+<span class="cline-any cline-yes">55x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">144x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -182,17 +182,17 @@ export function listarCategorias() {
   return listar(COLECCION);
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >obtenerCategoria(</span>id) {
-<span class="cstat-no" title="statement not covered" >  return obtenerPorId(COLECCION, id);</span>
+export function obtenerCategoria(id) {
+  return obtenerPorId(COLECCION, id);
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >nombreCategoria(</span>id) {
-  const categoria = <span class="cstat-no" title="statement not covered" >obtenerCategoria(id);</span>
-<span class="cstat-no" title="statement not covered" >  return categoria ? categoria.nombre : 'Sin categoría';</span>
+export function nombreCategoria(id) {
+  const categoria = obtenerCategoria(id);
+  return categoria ? categoria.nombre : <span class="branch-1 cbranch-no" title="branch not covered" >'Sin categoría';</span>
 }
 &nbsp;
-export function <span class="fstat-no" title="function not covered" >contarProductosDeCategoria(</span>id) {
-<span class="cstat-no" title="statement not covered" >  return listar('productos').filter(<span class="fstat-no" title="function not covered" >(p</span>) =&gt; <span class="cstat-no" title="statement not covered" >p.categoriaId === Number(id))</span>.length;</span>
+export function contarProductosDeCategoria(id) {
+  return listar('productos').filter((p) =&gt; p.categoriaId === Number(id)).length;
 }
 &nbsp;
 function <span class="fstat-no" title="function not covered" >nombreRepetido(</span>nombre, idActual = <span class="branch-0 cbranch-no" title="branch not covered" >null)</span> {
@@ -206,7 +206,7 @@ export function <span class="fstat-no" title="function not covered" >crearCatego
   const categoria = <span class="cstat-no" title="statement not covered" >crear(COLECCION, {</span>
     nombre: datos.nombre.trim(),
     descripcion: (datos.descripcion || '').trim(),
-    imagen: datos.imagen || 'img/disenos/mariposa-lineal.svg',
+    imagen: datos.imagen || 'mariposa-lineal',
   });
 <span class="cstat-no" title="statement not covered" >  return { ok: true, categoria };</span>
 }
@@ -235,7 +235,7 @@ export function <span class="fstat-no" title="function not covered" >eliminarCat
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

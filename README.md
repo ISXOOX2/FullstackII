@@ -5,40 +5,34 @@ Sitio web de un estudio de tatuajes minimalista: el cliente elige diseños del c
 (tatuador, fecha y hora) y paga en línea (pago simulado). El personal del estudio administra el catálogo,
 las órdenes y los usuarios desde un panel.
 
-**Tecnologías:** React 19 · Vite · react-router-dom (HashRouter) · react-bootstrap / Bootstrap 5 ·
-Jasmine + Karma (pruebas unitarias y cobertura).
+**Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 ·
+Jasmine + Karma + Testing Library (pruebas unitarias y cobertura).
+
+**Autora:** Isabel Cántaro.
 
 ## Cómo ejecutarlo
 
 ```bash
-npm install          # instala las dependencias (una sola vez)
-npm run dev          # servidor de desarrollo -> http://localhost:5173
-npm run build        # genera la versión final en /dist
-npm run preview      # sirve /dist para revisarla
-npm test             # corre las 10 pruebas (Karma + Jasmine) y genera el informe en /coverage
+npm install            # instala las dependencias (una sola vez)
+npm run dev            # servidor de desarrollo -> http://localhost:5173
+npm run build          # genera la versión final en /dist
+npm run preview        # sirve /dist para revisarla
+npm test               # corre las 15 pruebas (Karma + Jasmine) y genera el informe en /coverage
+npm run test:defensa   # corre solo las 10 pruebas de la defensa, mostrando el nombre de cada una
 ```
 
 > `npm test` usa Chrome sin ventana (ChromeHeadless). Si Chrome no está en la ruta habitual,
-> indica el ejecutable con la variable `CHROME_BIN` (ej. `CHROME_BIN=/usr/bin/chromium npm test`).
+> indica el ejecutable con la variable `CHROME_BIN`. En Linux como root o en GitHub Actions usa
+> `npm test -- --browsers=ChromeHeadlessCI` (agrega `--no-sandbox`).
 
 ### ¿Y con "Open with Live Server" de VS Code?
 
 El `index.html` de la raíz es código fuente (JSX): un servidor estático no puede ejecutarlo y por eso
 saldría en blanco. Por eso el repo incluye la carpeta **`dist/`** (la versión ya compilada) y el archivo
-`.vscode/settings.json`, que le indica a Live Server que sirva `dist/`. Así, clic derecho en `index.html`
-→ *Open with Live Server* muestra la tienda sin instalar nada.
+`.vscode/settings.json`, que le indica a Live Server que sirva `dist/` y que responda `index.html` en
+cualquier ruta (necesario con BrowserRouter). Clic derecho en `index.html` → *Open with Live Server*.
 
 Si cambias el código, vuelve a compilar con `npm run build` para actualizar `dist/`.
-
-## Equipo y reparto de responsabilidades
-
-| Integrante | Lidera |
-|---|---|
-| **Isabel Cántaro** | Tienda y agendamiento: catálogo, carrito, checkout con agenda, pago simulado, órdenes y reglas de la agenda. |
-| **Valentine Gaete** | Administración, usuarios y diseño: panel admin, roles y sesión, base de datos simulada, validaciones y estilos. |
-
-Ambas explican todo el proyecto en la presentación; el detalle por archivo y por prueba está en
-`docs/Guia_Defensa_Presentacion.docx` (sección 1.1).
 
 ## Cuentas de demostración
 
@@ -50,26 +44,47 @@ Ambas explican todo el proyecto en la presentación; el detalle por archivo y po
 
 El **Vendedor** solo ve Órdenes y Productos (productos en modo lectura). El **Administrador** ve todo.
 
-## Estructura del proyecto
+## Estructura del proyecto (Atomic Design)
 
 ```
 src/
-  App.jsx, main.jsx        Rutas y arranque de la aplicación
+  main.jsx                 Arranque: estilos globales y <BrowserRouter> envolviendo a <App />
+  App.jsx                  Contextos, Error Boundary y todas las rutas (panel con React.lazy)
+  assets/                  Imágenes (src/assets/images) + images.js que las importa todas
+  components/
+    atomos/                Piezas mínimas: Boton, Logo, InsigniaEstado, Cargando
+    moleculas/             Combinan átomos: CampoFormulario, TarjetaProducto, Galeria, Migas…
+    organismos/            Secciones completas: BarraNavegacion, ListaProductos, formularios, Boleta…
+    plantillas/            Estructura de página: LayoutTienda y LayoutAdmin
+    utilidades/            Sin interfaz propia: RutaProtegida, ScrollArriba, LimiteDeErrores
+  pages/tienda, pages/admin  Páginas (una por ruta)
   config/estudio.js        Datos del estudio, horarios y reglas de agenda
-  data/                    "Base de datos" simulada: db.js (CRUD sobre localStorage) + seed.js (datos iniciales)
+  data/                    "Base de datos" simulada: db.js (CRUD sobre localStorage) + seed.js
   services/                Reglas de negocio (productos, carrito, órdenes, usuarios, pagos, reportes…)
   context/                 Context API: sesión, carrito y avisos
   hooks/                   useFormulario (validación en tiempo real), useAgregarAlCarrito
   utils/                   validaciones.js (RUN, correo, contraseña, fecha de cita…), formato.js, boleta.js
-  components/
-    comunes/               Componentes reutilizables (Logo, CampoFormulario, Boleta, RutaProtegida…)
-    tienda/                Componentes de la tienda (barra, tarjetas, filtros, formularios, checkout…)
-    admin/                 Componentes del panel (layout, formularios, alertas)
-  pages/tienda, pages/admin  Una página por ruta
-  styles/tema.css          Tema minimalista (sobre Bootstrap)
-test/                      10 pruebas Jasmine: logica, componentes y checkout (*.spec.jsx) + ayudas.jsx
-docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de 2 días
+  styles/tema.css          Única hoja de estilos propia (sobre Bootstrap)
+test/
+  defensa.spec.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
+  complementarias.spec.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary
+  ayudas.jsx, index.js     Funciones de apoyo y punto de entrada de Karma
+docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
 ```
+
+## Decisiones técnicas (según el material de la asignatura)
+
+- **Vite + React** (diapositivas React I) y **BrowserRouter en `main.jsx`** con `Routes`/`Route` en `App.jsx`
+  (React II). Los detalles leen el id con `useParams` y el catálogo lee `?q=` con `useLocation` (2.2.1).
+- **Imágenes importadas desde `src/assets`** con `images.js` (React III). Se usa `import.meta.glob(..., { eager: true })`,
+  que es el reemplazo actual de `import.meta.globEager`.
+- **Atomic Design** para organizar los componentes (2.2.1) y principio de responsabilidad única (Anexo 1).
+- **react-bootstrap** con solo el CSS de Bootstrap importado (guía 2.1.2): el JS de Bootstrap no es necesario.
+- **Hoja de estilos** (1.2.4 y 1.2.6): una sola hoja propia, formato estándar, tabla de contenido, mobile first
+  (`min-width`), imágenes con `max-width: 100%` y sin estilos en línea ni `!important`.
+- **Error Boundary** (2.3.5) y **carga diferida** del panel con `React.lazy` + `Suspense` (2.3.3).
+- **Pruebas** con Jasmine y Karma: `karma.conf.js` como la guía 2.3.2 (jasmine, ChromeHeadless, progress y coverage),
+  webpack + babel para JSX (2.3.5), `renderHook`, `jasmine.createSpyObj`, `spyOn` y matchers de jasmine-dom.
 
 ## Persistencia simulada
 
@@ -81,8 +96,9 @@ el almacenamiento del sitio en el navegador (o llamar a `reiniciarBD()`).
 
 1. Subir el proyecto a GitHub (rama `main`).
 2. En el repositorio: **Settings → Pages → Source: GitHub Actions**.
-3. Cada `push` a `main` ejecuta `.github/workflows/deploy.yml` y publica el sitio.
-   Se usa `HashRouter` y `base: './'`, por lo que las rutas funcionan sin configuración extra.
+3. Cada `push` a `main` ejecuta `.github/workflows/deploy.yml`: corre las pruebas, compila con
+   `--base=/FullstackII/` y publica una copia de `index.html` como `404.html`, para que las rutas de
+   BrowserRouter (por ejemplo `/productos/3`) también carguen la aplicación.
 
 ## Limitaciones conocidas (proyecto académico)
 

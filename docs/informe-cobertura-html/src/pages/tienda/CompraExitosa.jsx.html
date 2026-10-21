@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>4/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>4/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -98,7 +98,8 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -106,11 +107,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -119,7 +120,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -135,32 +137,33 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link, useParams } from 'react-router-dom';
 import { Alert, Button, Container } from 'react-bootstrap';
-import Boleta from '../../components/comunes/Boleta.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import Boleta from '../../components/organismos/Boleta.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { obtenerOrden } from '../../services/ordenesService.js';
 import { construirMailtoBoleta } from '../../utils/boleta.js';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >CompraExitosa(</span>) {
-  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
-  const orden = <span class="cstat-no" title="statement not covered" >obtenerOrden(id);</span>
+export default function CompraExitosa() {
+  const { id } = useParams();
+  const orden = obtenerOrden(id);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!orden || orden.estado !== 'Pagada') {</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!orden || orden.estado !== 'Pagada') {
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;Container className="py-5"&gt;
-        &lt;MensajeVacio titulo="No encontramos esa compra"&gt;
+        &lt;MensajeVacio nivelTitulo={1} titulo="No encontramos esa compra"&gt;
           &lt;Link to="/" className="btn btn-dark"&gt;Volver al inicio&lt;/Link&gt;
         &lt;/MensajeVacio&gt;
       &lt;/Container&gt;
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Container className="py-4" style={{ maxWidth: 820 }}&gt;
-      &lt;Alert variant="success" className="no-imprimir" role="status"&gt;
+  return (
+    &lt;Container className="py-4 contenedor-angosto"&gt;
+      &lt;h1 className="titulo-seccion d-print-none"&gt;Compra exitosa&lt;/h1&gt;
+      &lt;Alert variant="success" className="d-print-none" role="status"&gt;
         &lt;strong&gt;¡Reserva confirmada!&lt;/strong&gt; Te esperamos el {orden.cita.fecha.split('-').reverse().join('-')} a las {orden.cita.hora} hrs.
       &lt;/Alert&gt;
       &lt;Boleta orden={orden} /&gt;
-      &lt;div className="d-flex flex-wrap gap-2 mt-4 no-imprimir"&gt;
+      &lt;div className="d-flex flex-wrap gap-2 mt-4 d-print-none"&gt;
         &lt;Button variant="dark" onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >window.print()}</span>&gt;Imprimir boleta (PDF)&lt;/Button&gt;
         &lt;a className="btn btn-outline-dark" href={construirMailtoBoleta(orden)}&gt;Enviar boleta por correo&lt;/a&gt;
         &lt;Link to="/productos" className="btn btn-outline-dark"&gt;Seguir explorando&lt;/Link&gt;
@@ -175,7 +178,7 @@ export default function <span class="fstat-no" title="function not covered" >Com
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

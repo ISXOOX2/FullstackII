@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">47.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>8/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">45% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>9/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">53.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>8/15</span>
             </div>
         
             
@@ -112,31 +112,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -144,21 +144,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link, useNavigate, useParams } from 'react-router-dom';
-import FormularioUsuario from '../../components/tienda/FormularioUsuario.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { actualizarUsuario, crearUsuario, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';
 &nbsp;
 /** Crear (/admin/usuarios/nuevo) o editar (/admin/usuarios/:id/editar) un usuario. */
-export default function <span class="fstat-no" title="function not covered" >FormularioUsuarioPagina(</span>) {
-  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
-  const navegar = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
-  const { mostrar } = <span class="cstat-no" title="statement not covered" >useAvisos();</span>
-  const { usuario: sesion, actualizarSesion } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
-  const existente = <span class="cstat-no" title="statement not covered" >id ? obtenerUsuario(id) : null;</span>
+export default function FormularioUsuarioPagina() {
+  const { id } = useParams();
+  const navegar = useNavigate();
+  const { mostrar } = useAvisos();
+  const { usuario: sesion, actualizarSesion } = useSesion();
+  const existente = id ? obtenerUsuario(id) : null;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (id &amp;&amp; !existente) {</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (id &amp;&amp; !existente) {
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;MensajeVacio titulo="Ese usuario no existe"&gt;
         &lt;Link to="/admin/usuarios" className="btn btn-dark"&gt;Volver&lt;/Link&gt;
@@ -166,7 +166,7 @@ export default function <span class="fstat-no" title="function not covered" >For
     );
   }
 &nbsp;
-  const guardar = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(d</span>atos) =&gt; {</span>
+  const guardar = <span class="fstat-no" title="function not covered" >(d</span>atos) =&gt; {
     const resultado = <span class="cstat-no" title="statement not covered" >existente ? actualizarUsuario(existente.id, datos) : crearUsuario(datos);</span>
 <span class="cstat-no" title="statement not covered" >    if (!resultado.ok) <span class="cstat-no" title="statement not covered" >return resultado.error;</span></span>
     // Si el administrador se edita a sí mismo, la sesión debe reflejar los cambios.
@@ -176,7 +176,7 @@ export default function <span class="fstat-no" title="function not covered" >For
 <span class="cstat-no" title="statement not covered" >    return '';</span>
   };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;&gt;
       &lt;h1 className="titulo-seccion"&gt;{existente ? 'Editar usuario' : 'Nuevo usuario'}&lt;/h1&gt;
       &lt;FormularioUsuario modo={existente ? 'admin-editar' : 'admin-nuevo'} inicial={existente} onEnviar={guardar} /&gt;
@@ -190,7 +190,7 @@ export default function <span class="fstat-no" title="function not covered" >For
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

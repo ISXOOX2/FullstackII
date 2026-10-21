@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -99,19 +99,8 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a>
-<a name='L37'></a><a href='#L37'>37</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -120,6 +109,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -128,7 +121,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,34 +139,35 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link, useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import Migas from '../../components/comunes/Migas.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { obtenerBlog } from '../../data/blogs.js';
 import { formatoFechaLarga } from '../../utils/formato.js';
+import images from '../../assets/images.js';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >DetalleBlog(</span>) {
-  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
-  const blog = <span class="cstat-no" title="statement not covered" >obtenerBlog(id);</span>
+export default function DetalleBlog() {
+  const { id } = useParams();
+  const blog = obtenerBlog(id);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!blog) {</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!blog) {
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;Container className="py-5"&gt;
-        &lt;MensajeVacio titulo="Ese artículo no existe"&gt;
+        &lt;MensajeVacio nivelTitulo={1} titulo="Ese artículo no existe"&gt;
           &lt;Link to="/blogs" className="btn btn-dark"&gt;Volver al blog&lt;/Link&gt;
         &lt;/MensajeVacio&gt;
       &lt;/Container&gt;
     );
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;Container className="py-4" style={{ maxWidth: 780 }}&gt;
+  return (
+    &lt;Container className="py-4 contenedor-lectura"&gt;
       &lt;Migas items={[{ texto: 'Home', to: '/' }, { texto: 'Blog', to: '/blogs' }, { texto: blog.etiqueta }]} /&gt;
       &lt;article&gt;
         &lt;h1 className="titulo-seccion"&gt;{blog.titulo}&lt;/h1&gt;
         &lt;p className="text-muted"&gt;{formatoFechaLarga(blog.fecha)} · {blog.autor}&lt;/p&gt;
-        &lt;img src={blog.imagen} alt="" className="img-fluid mb-4 imagen-blog" /&gt;
-        {blog.contenido.map(<span class="fstat-no" title="function not covered" >(b</span>loque, i) =&gt;
-<span class="cstat-no" title="statement not covered" >          bloque.tipo === 'h' ? &lt;h2 key={i} className="h4 mt-4"&gt;{bloque.texto}&lt;/h2&gt; : &lt;p key={i}&gt;{bloque.texto}&lt;/p&gt;,</span>
+        &lt;img src={images[blog.imagen]} alt="" className="img-fluid mb-4 imagen-blog" /&gt;
+        {blog.contenido.map((bloque, i) =&gt;
+          bloque.tipo === 'h' ? &lt;h2 key={i} className="h4 mt-4"&gt;{bloque.texto}&lt;/h2&gt; : &lt;p key={i}&gt;{bloque.texto}&lt;/p&gt;,
         )}
       &lt;/article&gt;
       &lt;Link to="/blogs" className="enlace-sutil"&gt;← Volver al blog&lt;/Link&gt;
@@ -178,7 +181,7 @@ export default function <span class="fstat-no" title="function not covered" >Det
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

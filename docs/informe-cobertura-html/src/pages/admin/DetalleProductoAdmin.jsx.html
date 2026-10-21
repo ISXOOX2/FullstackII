@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">55% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>11/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">87.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>7/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -111,7 +111,8 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -121,26 +122,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,7 +142,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,42 +163,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link, useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { esStockCritico, obtenerProducto, precioFinal } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP } from '../../utils/formato.js';
+import images from '../../assets/images.js';
 &nbsp;
-export default function <span class="fstat-no" title="function not covered" >DetalleProductoAdmin(</span>) {
-  const { id } = <span class="cstat-no" title="statement not covered" >useParams();</span>
-  const { usuario } = <span class="cstat-no" title="statement not covered" >useSesion();</span>
-  const p = <span class="cstat-no" title="statement not covered" >obtenerProducto(id);</span>
+export default function DetalleProductoAdmin() {
+  const { id } = useParams();
+  const { usuario } = useSesion();
+  const p = obtenerProducto(id);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (!p) {</span>
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (!p) {
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;MensajeVacio titulo="Ese diseño no existe"&gt;
         &lt;Link to="/admin/productos" className="btn btn-dark"&gt;Volver&lt;/Link&gt;
       &lt;/MensajeVacio&gt;
     );
   }
-  const filas = <span class="cstat-no" title="statement not covered" >[</span>
+  const filas = [
     ['Código', p.codigo], ['Estilo', nombreCategoria(p.categoriaId)], ['Precio', formatoCLP(p.precio)],
-    ['Precio de oferta', p.precioOferta ? formatoCLP(precioFinal(p)) : '—'],
-    ['Stock', `${p.stock}${esStockCritico(p) ? ' (crítico)' : ''}`], ['Stock crítico', p.stockCritico ?? '—'],
-    ['Tamaño', p.tamano || '—'], ['Duración', p.duracionHoras ? `${p.duracionHoras} h` : '—'],
-    ['Zonas', p.zonas || '—'], ['Nivel de dolor', p.nivelDolor ?? '—'], ['Tinta', p.colorTinta],
-    ['Tatuador/a', nombreTatuador(p.tatuadorId)], ['Destacado', p.destacado ? 'Sí' : 'No'],
+    ['Precio de oferta', p.precioOferta ? <span class="branch-0 cbranch-no" title="branch not covered" >formatoCLP(precioFinal(p)) </span>: '—'],
+    ['Stock', `${p.stock}${esStockCritico(p) ? <span class="branch-0 cbranch-no" title="branch not covered" >' (crítico)' </span>: ''}`], ['Stock crítico', p.stockCritico ?? <span class="branch-1 cbranch-no" title="branch not covered" >'—']</span>,
+    ['Tamaño', p.tamano || <span class="branch-1 cbranch-no" title="branch not covered" >'—']</span>, ['Duración', p.duracionHoras ? `${p.duracionHoras} h` : <span class="branch-1 cbranch-no" title="branch not covered" >'—']</span>,
+    ['Zonas', p.zonas || <span class="branch-1 cbranch-no" title="branch not covered" >'—']</span>, ['Nivel de dolor', p.nivelDolor ?? <span class="branch-1 cbranch-no" title="branch not covered" >'—']</span>, ['Tinta', p.colorTinta],
+    ['Tatuador/a', nombreTatuador(p.tatuadorId)], ['Destacado', p.destacado ? 'Sí' : <span class="branch-1 cbranch-no" title="branch not covered" >'No']</span>,
   ];
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;&gt;
       &lt;h1 className="titulo-seccion"&gt;{p.nombre}&lt;/h1&gt;
       &lt;Row className="g-4"&gt;
-        &lt;Col md={4}&gt;&lt;div className="marco-imagen"&gt;&lt;img src={p.imagen} alt={`Diseño ${p.nombre}`} /&gt;&lt;/div&gt;&lt;/Col&gt;
+        &lt;Col md={4}&gt;&lt;div className="marco-imagen"&gt;&lt;img src={images[p.imagen]} alt={`Diseño ${p.nombre}`} /&gt;&lt;/div&gt;&lt;/Col&gt;
         &lt;Col md={8}&gt;
           &lt;p&gt;{p.descripcion}&lt;/p&gt;
           &lt;dl className="ficha-tecnica"&gt;
-            {filas.map(<span class="fstat-no" title="function not covered" >([</span>k, v]) =&gt; (<span class="cstat-no" title="statement not covered" >&lt;div key={k} className="ficha-fila"&gt;&lt;dt&gt;{k}&lt;/dt&gt;&lt;dd&gt;{v}&lt;/dd&gt;&lt;/div&gt;)</span>)}
+            {filas.map(([k, v]) =&gt; (&lt;div key={k} className="ficha-fila"&gt;&lt;dt&gt;{k}&lt;/dt&gt;&lt;dd&gt;{v}&lt;/dd&gt;&lt;/div&gt;))}
           &lt;/dl&gt;
           &lt;div className="d-flex gap-2"&gt;
             {usuario.tipo === 'Administrador' &amp;&amp; &lt;Link to={`/admin/productos/${p.id}/editar`} className="btn btn-dark"&gt;Editar&lt;/Link&gt;}
@@ -214,7 +217,7 @@ export default function <span class="fstat-no" title="function not covered" >Det
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-10-21T17:05:49.873Z
+                at 2026-10-21T18:06:17.852Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
