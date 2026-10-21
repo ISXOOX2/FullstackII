@@ -50,7 +50,8 @@ El **Vendedor** solo ve Órdenes y Productos (productos en modo lectura). El **A
 src/
   main.jsx                 Arranque: estilos globales y <BrowserRouter> envolviendo a <App />
   App.jsx                  Contextos, Error Boundary y todas las rutas (panel con React.lazy)
-  assets/                  Imágenes (src/assets/images) + images.js que las importa todas
+  assets/                  Recursos (diapositivas React III): images/ + images.js que las importa todas,
+                           y css/tema.css, la única hoja de estilos propia (sobre Bootstrap)
   components/
     atomos/                Piezas mínimas: Boton, Logo, InsigniaEstado, Cargando
     moleculas/             Combinan átomos: CampoFormulario, TarjetaProducto, Galeria, Migas…
@@ -64,7 +65,6 @@ src/
   context/                 Context API: sesión, carrito y avisos
   hooks/                   useFormulario (validación en tiempo real), useAgregarAlCarrito
   utils/                   validaciones.js (RUN, correo, contraseña, fecha de cita…), formato.js, boleta.js
-  styles/tema.css          Única hoja de estilos propia (sobre Bootstrap)
 test/
   defensa.spec.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
   complementarias.spec.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary

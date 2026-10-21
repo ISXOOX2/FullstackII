@@ -14,7 +14,7 @@ import '@fontsource/jost/400.css';
 import '@fontsource/jost/500.css';
 import '@fontsource/cormorant-garamond/500.css';
 import '@fontsource/cormorant-garamond/600.css';
-import './styles/tema.css';
+import './assets/css/tema.css';
 import App from './App.jsx';
 
 // basename: en GitHub Pages el sitio vive en /FullstackII/; en desarrollo es "/".
