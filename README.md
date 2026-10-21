@@ -18,19 +18,17 @@ npm run dev            # servidor de desarrollo -> http://localhost:5173
 npm run build          # genera la versión final en /dist
 npm run preview        # sirve /dist para revisarla
 npm test               # corre las 15 pruebas (Karma + Jasmine) y genera el informe en /coverage
-npm run test:defensa   # corre solo las 10 pruebas de la defensa, mostrando el nombre de cada una
 ```
 
 > `npm test` usa Chrome sin ventana (ChromeHeadless). Si Chrome no está en la ruta habitual,
-> indica el ejecutable con la variable `CHROME_BIN`. En Linux como root o en GitHub Actions usa
-> `npm test -- --browsers=ChromeHeadlessCI` (agrega `--no-sandbox`).
+> indica el ejecutable con la variable `CHROME_BIN`.
 
 ### ¿Y con "Open with Live Server" de VS Code?
 
 El `index.html` de la raíz es código fuente (JSX): un servidor estático no puede ejecutarlo y por eso
 saldría en blanco. Por eso el repo incluye la carpeta **`dist/`** (la versión ya compilada) y el archivo
 `.vscode/settings.json`, que le indica a Live Server que sirva `dist/` y que responda `index.html` en
-cualquier ruta (necesario con BrowserRouter). Clic derecho en `index.html` → *Open with Live Server*.
+cualquier ruta (necesario con BrowserRouter). Abre en VS Code la carpeta del proyecto (la que tiene `package.json`). Clic derecho en `index.html` → *Open with Live Server*.
 
 Si cambias el código, vuelve a compilar con `npm run build` para actualizar `dist/`.
 
@@ -49,7 +47,8 @@ El **Vendedor** solo ve Órdenes y Productos (productos en modo lectura). El **A
 ```
 src/
   main.jsx                 Arranque: estilos globales y <BrowserRouter> envolviendo a <App />
-  App.jsx                  Contextos, Error Boundary y todas las rutas (panel con React.lazy)
+  App.jsx                  Estado compartido (sesión, carrito, avisos) que baja por props, Error Boundary
+                           y todas las rutas (panel con React.lazy)
   assets/                  Recursos (diapositivas React III): images/ + images.js que las importa todas,
                            y css/tema.css, la única hoja de estilos propia (sobre Bootstrap)
   components/
@@ -62,8 +61,7 @@ src/
   config/estudio.js        Datos del estudio, horarios y reglas de agenda
   data/                    "Base de datos" simulada: db.js (CRUD sobre localStorage) + seed.js
   services/                Reglas de negocio (productos, carrito, órdenes, usuarios, pagos, reportes…)
-  context/                 Context API: sesión, carrito y avisos
-  hooks/                   useFormulario (validación en tiempo real), useAgregarAlCarrito
+  hooks/                   useFormulario (validación en tiempo real de los formularios)
   utils/                   validaciones.js (RUN, correo, contraseña, fecha de cita…), formato.js, boleta.js
 test/
   defensa.spec.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
@@ -76,15 +74,19 @@ docs/                      ERS, documento de cobertura de testing, guía de defe
 
 - **Vite + React** (diapositivas React I) y **BrowserRouter en `main.jsx`** con `Routes`/`Route` en `App.jsx`
   (React II). Los detalles leen el id con `useParams` y el catálogo lee `?q=` con `useLocation` (2.2.1).
-- **Imágenes importadas desde `src/assets`** con `images.js` (React III). Se usa `import.meta.glob(..., { eager: true })`,
-  que es el reemplazo actual de `import.meta.globEager`.
+- **Imágenes importadas desde `src/assets`** (React III): `images.js` tiene un import por imagen y las junta en un
+  objeto que se usa como `images.logo`.
+- **Estado en el componente padre** (React II, Generador de Memes): sesión, carrito y avisos viven en `App.jsx` y
+  bajan a las páginas por props.
+- **Fuentes de Google Fonts** con `<link>` en el `<head>` de `index.html` (clase Css 2).
 - **Atomic Design** para organizar los componentes (2.2.1) y principio de responsabilidad única (Anexo 1).
 - **react-bootstrap** con solo el CSS de Bootstrap importado (guía 2.1.2): el JS de Bootstrap no es necesario.
 - **Hoja de estilos** (1.2.4 y 1.2.6): una sola hoja propia, formato estándar, tabla de contenido, mobile first
   (`min-width`), imágenes con `max-width: 100%` y sin estilos en línea ni `!important`.
 - **Error Boundary** (2.3.5) y **carga diferida** del panel con `React.lazy` + `Suspense` (2.3.3).
 - **Pruebas** con Jasmine y Karma: `karma.conf.js` como la guía 2.3.2 (jasmine, ChromeHeadless, progress y coverage),
-  webpack + babel para JSX (2.3.5), `renderHook`, `jasmine.createSpyObj`, `spyOn` y matchers de jasmine-dom.
+  webpack + babel para JSX (2.3.5), `renderHook`, `jasmine.createSpy`,
+  `jasmine.createSpyObj`, `MemoryRouter` y comprobaciones `toBe` / `toBeTruthy` (React IV).
 
 ## Persistencia simulada
 
@@ -92,13 +94,6 @@ No hay backend. `src/data/db.js` ofrece un CRUD genérico (`crear`, `listar`, `o
 `eliminar`) sobre `localStorage`, sembrado desde `seed.js`. Para volver a los datos originales basta con borrar
 el almacenamiento del sitio en el navegador (o llamar a `reiniciarBD()`).
 
-## Publicar en GitHub Pages
-
-1. Subir el proyecto a GitHub (rama `main`).
-2. En el repositorio: **Settings → Pages → Source: GitHub Actions**.
-3. Cada `push` a `main` ejecuta `.github/workflows/deploy.yml`: corre las pruebas, compila con
-   `--base=/FullstackII/` y publica una copia de `index.html` como `404.html`, para que las rutas de
-   BrowserRouter (por ejemplo `/productos/3`) también carguen la aplicación.
 
 ## Limitaciones conocidas (proyecto académico)
 
