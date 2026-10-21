@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
-import CarruselPortada from '../../components/tienda/CarruselPortada.jsx';
-import TarjetaCategoria from '../../components/tienda/TarjetaCategoria.jsx';
-import ListaProductos from '../../components/tienda/ListaProductos.jsx';
+import CarruselPortada from '../../components/organismos/CarruselPortada.jsx';
+import TarjetaCategoria from '../../components/moleculas/TarjetaCategoria.jsx';
+import ListaProductos from '../../components/organismos/ListaProductos.jsx';
 import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { listarCategorias, contarProductosDeCategoria } from '../../services/categoriasService.js';
 import { productosDestacados } from '../../services/productosService.js';

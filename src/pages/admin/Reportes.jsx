@@ -1,10 +1,10 @@
-import { Col, Row, Table } from 'react-bootstrap';
+import { Col, ProgressBar, Row, Table } from 'react-bootstrap';
 import {
   ordenesPorEstado, productosMasReservados, resumenGeneral, ventasPorCategoria, ventasPorMes,
 } from '../../services/reportesService.js';
 import { formatoCLP } from '../../utils/formato.js';
 
-/** Reportes simples calculados con las órdenes pagadas (tablas con barras de proporción). */
+/** Reportes simples calculados con las órdenes pagadas (tablas con barras de proporción de Bootstrap). */
 export default function Reportes() {
   const resumen = resumenGeneral();
   const porCategoria = ventasPorCategoria();
@@ -21,14 +21,14 @@ export default function Reportes() {
         <Col xl={6}>
           <h2 className="h5">Ventas por estilo</h2>
           <Table size="sm" className="align-middle">
-            <thead><tr><th scope="col">Estilo</th><th scope="col" className="text-center">Unidades</th><th scope="col" style={{ width: '45%' }}>Monto</th></tr></thead>
+            <thead><tr><th scope="col">Estilo</th><th scope="col" className="text-center">Unidades</th><th scope="col" className="columna-monto">Monto</th></tr></thead>
             <tbody>
               {porCategoria.map((f) => (
                 <tr key={f.categoriaId}>
                   <td>{f.categoria}</td>
                   <td className="text-center">{f.unidades}</td>
                   <td>
-                    <div className="barra-reporte" style={{ width: `${(f.monto / maxCategoria) * 100}%` }} />
+                    <ProgressBar now={(f.monto / maxCategoria) * 100} variant="dark" className="barra-reporte" aria-label={`Proporción de ventas de ${f.categoria}`} />
                     <small>{formatoCLP(f.monto)}</small>
                   </td>
                 </tr>

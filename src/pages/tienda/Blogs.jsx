@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Badge, Card, Col, Container, Row } from 'react-bootstrap';
-import Migas from '../../components/comunes/Migas.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import { BLOGS } from '../../data/blogs.js';
 import { formatoFechaLarga } from '../../utils/formato.js';
+import images from '../../assets/images.js';
 
 export default function Blogs() {
   return (
@@ -14,7 +15,7 @@ export default function Blogs() {
         {BLOGS.map((b) => (
           <Col key={b.id}>
             <Card as={Link} to={`/blogs/${b.id}`} className="h-100 text-decoration-none tarjeta-blog">
-              <div className="marco-imagen"><Card.Img variant="top" src={b.imagen} alt="" /></div>
+              <div className="marco-imagen"><Card.Img variant="top" src={images[b.imagen]} alt="" /></div>
               <Card.Body>
                 <Badge bg="dark" className="fw-normal mb-2">{b.etiqueta}</Badge>
                 <Card.Title as="h2" className="h5">{b.titulo}</Card.Title>

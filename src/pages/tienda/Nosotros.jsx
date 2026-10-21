@@ -1,5 +1,5 @@
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import Migas from '../../components/comunes/Migas.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import { ESTUDIO, EQUIPO_DESARROLLO } from '../../config/estudio.js';
 import { TATUADORES } from '../../data/tatuadores.js';
 import { inicial } from '../../utils/formato.js';
@@ -9,7 +9,7 @@ export default function Nosotros() {
     <Container className="py-4">
       <Migas items={[{ texto: 'Home', to: '/' }, { texto: 'Nosotros' }]} />
       <h1 className="titulo-seccion">Sobre {ESTUDIO.nombre}</h1>
-      <Row className="g-5 mb-5">
+      <Row className="g-4 g-md-5 mb-5">
         <Col md={7}>
           <p className="lead">
             Somos un estudio pequeño de Providencia que cree en los tatuajes de línea fina: pocos trazos, bien pensados, hechos para durar.
@@ -53,7 +53,7 @@ export default function Nosotros() {
       </section>
 
       <section aria-labelledby="titulo-desarrolladores">
-        <h2 id="titulo-desarrolladores" className="titulo-seccion">Desarrolladoras del sitio</h2>
+        <h2 id="titulo-desarrolladores" className="titulo-seccion">Desarrollo del sitio</h2>
         <p className="text-muted">Proyecto de la asignatura Desarrollo Fullstack II (DSY1104) · DuocUC.</p>
         <Row xs={1} md={2} className="g-4">
           {EQUIPO_DESARROLLO.map((p) => (

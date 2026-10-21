@@ -1,6 +1,6 @@
 import { Col, Container, Row } from 'react-bootstrap';
-import TarjetaCategoria from '../../components/tienda/TarjetaCategoria.jsx';
-import Migas from '../../components/comunes/Migas.jsx';
+import TarjetaCategoria from '../../components/moleculas/TarjetaCategoria.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import { contarProductosDeCategoria, listarCategorias } from '../../services/categoriasService.js';
 
 export default function Categorias() {

@@ -26,7 +26,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
+      - run: npm test
+      # El sitio vive en https://<usuario>.github.io/FullstackII/ : se compila con esa base.
+      - run: npm run build -- --base=/FullstackII/
+      # BrowserRouter: GitHub Pages no conoce rutas como /productos/3 y respondería 404.
+      # Copiar index.html como 404.html hace que esas rutas también carguen la aplicación.
+      - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

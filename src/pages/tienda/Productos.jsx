@@ -1,19 +1,24 @@
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import FiltrosProductos from '../../components/tienda/FiltrosProductos.jsx';
-import ListaProductos from '../../components/tienda/ListaProductos.jsx';
-import Migas from '../../components/comunes/Migas.jsx';
+import FiltrosProductos from '../../components/organismos/FiltrosProductos.jsx';
+import ListaProductos from '../../components/organismos/ListaProductos.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { buscarProductos } from '../../services/productosService.js';
 import { listarCategorias } from '../../services/categoriasService.js';
 
 const FILTROS_VACIOS = { texto: '', categoriaId: '', precioMax: '', soloOfertas: false, orden: 'relevancia' };
 
-/** Catálogo completo con filtros. La búsqueda de la barra llega por la URL (?q=texto). */
+/**
+ * Catálogo completo con filtros. La búsqueda de la barra llega por la URL (?q=texto).
+ * Como en el material 2.2.1, los parámetros de búsqueda se leen con useLocation():
+ * location.search trae "?q=texto" y URLSearchParams permite pedir cada parámetro por nombre.
+ */
 export default function Productos() {
-  const [parametros, setParametros] = useSearchParams();
-  const textoUrl = parametros.get('q') || '';
+  const location = useLocation();
+  const navegar = useNavigate();
+  const textoUrl = new URLSearchParams(location.search).get('q') || '';
   const [filtros, setFiltros] = useState({ ...FILTROS_VACIOS, texto: textoUrl });
   const [ultimoTextoUrl, setUltimoTextoUrl] = useState(textoUrl);
   const agregar = useAgregarAlCarrito();
@@ -29,7 +34,7 @@ export default function Productos() {
   const cambiar = (campo, valor) => setFiltros((actuales) => ({ ...actuales, [campo]: valor }));
   const limpiar = () => {
     setFiltros(FILTROS_VACIOS);
-    setParametros({});
+    navegar('/productos'); // quita el ?q= de la URL
   };
 
   return (

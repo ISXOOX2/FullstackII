@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Table } from 'react-bootstrap';
-import InsigniaEstado from '../../components/comunes/InsigniaEstado.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { ESTADOS, listarOrdenes } from '../../services/ordenesService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
@@ -14,7 +14,7 @@ export default function Ordenes() {
   return (
     <>
       <h1 className="titulo-seccion">Órdenes</h1>
-      <Form.Group controlId="filtro-estado" className="mb-3" style={{ maxWidth: 260 }}>
+      <Form.Group controlId="filtro-estado" className="mb-3 campo-filtro">
         <Form.Label className="etiqueta-campo">Filtrar por estado</Form.Label>
         <Form.Select value={estado} onChange={(e) => setEstado(e.target.value)}>
           <option value="">Todos</option>

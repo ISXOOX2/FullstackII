@@ -1,11 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { esStockCritico, obtenerProducto, precioFinal } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP } from '../../utils/formato.js';
+import images from '../../assets/images.js';
 
 export default function DetalleProductoAdmin() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export default function DetalleProductoAdmin() {
     <>
       <h1 className="titulo-seccion">{p.nombre}</h1>
       <Row className="g-4">
-        <Col md={4}><div className="marco-imagen"><img src={p.imagen} alt={`Diseño ${p.nombre}`} /></div></Col>
+        <Col md={4}><div className="marco-imagen"><img src={images[p.imagen]} alt={`Diseño ${p.nombre}`} /></div></Col>
         <Col md={8}>
           <p>{p.descripcion}</p>
           <dl className="ficha-tecnica">

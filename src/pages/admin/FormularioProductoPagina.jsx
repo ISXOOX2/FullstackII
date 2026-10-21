@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import FormularioProducto from '../../components/admin/FormularioProducto.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import FormularioProducto from '../../components/organismos/FormularioProducto.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { listarCategorias } from '../../services/categoriasService.js';
 import { actualizarProducto, crearProducto, obtenerProducto } from '../../services/productosService.js';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Button, Table } from 'react-bootstrap';
-import ModalConfirmacion from '../../components/comunes/ModalConfirmacion.jsx';
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { eliminarUsuario, listarUsuarios } from '../../services/usuariosService.js';

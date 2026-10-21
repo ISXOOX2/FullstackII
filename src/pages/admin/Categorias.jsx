@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
-import FormularioCategoria from '../../components/admin/FormularioCategoria.jsx';
-import ModalConfirmacion from '../../components/comunes/ModalConfirmacion.jsx';
+import FormularioCategoria from '../../components/organismos/FormularioCategoria.jsx';
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import {
   actualizarCategoria, contarProductosDeCategoria, crearCategoria, eliminarCategoria, listarCategorias,

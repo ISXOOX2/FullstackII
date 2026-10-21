@@ -1,8 +1,8 @@
 import { Link, Navigate } from 'react-router-dom';
 import { Col, Row, Table } from 'react-bootstrap';
-import TarjetaResumen from '../../components/admin/TarjetaResumen.jsx';
-import AlertaStockCritico from '../../components/admin/AlertaStockCritico.jsx';
-import InsigniaEstado from '../../components/comunes/InsigniaEstado.jsx';
+import TarjetaResumen from '../../components/moleculas/TarjetaResumen.jsx';
+import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.jsx';
+import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { resumenGeneral } from '../../services/reportesService.js';
 import { productosCriticos } from '../../services/productosService.js';

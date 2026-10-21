@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import TablaCarrito from '../../components/tienda/TablaCarrito.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
-import Migas from '../../components/comunes/Migas.jsx';
+import TablaCarrito from '../../components/organismos/TablaCarrito.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import { useCarrito } from '../../context/CarritoContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { formatoCLP } from '../../utils/formato.js';

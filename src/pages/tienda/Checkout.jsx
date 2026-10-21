@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Alert, Col, Container, Row } from 'react-bootstrap';
-import FormularioCheckout from '../../components/tienda/FormularioCheckout.jsx';
-import ResumenOrden from '../../components/tienda/ResumenOrden.jsx';
-import Migas from '../../components/comunes/Migas.jsx';
+import FormularioCheckout from '../../components/organismos/FormularioCheckout.jsx';
+import ResumenOrden from '../../components/moleculas/ResumenOrden.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import { useCarrito } from '../../context/CarritoContext.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { actualizarDatosOrden, crearOrden, marcarPagada, marcarRechazada, obtenerOrden } from '../../services/ordenesService.js';
@@ -91,7 +91,7 @@ export default function Checkout() {
         <Alert variant="warning">Estás reintentando el pago de la orden N° {ordenAnterior.numero}. Revisa tus datos y vuelve a pagar.</Alert>
       )}
       {error && <Alert variant="danger" role="alert">{error}</Alert>}
-      <Row className="g-5">
+      <Row className="g-4 g-md-5">
         <Col lg={7}>
           <FormularioCheckout valoresIniciales={inicial} total={total} ordenId={ordenId} procesando={procesando} onPagar={pagar} />
         </Col>

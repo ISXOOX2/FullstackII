@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
-import InsigniaEstado from '../../components/comunes/InsigniaEstado.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { historialDeCompras, obtenerUsuario } from '../../services/usuariosService.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 

@@ -1,7 +1,7 @@
 // ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
 // • Aquí viven las REGLAS DE NEGOCIO del carrito, en funciones normales (sin React).
 // • Son "puras": reciben el carrito y devuelven uno NUEVO, sin modificar el original.
-// • Por eso son fáciles de probar con Jasmine: entrada -> salida (prueba 2 de la defensa).
+// • Por eso son fáciles de probar con Jasmine: entrada -> salida (las usan las pruebas 8 y 12).
 // ───────────────────────────────────────────────────────────────────────────
 /**
  * Reglas del carrito de compras (reserva).
@@ -17,7 +17,7 @@
  */
 import { precioFinal } from './productosService.js';
 
-export const CLAVE_CARRITO = 'foreverInk_carrito';
+export const CLAVE_CARRITO = 'foreverInk_carrito_v2';
 export const MAXIMO_POR_ITEM = 5;
 
 /** Cantidad máxima que se puede reservar de un producto. */

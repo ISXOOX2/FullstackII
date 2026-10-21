@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button, Col, Container, Modal, Row, Table } from 'react-bootstrap';
-import FormularioUsuario from '../../components/tienda/FormularioUsuario.jsx';
-import Boleta from '../../components/comunes/Boleta.jsx';
-import InsigniaEstado from '../../components/comunes/InsigniaEstado.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
+import Boleta from '../../components/organismos/Boleta.jsx';
+import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { actualizarUsuario, historialDeCompras, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';
@@ -28,7 +28,7 @@ export default function Perfil() {
   return (
     <Container className="py-4">
       <h1 className="titulo-seccion">Mi perfil</h1>
-      <Row className="g-5">
+      <Row className="g-4 g-md-5">
         <Col lg={6}>
           <h2 className="h5 mb-3">Mis datos</h2>
           <FormularioUsuario modo="perfil" inicial={completo} onEnviar={guardar} />

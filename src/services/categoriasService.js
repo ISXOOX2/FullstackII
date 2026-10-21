@@ -31,7 +31,7 @@ export function crearCategoria(datos) {
   const categoria = crear(COLECCION, {
     nombre: datos.nombre.trim(),
     descripcion: (datos.descripcion || '').trim(),
-    imagen: datos.imagen || 'img/disenos/mariposa-lineal.svg',
+    imagen: datos.imagen || 'mariposa-lineal',
   });
   return { ok: true, categoria };
 }

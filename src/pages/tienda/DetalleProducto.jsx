@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Badge, Button, Col, Container, Form, Row } from 'react-bootstrap';
-import Galeria from '../../components/tienda/Galeria.jsx';
-import ListaProductos from '../../components/tienda/ListaProductos.jsx';
-import Migas from '../../components/comunes/Migas.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import Galeria from '../../components/moleculas/Galeria.jsx';
+import ListaProductos from '../../components/organismos/ListaProductos.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { estaEnOferta, esStockCritico, obtenerProducto, precioFinal, productosRelacionados } from '../../services/productosService.js';
 import { limiteDeCantidad } from '../../services/carritoService.js';
@@ -21,7 +21,7 @@ export default function DetalleProducto() {
   if (!producto) {
     return (
       <Container className="py-5">
-        <MensajeVacio titulo="Ese diseño no existe" texto="Puede que haya sido retirado del catálogo.">
+        <MensajeVacio nivelTitulo={1} titulo="Ese diseño no existe" texto="Puede que haya sido retirado del catálogo.">
           <Link to="/productos" className="btn btn-dark">Ver todos los diseños</Link>
         </MensajeVacio>
       </Container>
@@ -57,7 +57,7 @@ export default function DetalleProducto() {
           { texto: producto.nombre },
         ]}
       />
-      <Row className="g-5">
+      <Row className="g-4 g-md-5">
         <Col md={6}>
           <Galeria imagenes={producto.imagenes || [producto.imagen]} nombre={producto.nombre} />
         </Col>
@@ -93,7 +93,7 @@ export default function DetalleProducto() {
               <div className="d-flex align-items-end gap-3 flex-wrap">
                 <Form.Group controlId="cantidad-detalle">
                   <Form.Label className="etiqueta-campo">Cantidad</Form.Label>
-                  <Form.Control type="number" min={1} max={limite} value={cantidad} onChange={manejarCantidad} style={{ width: 96 }} />
+                  <Form.Control type="number" min={1} max={limite} value={cantidad} onChange={manejarCantidad} className="campo-cantidad" />
                 </Form.Group>
                 <Button variant="dark" size="lg" onClick={() => agregar(producto, cantidad)}>
                   Añadir a mi reserva

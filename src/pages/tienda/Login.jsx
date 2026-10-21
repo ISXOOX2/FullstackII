@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
-import FormularioLogin from '../../components/tienda/FormularioLogin.jsx';
+import FormularioLogin from '../../components/organismos/FormularioLogin.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { CUENTAS_DEMO } from '../../config/estudio.js';

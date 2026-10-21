@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Button, Form, Table } from 'react-bootstrap';
-import AlertaStockCritico from '../../components/admin/AlertaStockCritico.jsx';
-import ModalConfirmacion from '../../components/comunes/ModalConfirmacion.jsx';
+import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.jsx';
+import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { eliminarProducto, esStockCritico, listarProductos, productosCriticos } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
+import images from '../../assets/images.js';
 
 /** Mantenedor de productos. El vendedor solo puede ver (sin crear, editar ni eliminar). */
 export default function Productos() {
@@ -49,7 +50,7 @@ export default function Productos() {
               <tr key={p.id} className={esStockCritico(p) ? 'fila-critica' : ''}>
                 <td>{p.codigo}</td>
                 <td>
-                  <img src={p.imagen} alt="" width="36" height="36" className="miniatura me-2" />
+                  <img src={images[p.imagen]} alt="" width="36" height="36" className="miniatura me-2" />
                   {p.nombre}
                 </td>
                 <td>{nombreCategoria(p.categoriaId)}</td>

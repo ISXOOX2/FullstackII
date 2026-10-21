@@ -7,7 +7,7 @@ export const BLOGS = [
     titulo: 'Cuidados después de tatuarte: guía de las primeras cuatro semanas',
     resumen:
       'Lo que haces los primeros días decide cómo queda el tatuaje para siempre. Te contamos paso a paso cómo cuidarlo.',
-    imagen: 'img/blog/cuidados.svg',
+    imagen: 'cuidados',
     fecha: '2026-09-18',
     autor: 'Equipo Forever Ink',
     etiqueta: 'Cuidados',
@@ -28,7 +28,7 @@ export const BLOGS = [
     titulo: 'Cómo elegir tu primer tatuaje sin arrepentirte',
     resumen:
       'Estilo, tamaño, ubicación y presupuesto: cinco preguntas que conviene responder antes de sentarte en la camilla.',
-    imagen: 'img/blog/primer-tatuaje.svg',
+    imagen: 'primer-tatuaje',
     fecha: '2026-09-30',
     autor: 'Equipo Forever Ink',
     etiqueta: 'Guía',

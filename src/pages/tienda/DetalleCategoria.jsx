@@ -1,8 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import ListaProductos from '../../components/tienda/ListaProductos.jsx';
-import Migas from '../../components/comunes/Migas.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import ListaProductos from '../../components/organismos/ListaProductos.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { obtenerCategoria } from '../../services/categoriasService.js';
 import { productosPorCategoria } from '../../services/productosService.js';
@@ -15,7 +15,7 @@ export default function DetalleCategoria() {
   if (!categoria) {
     return (
       <Container className="py-5">
-        <MensajeVacio titulo="Ese estilo no existe">
+        <MensajeVacio nivelTitulo={1} titulo="Ese estilo no existe">
           <Link to="/categorias" className="btn btn-dark">Ver los estilos</Link>
         </MensajeVacio>
       </Container>

@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import FormularioUsuario from '../../components/tienda/FormularioUsuario.jsx';
-import MensajeVacio from '../../components/comunes/MensajeVacio.jsx';
+import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
+import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { actualizarUsuario, crearUsuario, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';

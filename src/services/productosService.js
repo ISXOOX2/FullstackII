@@ -43,7 +43,7 @@ export function normalizarProducto(datos) {
     colorTinta: String(datos.colorTinta || 'Negro').trim(),
     tatuadorId: aNumeroONulo(datos.tatuadorId),
     destacado: Boolean(datos.destacado),
-    imagen: String(datos.imagen || 'img/disenos/mariposa-lineal.svg').trim(),
+    imagen: String(datos.imagen || 'mariposa-lineal').trim(),
   };
 }
 

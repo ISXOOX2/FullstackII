@@ -21,7 +21,7 @@ export function AvisosProvider({ children }) {
   return (
     <AvisosContext.Provider value={valor}>
       {children}
-      <ToastContainer position="bottom-end" className="p-3 position-fixed" style={{ zIndex: 2000 }}>
+      <ToastContainer position="bottom-end" className="contenedor-avisos p-3 position-fixed d-print-none">
         {avisos.map((aviso) => (
           <Toast
             key={aviso.id}

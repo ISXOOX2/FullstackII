@@ -1,4 +1,5 @@
 // Imágenes de diseños disponibles para elegir en el mantenedor de productos.
+// "valor" es la key de la imagen en src/assets/images.js (nombre del archivo sin extensión).
 export const IMAGENES_DISENO = [
   ['ancla-fina', 'Ancla fina'],
   ['constelacion', 'Constelación'],
@@ -12,4 +13,4 @@ export const IMAGENES_DISENO = [
   ['rama-de-olivo', 'Rama de olivo'],
   ['ramillete-de-lavanda', 'Ramillete de lavanda'],
   ['sol-y-rayos', 'Sol y rayos'],
-].map(([archivo, etiqueta]) => ({ valor: `img/disenos/${archivo}.svg`, etiqueta }));
+].map(([archivo, etiqueta]) => ({ valor: archivo, etiqueta }));

@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap';
-import ListaProductos from '../../components/tienda/ListaProductos.jsx';
-import Migas from '../../components/comunes/Migas.jsx';
+import ListaProductos from '../../components/organismos/ListaProductos.jsx';
+import Migas from '../../components/moleculas/Migas.jsx';
 import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { productosEnOferta } from '../../services/productosService.js';
 

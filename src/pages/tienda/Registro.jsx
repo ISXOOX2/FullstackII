@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
-import FormularioUsuario from '../../components/tienda/FormularioUsuario.jsx';
+import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
 import { registrarCliente } from '../../services/usuariosService.js';
 import { useSesion } from '../../context/SesionContext.jsx';
 import { useAvisos } from '../../context/AvisosContext.jsx';
