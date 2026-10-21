@@ -29,6 +29,31 @@ export function autenticar(correo, password) {
   return usuario ? usuarioPublico(usuario) : null;
 }
 
+/** Busca un usuario local por su correo (sin importar mayúsculas). */
+export function buscarUsuarioPorCorreo(correo) {
+  const buscado = String(correo || '').trim().toLowerCase();
+  return listarUsuarios().find((u) => u.correo.toLowerCase() === buscado) || null;
+}
+
+/**
+ * Datos que se envían a usuario-service al registrarse (POST /api/usuarios).
+ * Se quitan los campos de confirmación y una fecha vacía se envía como null.
+ */
+export function datosParaRegistroRemoto(datos) {
+  return {
+    run: String(datos.run).trim().toUpperCase(),
+    nombre: String(datos.nombre).trim(),
+    apellidos: String(datos.apellidos).trim(),
+    correo: String(datos.correo).trim().toLowerCase(),
+    password: datos.password,
+    telefono: String(datos.telefono || '').trim(),
+    fechaNacimiento: datos.fechaNacimiento || null,
+    region: datos.region,
+    comuna: datos.comuna,
+    direccion: String(datos.direccion).trim(),
+  };
+}
+
 /** Deja solo los campos que se guardan (quita confirmarCorreo, confirmarPassword, etc.). */
 function limpiarDatos(datos) {
   return {

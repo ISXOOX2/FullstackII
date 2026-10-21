@@ -8,12 +8,25 @@ import { CLAVE_SESION, guardarSesion } from '../src/services/sesionService.js';
 import { autenticar } from '../src/services/usuariosService.js';
 import { obtenerProducto } from '../src/services/productosService.js';
 import { fechaISO, sumarDias } from '../src/utils/formato.js';
+import { api } from '../src/services/api.js';
 
-/** Deja el navegador "de fábrica": base de datos inicial, sin carrito y sin sesión. */
+/**
+ * Mock de los microservicios: cada función de api.js se reemplaza por un spy que responde
+ * "sin conexión". Así las pruebas no dependen de que Spring Boot esté encendido y la tienda
+ * usa sus datos locales. Una prueba puede cambiar la respuesta de un spy (ver prueba 14).
+ */
+export function simularMicroserviciosApagados() {
+  Object.keys(api).forEach((nombre) => {
+    api[nombre] = jasmine.createSpy(nombre).and.callFake(() => Promise.reject(new Error('sin conexión')));
+  });
+}
+
+/** Deja el navegador "de fábrica": base de datos inicial, sin carrito, sin sesión y sin microservicios. */
 export function reiniciarTodo() {
   reiniciarBD();
   localStorage.removeItem(CLAVE_CARRITO);
   sessionStorage.removeItem(CLAVE_SESION);
+  simularMicroserviciosApagados();
 }
 
 /**

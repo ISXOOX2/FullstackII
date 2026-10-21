@@ -115,9 +115,16 @@ export function productosRelacionados(producto, cantidad = 4) {
  * filtros: { texto, categoriaId, precioMax, soloOfertas, orden }
  * orden: 'relevancia' | 'precio-asc' | 'precio-desc' | 'nombre'
  */
-export function buscarProductos({ texto = '', categoriaId = '', precioMax = '', soloOfertas = false, orden = 'relevancia' } = {}) {
+/**
+ * Filtra y ordena el catálogo. "lista" son los diseños a filtrar: los que entregó
+ * producto-service o, si no responde, los de la base local (db.js).
+ */
+export function buscarProductos(
+  { texto = '', categoriaId = '', precioMax = '', soloOfertas = false, orden = 'relevancia' } = {},
+  lista = listarProductos(),
+) {
   const buscado = normalizarTexto(texto);
-  let resultado = listarProductos().filter((p) => {
+  let resultado = lista.filter((p) => {
     if (buscado) {
       const contenido = normalizarTexto(`${p.nombre} ${p.descripcion} ${p.zonas} ${p.tamano}`);
       if (!contenido.includes(buscado)) return false;

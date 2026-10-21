@@ -11,6 +11,7 @@
     "test:watch": "karma start karma.conf.js --no-single-run"
   },
   "dependencies": {
+    "axios": "^1.20.0",
     "bootstrap": "^5.3.8",
     "react": "^19.3.0",
     "react-bootstrap": "^2.10.10",

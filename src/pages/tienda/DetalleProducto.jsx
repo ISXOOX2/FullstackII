@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Badge, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import Galeria from '../../components/moleculas/Galeria.jsx';
@@ -10,11 +10,26 @@ import { limiteDeCantidad } from '../../services/carritoService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP } from '../../utils/formato.js';
+import { api } from '../../services/api.js';
 
+/**
+ * Detalle de un diseño. Se muestra al tiro con los datos locales y, cuando responde
+ * producto-service (GET /api/productos/{id}), se reemplazan por los del microservicio
+ * (por ejemplo, los cupos actualizados).
+ */
 export default function DetalleProducto({ onAgregar }) {
   const { id } = useParams();
-  const producto = obtenerProducto(id);
+  const [remoto, setRemoto] = useState({ id: null, producto: null });
   const [cantidad, setCantidad] = useState(1);
+
+  // Se vuelve a pedir cada vez que cambia el id de la URL (ej. al abrir un diseño relacionado).
+  useEffect(() => {
+    api.obtenerProducto(id)
+      .then((producto) => setRemoto({ id, producto }))
+      .catch(() => setRemoto({ id, producto: null })); // 404 o servicio apagado: datos locales
+  }, [id]);
+
+  const producto = (remoto.id === id && remoto.producto) || obtenerProducto(id);
 
   if (!producto) {
     return (

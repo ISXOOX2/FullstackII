@@ -87,6 +87,24 @@ export function cantidadTotal(items) {
 // ---------------------------------------------------------------------------
 // Persistencia en localStorage
 // ---------------------------------------------------------------------------
+/**
+ * Clave con la que carrito-service identifica el carrito de este navegador.
+ * Se crea una vez (al azar) y se guarda en localStorage.
+ */
+export const CLAVE_ID_CARRITO = 'foreverInk_carrito_clave';
+export function claveCarrito() {
+  try {
+    let clave = localStorage.getItem(CLAVE_ID_CARRITO);
+    if (!clave) {
+      clave = `navegador-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+      localStorage.setItem(CLAVE_ID_CARRITO, clave);
+    }
+    return clave;
+  } catch {
+    return 'navegador-sin-almacenamiento';
+  }
+}
+
 export function leerCarrito() {
   try {
     const texto = localStorage.getItem(CLAVE_CARRITO);
