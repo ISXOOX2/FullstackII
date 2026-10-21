@@ -3,7 +3,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import CarruselPortada from '../../components/organismos/CarruselPortada.jsx';
 import TarjetaCategoria from '../../components/moleculas/TarjetaCategoria.jsx';
 import ListaProductos from '../../components/organismos/ListaProductos.jsx';
-import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { listarCategorias, contarProductosDeCategoria } from '../../services/categoriasService.js';
 import { productosDestacados } from '../../services/productosService.js';
 import { ESTUDIO } from '../../config/estudio.js';
@@ -14,8 +13,8 @@ const PASOS = [
   { numero: '03', titulo: 'Paga y listo', texto: 'Confirma tu reserva y recibe tu boleta con todos los datos de la cita.' },
 ];
 
-export default function Home() {
-  const agregar = useAgregarAlCarrito();
+/** onAgregar(producto) llega por props desde App.jsx (ahí vive el estado del carrito). */
+export default function Home({ onAgregar }) {
   const categorias = listarCategorias();
 
   return (
@@ -44,7 +43,7 @@ export default function Home() {
             <Link to="/productos" className="enlace-sutil">Ver todos los diseños →</Link>
           </div>
           <div className="mt-4">
-            <ListaProductos productos={productosDestacados(4)} onAgregar={agregar} />
+            <ListaProductos productos={productosDestacados(4)} onAgregar={onAgregar} />
           </div>
         </section>
 

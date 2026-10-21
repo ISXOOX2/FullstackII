@@ -2,19 +2,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
 import { registrarCliente } from '../../services/usuariosService.js';
-import { useSesion } from '../../context/SesionContext.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 
-export default function Registro() {
-  const { iniciarSesion } = useSesion();
-  const { mostrar } = useAvisos();
+export default function Registro({ iniciarSesion, mostrarAviso }) {
   const navegar = useNavigate();
 
   const registrar = (datos) => {
     const resultado = registrarCliente(datos);
     if (!resultado.ok) return resultado.error;
     iniciarSesion(datos.correo, datos.password); // el cliente queda conectado de inmediato
-    mostrar('¡Cuenta creada! Ya puedes reservar tu hora.');
+    mostrarAviso('¡Cuenta creada! Ya puedes reservar tu hora.');
     navegar('/', { replace: true });
     return '';
   };

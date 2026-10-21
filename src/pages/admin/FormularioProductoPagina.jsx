@@ -1,15 +1,13 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import FormularioProducto from '../../components/organismos/FormularioProducto.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import { listarCategorias } from '../../services/categoriasService.js';
 import { actualizarProducto, crearProducto, obtenerProducto } from '../../services/productosService.js';
 
 /** Página para crear (/admin/productos/nuevo) o editar (/admin/productos/:id/editar) un diseño. */
-export default function FormularioProductoPagina() {
+export default function FormularioProductoPagina({ mostrarAviso }) {
   const { id } = useParams();
   const navegar = useNavigate();
-  const { mostrar } = useAvisos();
   const existente = id ? obtenerProducto(id) : null;
 
   if (id && !existente) {
@@ -23,7 +21,7 @@ export default function FormularioProductoPagina() {
   const guardar = (valores) => {
     const resultado = existente ? actualizarProducto(existente.id, valores) : crearProducto(valores);
     if (!resultado.ok) return resultado.error;
-    mostrar(existente ? 'Diseño actualizado.' : 'Diseño creado.');
+    mostrarAviso(existente ? 'Diseño actualizado.' : 'Diseño creado.');
     navegar('/admin/productos');
     return '';
   };

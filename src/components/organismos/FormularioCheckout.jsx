@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
 import useFormulario from '../../hooks/useFormulario.js';
@@ -31,10 +30,8 @@ export default function FormularioCheckout({ valoresIniciales, total, ordenId = 
 
   const { fecha, tatuadorId } = f.valores;
   const fechaValida = !validarFechaCita(fecha);
-  const horas = useMemo(
-    () => (fechaValida && tatuadorId ? horasDisponibles(fecha, tatuadorId, ordenId) : []),
-    [fecha, tatuadorId, fechaValida, ordenId],
-  );
+  // Horarios libres para la fecha y el tatuador elegidos (se recalculan en cada render).
+  const horas = fechaValida && tatuadorId ? horasDisponibles(fecha, tatuadorId, ordenId) : [];
 
   const enviar = (evento) => {
     evento.preventDefault();

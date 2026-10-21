@@ -1,10 +1,9 @@
 // ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
-// • Es el "guardia" del panel admin: lee la sesión con useSesion() (Context).
+// • Es el "guardia" del panel admin: recibe por props el usuario conectado (vive en App.jsx).
 // • Sin sesión -> <Navigate> al login. Con sesión pero rol equivocado -> al inicio.
 // • Roles del proyecto: Administrador, Vendedor y Cliente.
 // ───────────────────────────────────────────────────────────────────────────
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSesion } from '../../context/SesionContext.jsx';
 
 /**
  * Protege vistas privadas (el panel de administración).
@@ -13,8 +12,7 @@ import { useSesion } from '../../context/SesionContext.jsx';
  *  - Con permiso           -> muestra el contenido.
  * "roles" es la lista de tipos de usuario que pueden entrar (vacía = cualquiera con sesión).
  */
-export default function RutaProtegida({ roles = [], children }) {
-  const { usuario } = useSesion();
+export default function RutaProtegida({ usuario, roles = [], children }) {
   const ubicacion = useLocation();
 
   if (!usuario) {

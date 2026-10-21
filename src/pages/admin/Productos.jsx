@@ -3,17 +3,13 @@ import { Link } from 'react-router-dom';
 import { Badge, Button, Form, Table } from 'react-bootstrap';
 import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.jsx';
 import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import { eliminarProducto, esStockCritico, listarProductos, productosCriticos } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
 /** Mantenedor de productos. El vendedor solo puede ver (sin crear, editar ni eliminar). */
-export default function Productos() {
-  const { usuario } = useSesion();
-  const { mostrar } = useAvisos();
+export default function Productos({ usuario, mostrarAviso }) {
   const puedeEditar = usuario.tipo === 'Administrador';
   const [version, setVersion] = useState(0); // al cambiar, la lista se vuelve a leer de la base
   const [soloCriticos, setSoloCriticos] = useState(false);
@@ -23,7 +19,7 @@ export default function Productos() {
 
   const confirmarEliminar = () => {
     eliminarProducto(aEliminar.id);
-    mostrar(`«${aEliminar.nombre}» fue eliminado.`, 'secondary');
+    mostrarAviso(`«${aEliminar.nombre}» fue eliminado.`, 'secondary');
     setAEliminar(null);
     setVersion(version + 1);
   };

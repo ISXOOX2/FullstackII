@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button, Container, Form, InputGroup, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import Logo from '../atomos/Logo.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
-import { useCarrito } from '../../context/CarritoContext.jsx';
 import { listarCategorias } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 
@@ -11,11 +9,9 @@ import { formatoCLP } from '../../utils/formato.js';
  * Cabecera de la tienda en dos filas:
  *  1) logo, buscador y botones de sesión;
  *  2) menú de navegación (Home, Categorías, Ofertas, Nosotros, Blog, Contacto) y el carrito.
- * Usa los contextos de sesión y carrito para mostrar quién está conectado y cuánto hay reservado.
+ * Recibe por props quién está conectado (usuario) y el total del carrito, que viven en App.jsx.
  */
-export default function BarraNavegacion() {
-  const { usuario, cerrarSesion } = useSesion();
-  const { total, cantidad } = useCarrito();
+export default function BarraNavegacion({ usuario, onCerrarSesion, total, cantidad }) {
   const navegar = useNavigate();
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -29,7 +25,7 @@ export default function BarraNavegacion() {
   };
 
   const salir = () => {
-    cerrarSesion();
+    onCerrarSesion();
     setMenuAbierto(false);
     navegar('/');
   };

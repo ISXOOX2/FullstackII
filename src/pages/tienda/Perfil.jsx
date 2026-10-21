@@ -4,15 +4,11 @@ import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx
 import Boleta from '../../components/organismos/Boleta.jsx';
 import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import { actualizarUsuario, historialDeCompras, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 
 /** Mi perfil: editar mis datos e ver el historial de mis reservas. */
-export default function Perfil() {
-  const { usuario, actualizarSesion } = useSesion();
-  const { mostrar } = useAvisos();
+export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
   const [ordenVista, setOrdenVista] = useState(null);
   const completo = obtenerUsuario(usuario.id);
   const historial = historialDeCompras(usuario.id);
@@ -21,7 +17,7 @@ export default function Perfil() {
     const resultado = actualizarUsuario(usuario.id, { ...datos, tipo: usuario.tipo });
     if (!resultado.ok) return resultado.error;
     actualizarSesion(usuarioPublico(resultado.usuario));
-    mostrar('Tus datos se actualizaron correctamente.');
+    mostrarAviso('Tus datos se actualizaron correctamente.');
     return '';
   };
 

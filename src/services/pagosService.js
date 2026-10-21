@@ -5,8 +5,8 @@
  * imita la respuesta de una pasarela: tarda un momento y responde aprobado o rechazado.
  *
  * Se exporta como OBJETO (y no como función suelta) a propósito: así en las pruebas con
- * Jasmine se puede reemplazar con spyOn(pagosService, 'procesar') y simular un pago
- * aprobado o rechazado sin esperar ni depender de nada externo (mock).
+ * Jasmine se puede reemplazar su método por un mock (jasmine.createSpy, guía 2.3.5) y simular
+ * un pago aprobado o rechazado sin esperar ni depender de nada externo.
  */
 export const pagosService = {
   /**

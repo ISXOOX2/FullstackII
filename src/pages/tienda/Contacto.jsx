@@ -2,15 +2,13 @@ import { Col, Container, Row } from 'react-bootstrap';
 import FormularioContacto from '../../components/organismos/FormularioContacto.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
 import { guardarMensaje } from '../../services/contactoService.js';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import { ESTUDIO } from '../../config/estudio.js';
 
-export default function Contacto() {
-  const { mostrar } = useAvisos();
+export default function Contacto({ mostrarAviso }) {
 
   const enviar = (valores) => {
     guardarMensaje(valores);
-    mostrar('Mensaje enviado. Te responderemos pronto.');
+    mostrarAviso('Mensaje enviado. Te responderemos pronto.');
   };
 
   return (

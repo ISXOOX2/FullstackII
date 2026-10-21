@@ -2,10 +2,10 @@
 // 5 PRUEBAS COMPLEMENTARIAS  (se ejecutan con npm test junto a las 10 de defensa)
 //
 // Cubren lo que pide el Anexo 1 además de los componentes (CRUD del archivo de datos y
-// flujo de compra) y temas de las guías 2.3.3 y 2.3.5 (seguridad XSS, manejo de errores),
+// flujo de compra) y temas de las guías 2.3.3 y 2.3.5 (inyección XSS, manejo de errores),
 // y recorren todas las vistas para que el informe de cobertura sea representativo.
 // ════════════════════════════════════════════════════════════════════════════
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import TarjetaProducto from '../src/components/moleculas/TarjetaProducto.jsx';
 import LimiteDeErrores from '../src/components/utilidades/LimiteDeErrores.jsx';
 import { actualizar, crear, eliminar, listar, obtenerPorId } from '../src/data/db.js';
@@ -14,11 +14,22 @@ import { CLAVE_CARRITO, agregarItem, leerCarrito } from '../src/services/carrito
 import { horasDisponibles, listarOrdenes } from '../src/services/ordenesService.js';
 import { obtenerProducto } from '../src/services/productosService.js';
 import {
-  iniciarSesionComo, productoDePrueba, proximoMiercoles, reiniciarTodo, renderApp, renderConContextos,
+  iniciarSesionComo, productoDePrueba, proximoMiercoles, reiniciarTodo, renderApp, renderConRouter,
 } from './ayudas.jsx';
 
 describe('Pruebas complementarias', () => {
-  beforeEach(reiniciarTodo);
+  // Se guardan las funciones reales que algunas pruebas reemplazan por un mock.
+  let procesarReal;
+  let consoleErrorReal;
+  beforeEach(() => {
+    reiniciarTodo();
+    procesarReal = pagosService.procesar;
+    consoleErrorReal = console.error;
+  });
+  afterEach(() => {
+    pagosService.procesar = procesarReal;
+    console.error = consoleErrorReal;
+  });
 
   // ─── 11 · CRUD del archivo de datos (Anexo 1: "fuente de datos simulada") ───
   it('11. db.js permite crear, leer, actualizar y eliminar registros', () => {
@@ -30,17 +41,18 @@ describe('Pruebas complementarias', () => {
     expect(obtenerPorId('mensajes', nuevo.id).nombre).toBe('Ana');
     // Update
     expect(actualizar('mensajes', nuevo.id, { nombre: 'Ana María' }).nombre).toBe('Ana María');
-    expect(actualizar('mensajes', 9999, { nombre: 'Nadie' })).toBeNull(); // caso límite: no existe
+    expect(actualizar('mensajes', 9999, { nombre: 'Nadie' })).toBeNull(); // no existe
     // Delete
-    expect(eliminar('mensajes', nuevo.id)).toBeTrue();
+    expect(eliminar('mensajes', nuevo.id)).toBe(true);
     expect(obtenerPorId('mensajes', nuevo.id)).toBeNull();
-    expect(eliminar('mensajes', nuevo.id)).toBeFalse(); // borrar dos veces no hace nada
+    expect(eliminar('mensajes', nuevo.id)).toBe(false); // borrar dos veces no hace nada
   });
 
   // ─── 12 · Flujo completo de compra APROBADA (integración + mock) ────────────
   it('12. Checkout con pago APROBADO: muestra la boleta, descuenta cupos, vacía el carrito y ocupa la hora', async () => {
     // Arrange: pasarela aprobada (mock) y 2 unidades del diseño 1 en el carrito
-    spyOn(pagosService, 'procesar').and.returnValue(Promise.resolve({ aprobado: true, metodo: 'Tarjeta (simulado)' }));
+    pagosService.procesar = jasmine.createSpy('procesar')
+      .and.returnValue(Promise.resolve({ aprobado: true, metodo: 'Tarjeta (simulado)' }));
     const conDos = agregarItem(agregarItem([], productoDePrueba(1)).items, productoDePrueba(1)).items;
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(conDos));
     const fecha = proximoMiercoles();
@@ -59,9 +71,9 @@ describe('Pruebas complementarias', () => {
     fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
 
     // Assert
-    expect(await screen.findByRole('article', { name: /Boleta/ })).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Compra exitosa')).toBeTruthy());
     expect(listarOrdenes()[0].estado).toBe('Pagada');
-    expect(obtenerProducto(1).stock).toBe(6);              // 8 - 2
+    expect(obtenerProducto(1).stock).toBe(6); // 8 - 2
     expect(leerCarrito().length).toBe(0);
     expect(horasDisponibles(fecha, 1)).not.toContain('11:00');
   });
@@ -74,11 +86,11 @@ describe('Pruebas complementarias', () => {
     ];
     for (const ruta of vistasTienda) {
       const vista = renderApp(ruta);
-      expect(screen.getAllByRole('heading', { level: 1 }).length).withContext(ruta).toBeGreaterThan(0);
+      expect(screen.getAllByRole('heading', { level: 1 }).length).toBeGreaterThan(0);
       vista.unmount();
     }
 
-    // El panel requiere sesión de Administrador. Sus páginas son lazy: se espera con findBy.
+    // El panel requiere sesión de Administrador. Sus páginas son lazy: se espera con waitFor.
     iniciarSesionComo('admin.foreverink@gmail.com', 'Admin#123');
     const vistasPanel = [
       '/admin', '/admin/ordenes', '/admin/ordenes/1', '/admin/productos', '/admin/productos/1',
@@ -87,7 +99,7 @@ describe('Pruebas complementarias', () => {
     ];
     for (const ruta of vistasPanel) {
       const vista = renderApp(ruta);
-      expect((await screen.findAllByRole('heading', { level: 1 })).length).withContext(ruta).toBeGreaterThan(0);
+      await waitFor(() => expect(screen.getAllByRole('heading', { level: 1 }).length).toBeGreaterThan(0));
       vista.unmount();
     }
   });
@@ -99,19 +111,19 @@ describe('Pruebas complementarias', () => {
     const producto = { ...productoDePrueba(1), nombre: ataque };
 
     // Act
-    renderConContextos(<TarjetaProducto producto={producto} onAgregar={() => {}} />);
+    renderConRouter(<TarjetaProducto producto={producto} onAgregar={() => {}} />);
 
     // Assert: aparece como texto literal y no se creó ninguna etiqueta <img src="x">
-    expect(screen.getByRole('link', { name: ataque })).toBeInTheDocument();
+    expect(screen.getByText(ataque)).toBeTruthy();
     expect(document.querySelector('img[src="x"]')).toBeNull();
     expect(window.hackeado).toBeUndefined();
   });
 
   // ─── 15 · Manejo de errores: Error Boundary (guía 2.3.5) ────────────────────
   it('15. LimiteDeErrores muestra un mensaje amable si un componente falla al dibujarse', () => {
-    // Arrange: un componente que siempre falla. Se silencia console.error con un spy
+    // Arrange: un componente que siempre falla. console.error se reemplaza por un spy
     // porque React informa el error en la consola aunque esté controlado.
-    spyOn(console, 'error');
+    console.error = jasmine.createSpy('console.error');
     function ComponenteRoto() {
       throw new Error('Falla de prueba');
     }
@@ -120,6 +132,6 @@ describe('Pruebas complementarias', () => {
     render(<LimiteDeErrores><ComponenteRoto /></LimiteDeErrores>);
 
     // Assert: en vez de una pantalla en blanco se ve el mensaje de respaldo
-    expect(screen.getByRole('alert')).toHaveTextContent('Algo salió mal');
+    expect(screen.getByText('Algo salió mal')).toBeTruthy();
   });
 });

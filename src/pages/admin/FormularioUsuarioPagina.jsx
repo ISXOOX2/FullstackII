@@ -1,16 +1,12 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
 import { actualizarUsuario, crearUsuario, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';
 
 /** Crear (/admin/usuarios/nuevo) o editar (/admin/usuarios/:id/editar) un usuario. */
-export default function FormularioUsuarioPagina() {
+export default function FormularioUsuarioPagina({ usuario: sesion, actualizarSesion, mostrarAviso }) {
   const { id } = useParams();
   const navegar = useNavigate();
-  const { mostrar } = useAvisos();
-  const { usuario: sesion, actualizarSesion } = useSesion();
   const existente = id ? obtenerUsuario(id) : null;
 
   if (id && !existente) {
@@ -26,7 +22,7 @@ export default function FormularioUsuarioPagina() {
     if (!resultado.ok) return resultado.error;
     // Si el administrador se edita a sí mismo, la sesión debe reflejar los cambios.
     if (existente && existente.id === sesion.id) actualizarSesion(usuarioPublico(resultado.usuario));
-    mostrar(existente ? 'Usuario actualizado.' : 'Usuario creado.');
+    mostrarAviso(existente ? 'Usuario actualizado.' : 'Usuario creado.');
     navegar('/admin/usuarios');
     return '';
   };

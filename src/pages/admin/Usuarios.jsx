@@ -2,13 +2,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Button, Table } from 'react-bootstrap';
 import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import { eliminarUsuario, listarUsuarios } from '../../services/usuariosService.js';
 
-export default function Usuarios() {
-  const { usuario: actual } = useSesion();
-  const { mostrar } = useAvisos();
+export default function Usuarios({ usuario: actual, mostrarAviso }) {
   const [, setVersion] = useState(0);
   const [aEliminar, setAEliminar] = useState(null);
   const [errorEliminar, setErrorEliminar] = useState('');
@@ -19,7 +15,7 @@ export default function Usuarios() {
       setErrorEliminar(resultado.error);
       return;
     }
-    mostrar('Usuario eliminado.', 'secondary');
+    mostrarAviso('Usuario eliminado.', 'secondary');
     setAEliminar(null);
     setVersion((v) => v + 1);
   };

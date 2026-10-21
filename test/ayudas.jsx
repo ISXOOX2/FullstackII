@@ -2,9 +2,6 @@
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../src/App.jsx';
-import { AvisosProvider } from '../src/context/AvisosContext.jsx';
-import { SesionProvider } from '../src/context/SesionContext.jsx';
-import { CarritoProvider } from '../src/context/CarritoContext.jsx';
 import { reiniciarBD } from '../src/data/db.js';
 import { CLAVE_CARRITO } from '../src/services/carritoService.js';
 import { CLAVE_SESION, guardarSesion } from '../src/services/sesionService.js';
@@ -20,28 +17,16 @@ export function reiniciarTodo() {
 }
 
 /**
- * Dibuja un componente suelto dentro del enrutador y de los tres contextos.
- * MemoryRouter es el enrutador "de mentira" para pruebas: la ruta inicial se indica a mano.
+ * Dibuja un componente que usa <Link> o rutas. Como en React IV, MemoryRouter simula la
+ * navegación sin un navegador real; initialEntries indica en qué ruta "entró" el usuario.
  */
-export function renderConContextos(ui, { ruta = '/' } = {}) {
-  return render(
-    <MemoryRouter initialEntries={[ruta]}>
-      <AvisosProvider>
-        <SesionProvider>
-          <CarritoProvider>{ui}</CarritoProvider>
-        </SesionProvider>
-      </AvisosProvider>
-    </MemoryRouter>,
-  );
+export function renderConRouter(ui, { ruta = '/' } = {}) {
+  return render(<MemoryRouter initialEntries={[ruta]}>{ui}</MemoryRouter>);
 }
 
 /** Dibuja la aplicación completa (todas las rutas) partiendo en la ruta indicada. */
 export function renderApp(ruta = '/') {
-  return render(
-    <MemoryRouter initialEntries={[ruta]}>
-      <App />
-    </MemoryRouter>,
-  );
+  return renderConRouter(<App />, { ruta });
 }
 
 /** Deja una sesión iniciada con una de las cuentas de demostración del README. */

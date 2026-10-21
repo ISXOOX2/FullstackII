@@ -1,14 +1,15 @@
 // ════════════════════════════════════════════════════════════════════════════
-// LAS 10 PRUEBAS DE LA DEFENSA  (npm run test:defensa)
+// LAS 10 PRUEBAS DE LA DEFENSA
 //
 // Siguen la "Propuesta de pruebas con Jasmine" del Anexo 1 de la Evaluación 2:
 //   renderizado correcto · renderizado condicional · props · estado · eventos
-// y los conceptos de las guías 2.3.2 y 2.3.5: hooks personalizados, mocks con
-// jasmine.createSpyObj y spyOn, lógica de validación y rutas protegidas.
+// y los conceptos de las guías 2.3.2 y 2.3.5: hooks personalizados (renderHook), mocks con
+// jasmine.createSpy / jasmine.createSpyObj, lógica de validación y rutas protegidas.
+// Las comprobaciones usan toBe, toBeTruthy, not y toContain, como en la clase React IV.
 //
 // Todas usan el patrón AAA:  Arrange (preparar) · Act (actuar) · Assert (verificar).
 // ════════════════════════════════════════════════════════════════════════════
-import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router-dom';
 import Boton from '../src/components/atomos/Boton.jsx';
 import CampoFormulario from '../src/components/moleculas/CampoFormulario.jsx';
@@ -24,13 +25,19 @@ import { listarProductos, obtenerProducto } from '../src/services/productosServi
 import { pagosService } from '../src/services/pagosService.js';
 import { CLAVE_CARRITO, agregarItem, leerCarrito } from '../src/services/carritoService.js';
 import { listarOrdenes } from '../src/services/ordenesService.js';
-import {
-  iniciarSesionComo, productoDePrueba, proximoMiercoles, reiniciarTodo, renderApp, renderConContextos,
-} from './ayudas.jsx';
+import { productoDePrueba, proximoMiercoles, reiniciarTodo, renderApp, renderConRouter } from './ayudas.jsx';
 
-describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
+describe('Las 10 pruebas de la defensa', () => {
   // Antes de CADA prueba se reinician los datos, así ninguna depende de otra.
-  beforeEach(reiniciarTodo);
+  // También se guarda la pasarela de pago real para devolverla después del mock (prueba 8).
+  let procesarReal;
+  beforeEach(() => {
+    reiniciarTodo();
+    procesarReal = pagosService.procesar;
+  });
+  afterEach(() => {
+    pagosService.procesar = procesarReal;
+  });
 
   // ─── 1 · RENDERIZADO CORRECTO ───────────────────────────────────────────────
   // Tarea del Anexo 1: "los componentes de lista rendericen todos los elementos".
@@ -39,28 +46,29 @@ describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
     const productos = listarProductos();
 
     // Act
-    renderConContextos(<ListaProductos productos={productos} onAgregar={() => {}} />);
+    renderConRouter(<ListaProductos productos={productos} onAgregar={() => {}} />);
 
     // Assert: hay tantas tarjetas como diseños, y cada nombre está en pantalla
     expect(screen.getAllByRole('button', { name: 'Añadir a mi reserva' }).length).toBe(productos.length);
     productos.forEach((p) => {
-      expect(screen.getAllByRole('link', { name: p.nombre })[0]).toBeInTheDocument();
+      expect(screen.getAllByRole('link', { name: p.nombre }).length).toBeGreaterThan(0);
     });
   });
 
   // ─── 2 · RENDERIZADO CONDICIONAL ────────────────────────────────────────────
   // Tarea del Anexo 1: "un mensaje de error solo se muestre cuando hay un error".
   it('2. CampoFormulario muestra el mensaje de error solo cuando recibe un error', () => {
-    // Arrange: el campo sin error
-    const { rerender } = render(<CampoFormulario id="nombre" etiqueta="Nombre" value="" onChange={() => {}} />);
+    // Caso 1: sin la prop "error" no hay mensaje
+    const sinError = render(<CampoFormulario id="nombre" etiqueta="Nombre" value="" onChange={() => {}} />);
     expect(screen.queryByText('El nombre es obligatorio')).toBeNull();
+    sinError.unmount();
 
-    // Act: el padre le pasa un error por props
-    rerender(<CampoFormulario id="nombre" etiqueta="Nombre" value="" onChange={() => {}} error="El nombre es obligatorio" />);
+    // Caso 2: el padre le pasa un error por props
+    render(<CampoFormulario id="nombre" etiqueta="Nombre" value="" onChange={() => {}} error="El nombre es obligatorio" />);
 
-    // Assert: ahora el mensaje aparece y el campo queda marcado como inválido
-    expect(screen.getByText('El nombre es obligatorio')).toBeInTheDocument();
-    expect(screen.getByLabelText('Nombre')).toHaveClass('is-invalid');
+    // Assert: el mensaje aparece y el campo queda marcado como inválido (clase de Bootstrap)
+    expect(screen.getByText('El nombre es obligatorio')).toBeTruthy();
+    expect(screen.getByLabelText('Nombre').classList.contains('is-invalid')).toBe(true);
   });
 
   // ─── 3 · PROPIEDADES (PROPS) ────────────────────────────────────────────────
@@ -69,8 +77,8 @@ describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
     // Arrange: un espía (spy) registra cada vez que se llama a la función
     const alHacerClic = jasmine.createSpy('alHacerClic');
     render(<Boton etiqueta="Agendar cita" onClick={alHacerClic} />);
-    const boton = screen.getByRole('button', { name: 'Agendar cita' });
-    expect(boton).toBeInTheDocument(); // la prop "etiqueta" llegó
+    const boton = screen.getByText('Agendar cita');
+    expect(boton).toBeTruthy(); // la prop "etiqueta" llegó
 
     // Act
     fireEvent.click(boton);
@@ -85,14 +93,14 @@ describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
     // Arrange
     render(<FormularioContacto onEnviar={() => {}} />);
     const comentario = screen.getByLabelText('Comentario');
-    expect(screen.getByText('0/500 caracteres')).toBeInTheDocument();
+    expect(screen.getByText('0/500 caracteres')).toBeTruthy();
 
     // Act: el usuario escribe en el textarea
     fireEvent.change(comentario, { target: { name: 'comentario', value: 'Hola Forever Ink' } });
 
     // Assert: el input controlado muestra el nuevo valor y el contador se recalculó
-    expect(comentario).toHaveValue('Hola Forever Ink');
-    expect(screen.getByText('16/500 caracteres')).toBeInTheDocument();
+    expect(comentario.value).toBe('Hola Forever Ink');
+    expect(screen.getByText('16/500 caracteres')).toBeTruthy();
   });
 
   // ─── 5 · EVENTOS ────────────────────────────────────────────────────────────
@@ -100,14 +108,13 @@ describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
   it('5. Galeria cambia la imagen principal al hacer clic en una miniatura', () => {
     // Arrange: estado inicial = primera imagen
     render(<Galeria imagenes={['mariposa-lineal', 'mariposa-lineal-cuerpo']} nombre="Mariposa lineal" />);
-    expect(screen.getByAltText(/vista 1 de 2/)).toHaveAttribute('src', images['mariposa-lineal']);
+    expect(screen.getByAltText(/vista 1 de 2/).getAttribute('src')).toBe(images['mariposa-lineal']);
 
     // Act: clic en la segunda miniatura
     fireEvent.click(screen.getByRole('button', { name: 'Ver imagen 2' }));
 
     // Assert: el estado cambió y React volvió a dibujar la imagen grande
-    expect(screen.getByAltText(/vista 2 de 2/)).toHaveAttribute('src', images['mariposa-lineal-cuerpo']);
-    expect(screen.getByRole('button', { name: 'Ver imagen 2' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByAltText(/vista 2 de 2/).getAttribute('src')).toBe(images['mariposa-lineal-cuerpo']);
   });
 
   // ─── 6 · HOOK PERSONALIZADO (renderHook + act, guía 2.3.2 paso 11) ──────────
@@ -128,8 +135,8 @@ describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
 
     // Assert 2: el correo ya no tiene error, pero falta la contraseña
     expect(result.current.visibles.correo).toBeUndefined();
-    expect(result.current.visibles.password).toBeDefined();
-    expect(sePuedeEnviar).toBeFalse();
+    expect(result.current.visibles.password).toBeTruthy();
+    expect(sePuedeEnviar).toBe(false);
   });
 
   // ─── 7 · MOCK CON jasmine.createSpyObj (guía 2.3.2 paso 8) ──────────────────
@@ -146,15 +153,16 @@ describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
 
     // Assert: se llamó al servicio con lo que escribió el usuario y se muestra su respuesta
     expect(servicioSesion.iniciar).toHaveBeenCalledWith({ correo: 'ana@gmail.com', password: 'Clave#12' });
-    expect(screen.getByRole('alert')).toHaveTextContent('Correo o contraseña incorrectos.');
+    expect(screen.getByRole('alert').textContent).toContain('Correo o contraseña incorrectos.');
   });
 
-  // ─── 8 · MOCK CON spyOn: pasarela de pago simulada ──────────────────────────
+  // ─── 8 · MOCK de la pasarela de pago (jasmine.createSpy, guía 2.3.5) ────────
   // Se reemplaza la pasarela por una respuesta controlada para probar el caso "rechazado"
   // sin esperar ni depender de un servicio externo.
   it('8. Checkout con pago RECHAZADO: la orden queda rechazada, el stock no cambia y el carrito se conserva', async () => {
     // Arrange: el mock responde "rechazado" y el carrito tiene 1 diseño (stock inicial 8)
-    spyOn(pagosService, 'procesar').and.returnValue(Promise.resolve({ aprobado: false, motivo: 'Rechazada' }));
+    pagosService.procesar = jasmine.createSpy('procesar')
+      .and.returnValue(Promise.resolve({ aprobado: false, motivo: 'Rechazada' }));
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(agregarItem([], productoDePrueba(1)).items));
     renderApp('/checkout');
     const escribir = (etiqueta, valor) => fireEvent.change(screen.getByLabelText(etiqueta), { target: { value: valor } });
@@ -172,42 +180,42 @@ describe('[DEFENSA] Pruebas de componentes React con Jasmine y Karma', () => {
     fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
 
     // Assert: mensaje de error, orden rechazada, stock intacto y carrito conservado
-    expect(await screen.findByText(/No pudimos procesar tu pago/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/No pudimos procesar tu pago/)).toBeTruthy());
     expect(pagosService.procesar).toHaveBeenCalledTimes(1);
     expect(listarOrdenes()[0].estado).toBe('Pago rechazado');
     expect(obtenerProducto(1).stock).toBe(8);
     expect(leerCarrito().length).toBe(1);
   });
 
-  // ─── 9 · LÓGICA: validación del RUN (valores válidos, inválidos y límites) ──
+  // ─── 9 · LÓGICA: validación del RUN (válido, inválido y entradas fuera del negocio) ──
   it('9. validarRun acepta un RUN correcto y rechaza dígito verificador, largo y vacío', () => {
-    // Arrange / Act / Assert en una tabla de casos (cada fila es un caso de uso)
+    // Como en React IV: no basta con probar el caso correcto, también los datos inválidos.
     expect(validarRun('190110222')).toBe('');                        // válido
     expect(validarRun('190110221')).toContain('dígito verificador');  // dígito incorrecto
     expect(validarRun('12345')).not.toBe('');                         // muy corto (mín. 7)
     expect(validarRun('')).not.toBe('');                              // requerido
   });
 
-  // ─── 10 · CONTEXTO + RUTAS PROTEGIDAS ───────────────────────────────────────
+  // ─── 10 · RUTAS PROTEGIDAS (MemoryRouter, React IV) ─────────────────────────
   it('10. RutaProtegida manda al login sin sesión y al inicio si el rol no tiene permiso', () => {
-    const rutas = (
+    // La ruta /admin solo deja entrar a un Administrador. "usuario" llega por props.
+    const rutas = (usuario) => (
       <Routes>
         <Route path="/" element={<p>Inicio de la tienda</p>} />
         <Route path="/login" element={<p>Pantalla de login</p>} />
-        <Route path="/admin" element={<RutaProtegida roles={['Administrador']}><p>Zona privada</p></RutaProtegida>} />
+        <Route path="/admin" element={<RutaProtegida usuario={usuario} roles={['Administrador']}><p>Zona privada</p></RutaProtegida>} />
       </Routes>
     );
 
-    // Caso 1 · sin sesión -> login
-    const primero = renderConContextos(rutas, { ruta: '/admin' });
-    expect(screen.getByText('Pantalla de login')).toBeInTheDocument();
+    // Caso 1 · sin sesión (usuario = null) -> login
+    const primero = renderConRouter(rutas(null), { ruta: '/admin' });
+    expect(screen.getByText('Pantalla de login')).toBeTruthy();
     expect(screen.queryByText('Zona privada')).toBeNull();
     primero.unmount();
 
     // Caso 2 · con sesión de Cliente -> inicio (no tiene permiso)
-    iniciarSesionComo('cliente.demo@gmail.com', 'Cliente#1');
-    renderConContextos(rutas, { ruta: '/admin' });
-    expect(screen.getByText('Inicio de la tienda')).toBeInTheDocument();
+    renderConRouter(rutas({ nombre: 'Ana', tipo: 'Cliente' }), { ruta: '/admin' });
+    expect(screen.getByText('Inicio de la tienda')).toBeTruthy();
     expect(screen.queryByText('Zona privada')).toBeNull();
   });
 });

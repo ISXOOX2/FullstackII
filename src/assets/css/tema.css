@@ -27,8 +27,8 @@
    13. Páginas informativas y blog                         495
    14. Avisos y boleta                                     521
    15. Panel de administración                             538
-   16. Puntos de interrupción · mobile first               596
-   17. Impresión                                           630
+   16. Puntos de interrupción · mobile first               602
+   17. Impresión                                           636
    ========================================================================== */
 
 
@@ -590,6 +590,12 @@ img {
 
 .table {
   --bs-table-bg: transparent;
+}
+
+/* Las tablas con scroll horizontal contienen sus elementos ocultos (visually-hidden), así no
+   agrandan la página en celular */
+.table-responsive {
+  position: relative;
 }
 
 

@@ -3,20 +3,18 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Button, Col, Container, Nav, Row } from 'react-bootstrap';
 import Logo from '../atomos/Logo.jsx';
 import Cargando from '../atomos/Cargando.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
 
 /**
  * PLANTILLA · Estructura del panel: menú lateral + contenido (<Outlet/>). El menú depende del rol:
  *  - Administrador: todo.
  *  - Vendedor: solo Órdenes y Productos (este último en modo lectura).
  */
-export default function LayoutAdmin() {
-  const { usuario, cerrarSesion } = useSesion();
+export default function LayoutAdmin({ usuario, onCerrarSesion }) {
   const navegar = useNavigate();
   const esAdmin = usuario.tipo === 'Administrador';
 
   const salir = () => {
-    cerrarSesion();
+    onCerrarSesion();
     navegar('/');
   };
 

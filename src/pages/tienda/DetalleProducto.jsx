@@ -5,18 +5,16 @@ import Galeria from '../../components/moleculas/Galeria.jsx';
 import ListaProductos from '../../components/organismos/ListaProductos.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { estaEnOferta, esStockCritico, obtenerProducto, precioFinal, productosRelacionados } from '../../services/productosService.js';
 import { limiteDeCantidad } from '../../services/carritoService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP } from '../../utils/formato.js';
 
-export default function DetalleProducto() {
+export default function DetalleProducto({ onAgregar }) {
   const { id } = useParams();
   const producto = obtenerProducto(id);
   const [cantidad, setCantidad] = useState(1);
-  const agregar = useAgregarAlCarrito();
 
   if (!producto) {
     return (
@@ -95,7 +93,7 @@ export default function DetalleProducto() {
                   <Form.Label className="etiqueta-campo">Cantidad</Form.Label>
                   <Form.Control type="number" min={1} max={limite} value={cantidad} onChange={manejarCantidad} className="campo-cantidad" />
                 </Form.Group>
-                <Button variant="dark" size="lg" onClick={() => agregar(producto, cantidad)}>
+                <Button variant="dark" size="lg" onClick={() => onAgregar(producto, cantidad)}>
                   Añadir a mi reserva
                 </Button>
               </div>
@@ -107,7 +105,7 @@ export default function DetalleProducto() {
 
       <section className="mt-5" aria-labelledby="titulo-relacionados">
         <h2 id="titulo-relacionados" className="titulo-seccion">También te puede gustar</h2>
-        <ListaProductos productos={productosRelacionados(producto, 4)} onAgregar={agregar} />
+        <ListaProductos productos={productosRelacionados(producto, 4)} onAgregar={onAgregar} />
       </section>
     </Container>
   );

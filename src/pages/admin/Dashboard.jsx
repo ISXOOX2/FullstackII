@@ -3,14 +3,12 @@ import { Col, Row, Table } from 'react-bootstrap';
 import TarjetaResumen from '../../components/moleculas/TarjetaResumen.jsx';
 import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.jsx';
 import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
 import { resumenGeneral } from '../../services/reportesService.js';
 import { productosCriticos } from '../../services/productosService.js';
 import { listarOrdenes } from '../../services/ordenesService.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 
-export default function Dashboard() {
-  const { usuario } = useSesion();
+export default function Dashboard({ usuario }) {
   // El vendedor no ve el dashboard: va directo a las órdenes.
   if (usuario.tipo === 'Vendedor') return <Navigate to="/admin/ordenes" replace />;
 

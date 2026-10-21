@@ -3,18 +3,16 @@ import { Button, Col, Container, Row } from 'react-bootstrap';
 import TablaCarrito from '../../components/organismos/TablaCarrito.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
-import { useCarrito } from '../../context/CarritoContext.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import { formatoCLP } from '../../utils/formato.js';
 
-export default function Carrito() {
-  const { items, total, cambiarCantidad, quitar, vaciar } = useCarrito();
-  const { mostrar } = useAvisos();
+/** carrito y mostrarAviso llegan por props desde App.jsx. */
+export default function Carrito({ carrito, mostrarAviso }) {
+  const { items, total, cambiarCantidad, quitar, vaciar } = carrito;
   const navegar = useNavigate();
 
   const quitarConAviso = (productoId) => {
     quitar(productoId);
-    mostrar('Diseño quitado de tu reserva.', 'secondary');
+    mostrarAviso('Diseño quitado de tu reserva.', 'secondary');
   };
 
   return (

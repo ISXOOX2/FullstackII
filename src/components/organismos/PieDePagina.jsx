@@ -5,7 +5,7 @@ import FormularioNewsletter from '../moleculas/FormularioNewsletter.jsx';
 import { ESTUDIO } from '../../config/estudio.js';
 
 /** Pie de página: datos del estudio, enlaces y suscripción al boletín. */
-export default function PieDePagina() {
+export default function PieDePagina({ mostrarAviso }) {
   return (
     <footer className="pie-tienda mt-5 pt-5 pb-4 d-print-none">
       <Container>
@@ -39,7 +39,7 @@ export default function PieDePagina() {
             </ul>
           </Col>
           <Col md={4}>
-            <FormularioNewsletter />
+            <FormularioNewsletter mostrarAviso={mostrarAviso} />
           </Col>
         </Row>
         <hr />

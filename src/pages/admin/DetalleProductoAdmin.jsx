@@ -1,16 +1,14 @@
 import { Link, useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
 import { esStockCritico, obtenerProducto, precioFinal } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
-export default function DetalleProductoAdmin() {
+export default function DetalleProductoAdmin({ usuario }) {
   const { id } = useParams();
-  const { usuario } = useSesion();
   const p = obtenerProducto(id);
 
   if (!p) {

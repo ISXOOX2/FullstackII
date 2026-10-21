@@ -1,7 +1,6 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import useFormulario from '../../hooks/useFormulario.js';
 import { validarCorreo } from '../../utils/validaciones.js';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 
 const validar = (datos) => {
   const error = validarCorreo(datos.correo);
@@ -9,14 +8,13 @@ const validar = (datos) => {
 };
 
 /** Suscripción al boletín (solo valida el correo y muestra un aviso; no envía nada). */
-export default function FormularioNewsletter() {
+export default function FormularioNewsletter({ mostrarAviso }) {
   const f = useFormulario({ correo: '' }, validar);
-  const { mostrar } = useAvisos();
 
   const enviar = (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    mostrar('¡Listo! Te suscribiste al boletín de Forever Ink.');
+    mostrarAviso('¡Listo! Te suscribiste al boletín de Forever Ink.');
     f.reiniciar();
   };
 

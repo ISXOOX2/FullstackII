@@ -1,13 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
 import FormularioLogin from '../../components/organismos/FormularioLogin.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import { CUENTAS_DEMO } from '../../config/estudio.js';
 
-export default function Login() {
-  const { iniciarSesion } = useSesion();
-  const { mostrar } = useAvisos();
+export default function Login({ iniciarSesion, mostrarAviso }) {
   const navegar = useNavigate();
   const ubicacion = useLocation();
 
@@ -15,7 +11,7 @@ export default function Login() {
   const ingresar = ({ correo, password }) => {
     const resultado = iniciarSesion(correo, password);
     if (!resultado.ok) return resultado.error;
-    mostrar(`¡Bienvenido/a, ${resultado.usuario.nombre}!`);
+    mostrarAviso(`¡Bienvenido/a, ${resultado.usuario.nombre}!`);
     // Admin y vendedor van al panel; el cliente vuelve a donde estaba (o al inicio).
     const destino = ubicacion.state?.desde || (resultado.usuario.tipo === 'Cliente' ? '/' : '/admin');
     navegar(destino, { replace: true });

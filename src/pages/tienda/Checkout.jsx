@@ -4,8 +4,6 @@ import { Alert, Col, Container, Row } from 'react-bootstrap';
 import FormularioCheckout from '../../components/organismos/FormularioCheckout.jsx';
 import ResumenOrden from '../../components/moleculas/ResumenOrden.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
-import { useCarrito } from '../../context/CarritoContext.jsx';
-import { useSesion } from '../../context/SesionContext.jsx';
 import { actualizarDatosOrden, crearOrden, marcarPagada, marcarRechazada, obtenerOrden } from '../../services/ordenesService.js';
 import { descontarCupos, obtenerProducto } from '../../services/productosService.js';
 import { pagosService } from '../../services/pagosService.js';
@@ -35,9 +33,9 @@ function valoresDePartida(usuario, ordenAnterior) {
   };
 }
 
-export default function Checkout() {
-  const { items, total, vaciar } = useCarrito();
-  const { usuario } = useSesion();
+/** carrito y usuario llegan por props desde App.jsx. */
+export default function Checkout({ carrito, usuario }) {
+  const { items, total, vaciar } = carrito;
   const navegar = useNavigate();
   const ubicacion = useLocation();
   const ordenId = ubicacion.state?.ordenId ?? null; // viene del botón "Volver a realizar el pago"

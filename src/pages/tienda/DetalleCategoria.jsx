@@ -3,14 +3,12 @@ import { Container } from 'react-bootstrap';
 import ListaProductos from '../../components/organismos/ListaProductos.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import useAgregarAlCarrito from '../../hooks/useAgregarAlCarrito.js';
 import { obtenerCategoria } from '../../services/categoriasService.js';
 import { productosPorCategoria } from '../../services/productosService.js';
 
-export default function DetalleCategoria() {
+export default function DetalleCategoria({ onAgregar }) {
   const { id } = useParams();
   const categoria = obtenerCategoria(id);
-  const agregar = useAgregarAlCarrito();
 
   if (!categoria) {
     return (
@@ -29,7 +27,7 @@ export default function DetalleCategoria() {
       <p className="text-muted mb-4">{categoria.descripcion}</p>
       <ListaProductos
         productos={productosPorCategoria(categoria.id)}
-        onAgregar={agregar}
+        onAgregar={onAgregar}
         vacioTitulo="Aún no hay diseños en este estilo"
         vacioTexto="Pronto subiremos nuevos diseños."
       />

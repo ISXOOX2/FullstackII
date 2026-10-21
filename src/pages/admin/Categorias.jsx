@@ -2,14 +2,12 @@ import { useState } from 'react';
 import { Button, Modal, Table } from 'react-bootstrap';
 import FormularioCategoria from '../../components/organismos/FormularioCategoria.jsx';
 import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
-import { useAvisos } from '../../context/AvisosContext.jsx';
 import {
   actualizarCategoria, contarProductosDeCategoria, crearCategoria, eliminarCategoria, listarCategorias,
 } from '../../services/categoriasService.js';
 
 /** Mantenedor de categorías (estilos). El formulario se abre en una ventana modal. */
-export default function Categorias() {
-  const { mostrar } = useAvisos();
+export default function Categorias({ mostrarAviso }) {
   const [, setVersion] = useState(0);
   const refrescar = () => setVersion((v) => v + 1);
   const [editando, setEditando] = useState(null); // null = cerrado, {} = nueva, {id,...} = editar
@@ -19,7 +17,7 @@ export default function Categorias() {
   const guardar = (valores) => {
     const resultado = editando.id ? actualizarCategoria(editando.id, valores) : crearCategoria(valores);
     if (!resultado.ok) return resultado.error;
-    mostrar(editando.id ? 'Categoría actualizada.' : 'Categoría creada.');
+    mostrarAviso(editando.id ? 'Categoría actualizada.' : 'Categoría creada.');
     setEditando(null);
     refrescar();
     return '';
@@ -31,7 +29,7 @@ export default function Categorias() {
       setErrorEliminar(resultado.error);
       return;
     }
-    mostrar('Categoría eliminada.', 'secondary');
+    mostrarAviso('Categoría eliminada.', 'secondary');
     setAEliminar(null);
     refrescar();
   };
