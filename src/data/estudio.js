@@ -23,7 +23,9 @@ export const DIAS_MAXIMOS_AGENDA = 180;
 // Personas que desarrollan el proyecto (se muestran en la página "Nosotros").
 // Si se suman integrantes al equipo, basta con agregarlos a esta lista.
 export const EQUIPO_DESARROLLO = [
-  { nombre: 'Isabel Cántaro', rol: 'Desarrollo completo: tienda, agendamiento, panel de administración y pruebas' },
+  { nombre: 'Isabel Cántaro', rol: 'Tienda y compra: catálogo, carrito, checkout con agenda, pago simulado y boleta' },
+  { nombre: 'Eduardo Caro', rol: 'Usuarios y panel: inicio de sesión, registro, roles y mantenedores del administrador' },
+  { nombre: 'Yeremi Vásquez', rol: 'Diseño y base: componentes (Atomic Design), estilos responsivos, datos simulados y pruebas' },
 ];
 
 // Credenciales de demostración (también están en el README).

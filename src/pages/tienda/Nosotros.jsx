@@ -55,7 +55,7 @@ export default function Nosotros() {
       <section aria-labelledby="titulo-desarrolladores">
         <h2 id="titulo-desarrolladores" className="titulo-seccion">Desarrollo del sitio</h2>
         <p className="text-muted">Proyecto de la asignatura Desarrollo Fullstack II (DSY1104) · DuocUC.</p>
-        <Row xs={1} md={2} className="g-4">
+        <Row xs={1} md={3} className="g-4">
           {EQUIPO_DESARROLLO.map((p) => (
             <Col key={p.nombre}>
               <Card className="h-100 tarjeta-persona">

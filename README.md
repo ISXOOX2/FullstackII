@@ -8,7 +8,17 @@ las órdenes y los usuarios desde un panel.
 **Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 ·
 Jasmine + Karma + Testing Library (pruebas unitarias y cobertura).
 
-**Autora:** Isabel Cántaro.
+## Equipo y reparto de responsabilidades
+
+| | Isabel Cántaro · Tienda y compra | Eduardo Caro · Usuarios y panel | Yeremi Vásquez · Diseño, componentes base y datos |
+|---|---|---|---|
+| Páginas | Home, Productos, Detalle, Categorías, Ofertas, Carrito, Checkout, Compra exitosa, Pago fallido | Login, Registro, Perfil y `pages/admin` | Nosotros, Blogs, Detalle blog, Contacto, 404 |
+| Componentes | ListaProductos, TarjetaProducto, Galeria, TablaCarrito, FormularioCheckout, ResumenOrden, Boleta | FormularioLogin, FormularioUsuario, FormularioProducto, FormularioCategoria, RutaProtegida, LayoutAdmin | Átomos, CampoFormulario, Header, Footer, LayoutTienda, Avisos, LimiteDeErrores |
+| Lógica | Estado del carrito en `App.jsx`, carritoService, ordenesService, pagosService | Sesión en `App.jsx`, usuarios, productos, categorías y reportes, validaciones.js | `data/db.js`, seed.js, images.js, useFormulario.js, `tema.css`, `karma.conf.js` |
+| Pruebas | 1, 5, 8, 12, 15 | 6, 7, 9, 10, 13 | 2, 3, 4, 11, 14 |
+
+La presentación es individual: cada integrante debe poder explicar todo el proyecto. El reparto indica
+quién lidera y mantiene cada parte.
 
 ## Cómo ejecutarlo
 

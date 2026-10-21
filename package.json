@@ -36,5 +36,5 @@
     "webpack": "^5.111.1",
     "webpack-cli": "^7.2.3"
   },
-  "author": "Isabel Cántaro"
+  "author": "Isabel Cántaro, Eduardo Caro, Yeremi Vásquez"
 }
