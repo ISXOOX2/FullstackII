@@ -1,4 +1,4 @@
-import { ESTUDIO } from '../../config/estudio.js';
+import { ESTUDIO } from '../../data/estudio.js';
 import images from '../../assets/images.js';
 
 /** Logo del estudio: marca (SVG) + nombre. Componente de presentación, sin estado. */

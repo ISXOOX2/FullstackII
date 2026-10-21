@@ -2,7 +2,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import FormularioContacto from '../../components/organismos/FormularioContacto.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
 import { guardarMensaje } from '../../services/contactoService.js';
-import { ESTUDIO } from '../../config/estudio.js';
+import { ESTUDIO } from '../../data/estudio.js';
 
 export default function Contacto({ mostrarAviso }) {
 

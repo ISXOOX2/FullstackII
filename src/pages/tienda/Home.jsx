@@ -5,7 +5,7 @@ import TarjetaCategoria from '../../components/moleculas/TarjetaCategoria.jsx';
 import ListaProductos from '../../components/organismos/ListaProductos.jsx';
 import { listarCategorias, contarProductosDeCategoria } from '../../services/categoriasService.js';
 import { productosDestacados } from '../../services/productosService.js';
-import { ESTUDIO } from '../../config/estudio.js';
+import { ESTUDIO } from '../../data/estudio.js';
 
 const PASOS = [
   { numero: '01', titulo: 'Elige tu diseño', texto: 'Explora los estilos y reserva uno o varios diseños del catálogo.' },

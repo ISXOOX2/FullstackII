@@ -1,7 +1,7 @@
 import { Form } from 'react-bootstrap';
 import Boton from '../atomos/Boton.jsx';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
-import useFormulario from '../../hooks/useFormulario.js';
+import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioContacto } from '../../utils/validaciones.js';
 
 /** Formulario de contacto. Props: onEnviar(valores) se llama solo si todo es válido. */

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
-import useFormulario from '../../hooks/useFormulario.js';
+import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioUsuario } from '../../utils/validaciones.js';
 import { REGIONES, comunasDeRegion } from '../../data/regiones.js';
 import { TIPOS_USUARIO } from '../../services/usuariosService.js';

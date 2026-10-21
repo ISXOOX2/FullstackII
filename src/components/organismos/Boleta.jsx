@@ -1,7 +1,7 @@
 import { Table } from 'react-bootstrap';
 import InsigniaEstado from '../atomos/InsigniaEstado.jsx';
 import Logo from '../atomos/Logo.jsx';
-import { ESTUDIO } from '../../config/estudio.js';
+import { ESTUDIO } from '../../data/estudio.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP, formatoFecha, formatoFechaLarga } from '../../utils/formato.js';
 

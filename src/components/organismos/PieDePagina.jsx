@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import Logo from '../atomos/Logo.jsx';
 import FormularioNewsletter from '../moleculas/FormularioNewsletter.jsx';
-import { ESTUDIO } from '../../config/estudio.js';
+import { ESTUDIO } from '../../data/estudio.js';
 
 /** Pie de página: datos del estudio, enlaces y suscripción al boletín. */
 export default function PieDePagina({ mostrarAviso }) {

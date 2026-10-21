@@ -1,7 +1,7 @@
 // Arma el enlace "mailto:" para enviar la boleta por correo (sin servidor de correo).
 import { formatoCLP, formatoFechaLarga } from './formato.js';
 import { nombreTatuador } from '../data/tatuadores.js';
-import { ESTUDIO } from '../config/estudio.js';
+import { ESTUDIO } from '../data/estudio.js';
 
 export function construirMailtoBoleta(orden) {
   const lineas = orden.items.map(

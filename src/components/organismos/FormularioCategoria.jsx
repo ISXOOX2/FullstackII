@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
-import useFormulario from '../../hooks/useFormulario.js';
+import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioCategoria } from '../../utils/validaciones.js';
 
 /** Formulario de categoría (estilo). onEnviar(valores) -> '' o mensaje de error. */

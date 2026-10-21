@@ -9,7 +9,7 @@
  * un objeto { campo: 'mensaje' } solo con los campos que tienen error.
  * Son funciones "puras" (no tocan la pantalla), por eso son fáciles de probar con Jasmine.
  */
-import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, HORAS_CITA } from '../config/estudio.js';
+import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, HORAS_CITA } from '../data/estudio.js';
 import { fechaISO, sumarDias } from './formato.js';
 
 // RFC 2822 (versión práctica): usuario@dominio.extension

@@ -1,6 +1,6 @@
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import Migas from '../../components/moleculas/Migas.jsx';
-import { ESTUDIO, EQUIPO_DESARROLLO } from '../../config/estudio.js';
+import { ESTUDIO, EQUIPO_DESARROLLO } from '../../data/estudio.js';
 import { TATUADORES } from '../../data/tatuadores.js';
 import { inicial } from '../../utils/formato.js';
 

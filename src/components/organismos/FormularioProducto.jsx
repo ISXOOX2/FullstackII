@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
-import useFormulario from '../../hooks/useFormulario.js';
+import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioProducto } from '../../utils/validaciones.js';
 import { TATUADORES } from '../../data/tatuadores.js';
 import { IMAGENES_DISENO } from '../../data/imagenes.js';

@@ -3,7 +3,7 @@
  * Una orden guarda: datos del cliente, datos de la cita, los diseños elegidos y su estado.
  */
 import { listar, obtenerPorId, crear, actualizar } from '../data/db.js';
-import { HORAS_CITA } from '../config/estudio.js';
+import { HORAS_CITA } from '../data/estudio.js';
 
 const COLECCION = 'ordenes';
 

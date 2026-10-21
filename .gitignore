@@ -2,3 +2,5 @@ node_modules
 coverage
 *.log
 .DS_Store
+# Se generan solos: npm run build crea dist/ y npm test crea coverage/
+dist

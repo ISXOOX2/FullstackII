@@ -26,11 +26,14 @@ npm test               # corre las 15 pruebas (Karma + Jasmine) y genera el info
 ### ¿Y con "Open with Live Server" de VS Code?
 
 El `index.html` de la raíz es código fuente (JSX): un servidor estático no puede ejecutarlo y por eso
-saldría en blanco. Por eso el repo incluye la carpeta **`dist/`** (la versión ya compilada) y el archivo
-`.vscode/settings.json`, que le indica a Live Server que sirva `dist/` y que responda `index.html` en
-cualquier ruta (necesario con BrowserRouter). Abre en VS Code la carpeta del proyecto (la que tiene `package.json`). Clic derecho en `index.html` → *Open with Live Server*.
+saldría en blanco. Para usar Live Server:
 
-Si cambias el código, vuelve a compilar con `npm run build` para actualizar `dist/`.
+1. Abre en VS Code la carpeta del proyecto (la que tiene `package.json`).
+2. Ejecuta `npm run build`: crea la carpeta `dist/` con la versión compilada.
+3. Clic derecho en `index.html` → *Open with Live Server*. El archivo `.vscode/settings.json` le indica a
+   Live Server que sirva `dist/` y que responda `index.html` en cualquier ruta (necesario con BrowserRouter).
+
+`dist/` no se sube al repositorio porque se genera sola; si cambias el código, vuelve a correr `npm run build`.
 
 ## Cuentas de demostración
 
@@ -49,8 +52,10 @@ src/
   main.jsx                 Arranque: estilos globales y <BrowserRouter> envolviendo a <App />
   App.jsx                  Estado compartido (sesión, carrito, avisos) que baja por props, Error Boundary
                            y todas las rutas (panel con React.lazy)
-  assets/                  Recursos (diapositivas React III): images/ + images.js que las importa todas,
-                           y css/tema.css, la única hoja de estilos propia (sobre Bootstrap)
+  assets/                  Recursos (diapositivas React III): lo que se ve pero no se programa
+    images/                disenos/ · portadas/ · blog/ · marca/
+    images.js              Importa todas las imágenes y las junta en un objeto (images.logo…)
+    css/tema.css           Única hoja de estilos propia (sobre Bootstrap)
   components/
     atomos/                Piezas mínimas: Boton, Logo, InsigniaEstado, Cargando
     moleculas/             Combinan átomos: CampoFormulario, TarjetaProducto, Galeria, Migas…
@@ -58,11 +63,11 @@ src/
     plantillas/            Estructura de página: LayoutTienda y LayoutAdmin
     utilidades/            Sin interfaz propia: RutaProtegida, ScrollArriba, LimiteDeErrores
   pages/tienda, pages/admin  Páginas (una por ruta)
-  config/estudio.js        Datos del estudio, horarios y reglas de agenda
-  data/                    "Base de datos" simulada: db.js (CRUD sobre localStorage) + seed.js
+  data/                    "Base de datos" simulada: db.js (CRUD sobre localStorage), seed.js y datos fijos
+                           (estudio.js: nombre, horarios y reglas de agenda; regiones, tatuadores, blogs)
   services/                Reglas de negocio (productos, carrito, órdenes, usuarios, pagos, reportes…)
-  hooks/                   useFormulario (validación en tiempo real de los formularios)
-  utils/                   validaciones.js (RUN, correo, contraseña, fecha de cita…), formato.js, boleta.js
+  utils/                   Funciones de apoyo: validaciones.js, formato.js, boleta.js y el hook
+                           personalizado useFormulario.js (validación en tiempo real)
 test/
   defensa.spec.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
   complementarias.spec.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary

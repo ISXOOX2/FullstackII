@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
 import FormularioLogin from '../../components/organismos/FormularioLogin.jsx';
-import { CUENTAS_DEMO } from '../../config/estudio.js';
+import { CUENTAS_DEMO } from '../../data/estudio.js';
 
 export default function Login({ iniciarSesion, mostrarAviso }) {
   const navegar = useNavigate();

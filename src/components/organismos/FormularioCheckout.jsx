@@ -1,10 +1,10 @@
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
-import useFormulario from '../../hooks/useFormulario.js';
+import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioCheckout, validarFechaCita } from '../../utils/validaciones.js';
 import { horasDisponibles } from '../../services/ordenesService.js';
 import { TATUADORES } from '../../data/tatuadores.js';
-import { DIAS_MAXIMOS_AGENDA, HORAS_CITA } from '../../config/estudio.js';
+import { DIAS_MAXIMOS_AGENDA, HORAS_CITA } from '../../data/estudio.js';
 import { fechaISO, formatoCLP, sumarDias } from '../../utils/formato.js';
 
 /**

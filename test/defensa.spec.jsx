@@ -18,7 +18,7 @@ import ListaProductos from '../src/components/organismos/ListaProductos.jsx';
 import FormularioContacto from '../src/components/organismos/FormularioContacto.jsx';
 import FormularioLogin from '../src/components/organismos/FormularioLogin.jsx';
 import RutaProtegida from '../src/components/utilidades/RutaProtegida.jsx';
-import useFormulario from '../src/hooks/useFormulario.js';
+import useFormulario from '../src/utils/useFormulario.js';
 import images from '../src/assets/images.js';
 import { validarFormularioLogin, validarRun } from '../src/utils/validaciones.js';
 import { listarProductos, obtenerProducto } from '../src/services/productosService.js';

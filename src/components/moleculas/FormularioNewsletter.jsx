@@ -1,5 +1,5 @@
 import { Button, Form, InputGroup } from 'react-bootstrap';
-import useFormulario from '../../hooks/useFormulario.js';
+import useFormulario from '../../utils/useFormulario.js';
 import { validarCorreo } from '../../utils/validaciones.js';
 
 const validar = (datos) => {
