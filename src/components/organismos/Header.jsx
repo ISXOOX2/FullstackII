@@ -6,12 +6,13 @@ import { listarCategorias } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 
 /**
+ * ORGANISMO · Header (cabecera), con el mismo nombre que en la diapositiva React III.
  * Cabecera de la tienda en dos filas:
  *  1) logo, buscador y botones de sesión;
  *  2) menú de navegación (Home, Categorías, Ofertas, Nosotros, Blog, Contacto) y el carrito.
  * Recibe por props quién está conectado (usuario) y el total del carrito, que viven en App.jsx.
  */
-export default function BarraNavegacion({ usuario, onCerrarSesion, total, cantidad }) {
+export default function Header({ usuario, onCerrarSesion, total, cantidad }) {
   const navegar = useNavigate();
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenuAbierto] = useState(false);

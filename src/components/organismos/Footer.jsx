@@ -4,8 +4,8 @@ import Logo from '../atomos/Logo.jsx';
 import FormularioNewsletter from '../moleculas/FormularioNewsletter.jsx';
 import { ESTUDIO } from '../../data/estudio.js';
 
-/** Pie de página: datos del estudio, enlaces y suscripción al boletín. */
-export default function PieDePagina({ mostrarAviso }) {
+/** ORGANISMO · Footer (pie de página, nombre de la diapositiva React III): datos del estudio, enlaces y boletín. */
+export default function Footer({ mostrarAviso }) {
   return (
     <footer className="pie-tienda mt-5 pt-5 pb-4 d-print-none">
       <Container>

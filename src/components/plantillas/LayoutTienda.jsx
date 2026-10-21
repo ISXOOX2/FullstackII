@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
-import BarraNavegacion from '../organismos/BarraNavegacion.jsx';
-import PieDePagina from '../organismos/PieDePagina.jsx';
+import Header from '../organismos/Header.jsx';
+import Footer from '../organismos/Footer.jsx';
 
 /**
  * PLANTILLA · Estructura común de las páginas de la tienda (Atomic Design, nivel 4).
@@ -18,11 +18,11 @@ export default function LayoutTienda({ usuario, onCerrarSesion, total, cantidad,
   return (
     <>
       <a href="#contenido" className="visually-hidden-focusable saltar-contenido d-print-none">Saltar al contenido</a>
-      <BarraNavegacion usuario={usuario} onCerrarSesion={onCerrarSesion} total={total} cantidad={cantidad} />
+      <Header usuario={usuario} onCerrarSesion={onCerrarSesion} total={total} cantidad={cantidad} />
       <main id="contenido">
         <Outlet />
       </main>
-      <PieDePagina mostrarAviso={mostrarAviso} />
+      <Footer mostrarAviso={mostrarAviso} />
     </>
   );
 }
