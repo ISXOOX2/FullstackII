@@ -41,7 +41,7 @@ más `dto`, `exception` (solo el `GlobalExceptionHandler`), `config` y, en produ
 
 ## Requisitos
 
-- Java 17 o superior y Maven (o IntelliJ / VS Code con Extension Pack for Java).
+- Java 17 o superior (Maven no es necesario: viene el Maven Wrapper). IntelliJ o VS Code con Extension Pack for Java.
 - MySQL de **XAMPP** o **Laragon** encendido en el puerto 3306, usuario `root` **sin contraseña**.
   (Si tu MySQL tiene contraseña, cámbiala en `spring.datasource.password` de cada `application.properties`.)
 - No hay que crear las bases a mano: `createDatabaseIfNotExist=true` las crea al arrancar.
@@ -51,11 +51,18 @@ más `dto`, `exception` (solo el `GlobalExceptionHandler`), `config` y, en produ
 1. XAMPP/Laragon → **Start MySQL**.
 2. Una terminal por microservicio:
 
-```bash
-cd backend/producto-service && mvn spring-boot:run     # :8081
-cd backend/usuario-service  && mvn spring-boot:run     # :8082
-cd backend/carrito-service  && mvn spring-boot:run     # :8083 (necesita producto-service encendido)
+No hace falta instalar Maven: cada servicio trae el **Maven Wrapper** (`mvnw`), igual que Music Shop.
+La primera vez descarga Maven y las dependencias (tarda unos minutos y necesita internet).
+
+```powershell
+# Windows (PowerShell), una terminal por servicio
+cd backend\producto-service ; .\mvnw.cmd spring-boot:run     # :8081
+cd backend\usuario-service  ; .\mvnw.cmd spring-boot:run     # :8082
+cd backend\carrito-service  ; .\mvnw.cmd spring-boot:run     # :8083 (necesita producto-service encendido)
 ```
+
+En Mac o Linux es `./mvnw spring-boot:run`. Si tienes Maven instalado, `mvn spring-boot:run` también sirve.
+El wrapper necesita Java: si dice que no encuentra `JAVA_HOME`, revisa que `java -version` muestre 17 o más.
 
    En IntelliJ: abrir cada carpeta como proyecto Maven y ejecutar la clase `...Application`.
 3. En la raíz del proyecto: `npm run dev` → http://localhost:5173
@@ -70,7 +77,7 @@ los repositorios y el cliente Feign se reemplazan por mocks (`@Mock`) y se inyec
 `@InjectMocks`, como en Music Shop. Cada prueba sigue el orden given / when / then.
 
 ```bash
-cd backend/producto-service && mvn test
+cd backend\producto-service ; .\mvnw.cmd test      # en Mac/Linux: ./mvnw test
 ```
 
 | Servicio | Prueba | Qué verifica |
