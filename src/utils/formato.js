@@ -1,6 +1,6 @@
 // Funciones pequeñas para mostrar datos con formato (precios, fechas, nombres).
 
-/** 65000 -> "$65.000" (separador de miles con punto, como se usa en Chile). */
+/** 15000 -> "$15.000" (separador de miles con punto, como se usa en Chile). */
 export function formatoCLP(valor) {
   const numero = Math.round(Number(valor) || 0);
   const signo = numero < 0 ? '-' : '';

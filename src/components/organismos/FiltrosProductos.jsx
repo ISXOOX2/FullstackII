@@ -31,9 +31,9 @@ export default function FiltrosProductos({ filtros, categorias, onCambiar, onLim
           <Form.Label htmlFor="f-precio" className="etiqueta-campo">Precio máximo</Form.Label>
           <Form.Select id="f-precio" value={filtros.precioMax} onChange={(e) => onCambiar('precioMax', e.target.value)}>
             <option value="">Sin límite</option>
-            <option value="70000">Hasta $70.000</option>
-            <option value="100000">Hasta $100.000</option>
-            <option value="150000">Hasta $150.000</option>
+            <option value="15000">Hasta $15.000</option>
+            <option value="20000">Hasta $20.000</option>
+            <option value="30000">Hasta $30.000</option>
           </Form.Select>
         </Col>
         <Col md={6} lg={2}>

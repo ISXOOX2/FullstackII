@@ -49,7 +49,7 @@ const PRODUCTOS = [
   {
     id: 1, codigo: 'FI-001', nombre: 'Neko chibi', categoriaId: 1,
     descripcion: 'Gatito de cabeza grande y ojos brillantes, en trazo limpio. Ideal para un primer tatuaje.',
-    precio: 20000, precioOferta: null, stock: 8, stockCritico: 3,
+    precio: 12000, precioOferta: null, stock: 8, stockCritico: 3,
     tamano: '7 x 6 cm', duracionHoras: 1.5, zonas: 'Antebrazo, tobillo, hombro', nivelDolor: 2,
     colorTinta: 'Negro', destacado: true,
     imagen: 'neko-chibi',
@@ -58,7 +58,7 @@ const PRODUCTOS = [
   {
     id: 2, codigo: 'FI-002', nombre: 'Onigiri feliz', categoriaId: 1,
     descripcion: 'Bolita de arroz con alga y carita sonriente. Pequeño, divertido y rápido de hacer.',
-    precio: 15000, precioOferta: 12000, stock: 10, stockCritico: 3,
+    precio: 10000, precioOferta: 8000, stock: 10, stockCritico: 3,
     tamano: '5 x 5 cm', duracionHoras: 1, zonas: 'Muñeca, tobillo, detrás de la oreja', nivelDolor: 2,
     colorTinta: 'Negro', destacado: false,
     imagen: 'onigiri-feliz',
@@ -67,7 +67,7 @@ const PRODUCTOS = [
   {
     id: 3, codigo: 'FI-003', nombre: 'Fresita kawaii', categoriaId: 1,
     descripcion: 'Frutilla con hojitas, semillas y una carita tierna.',
-    precio: 18000, precioOferta: null, stock: 7, stockCritico: 2,
+    precio: 12000, precioOferta: null, stock: 7, stockCritico: 2,
     tamano: '6 x 7 cm', duracionHoras: 1, zonas: 'Tobillo, pantorrilla, antebrazo', nivelDolor: 2,
     colorTinta: 'Negro', destacado: false,
     imagen: 'fresita-kawaii',
@@ -76,7 +76,7 @@ const PRODUCTOS = [
   {
     id: 4, codigo: 'FI-004', nombre: 'Nubecita dormilona', categoriaId: 1,
     descripcion: 'Nube con ojitos cerrados y unas zetas de sueño. Suave y relajada.',
-    precio: 20000, precioOferta: null, stock: 2, stockCritico: 3,
+    precio: 15000, precioOferta: null, stock: 2, stockCritico: 3,
     tamano: '8 x 6 cm', duracionHoras: 1.5, zonas: 'Antebrazo, clavícula, costillas', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'nubecita-dormilona',
@@ -85,7 +85,7 @@ const PRODUCTOS = [
   {
     id: 5, codigo: 'FI-005', nombre: 'Boba kawaii', categoriaId: 1,
     descripcion: 'Vaso de bubble tea con perlas y carita feliz.',
-    precio: 22000, precioOferta: null, stock: 6, stockCritico: 2,
+    precio: 15000, precioOferta: null, stock: 6, stockCritico: 2,
     tamano: '7 x 9 cm', duracionHoras: 1.5, zonas: 'Pantorrilla, antebrazo, muslo', nivelDolor: 2,
     colorTinta: 'Negro', destacado: false,
     imagen: 'boba-kawaii',
@@ -94,7 +94,7 @@ const PRODUCTOS = [
   {
     id: 6, codigo: 'FI-006', nombre: 'Máscara kitsune', categoriaId: 2,
     descripcion: 'Máscara de zorro del folclore japonés, con marcas en la frente y mirada serena.',
-    precio: 28000, precioOferta: null, stock: 6, stockCritico: 2,
+    precio: 15000, precioOferta: null, stock: 6, stockCritico: 2,
     tamano: '9 x 9 cm', duracionHoras: 2, zonas: 'Antebrazo, hombro, muslo', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'mascara-kitsune',
@@ -103,7 +103,7 @@ const PRODUCTOS = [
   {
     id: 7, codigo: 'FI-007', nombre: 'Ojos de anime', categoriaId: 2,
     descripcion: 'Mirada intensa al estilo anime, con pestañas marcadas y brillo en las pupilas.',
-    precio: 30000, precioOferta: null, stock: 5, stockCritico: 2,
+    precio: 18000, precioOferta: null, stock: 5, stockCritico: 2,
     tamano: '12 x 5 cm', duracionHoras: 2, zonas: 'Antebrazo, clavícula, espalda alta', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'ojos-anime',
@@ -112,7 +112,7 @@ const PRODUCTOS = [
   {
     id: 8, codigo: 'FI-008', nombre: 'Katana y sakura', categoriaId: 2,
     descripcion: 'Katana en diagonal rodeada de flores y pétalos de cerezo que caen.',
-    precio: 65000, precioOferta: null, stock: 4, stockCritico: 2,
+    precio: 28000, precioOferta: null, stock: 4, stockCritico: 2,
     tamano: '18 x 14 cm', duracionHoras: 3.5, zonas: 'Espalda, muslo, costillas', nivelDolor: 4,
     colorTinta: 'Negro', destacado: true,
     imagen: 'katana-sakura',
@@ -121,7 +121,7 @@ const PRODUCTOS = [
   {
     id: 9, codigo: 'FI-009', nombre: 'Ola y sol', categoriaId: 2,
     descripcion: 'Ola que se enrosca bajo un sol radiante, inspirada en los grabados japoneses.',
-    precio: 32000, precioOferta: 28000, stock: 6, stockCritico: 2,
+    precio: 18000, precioOferta: 15000, stock: 6, stockCritico: 2,
     tamano: '10 x 9 cm', duracionHoras: 2.5, zonas: 'Antebrazo, pantorrilla, hombro', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'ola-y-sol',
@@ -130,7 +130,7 @@ const PRODUCTOS = [
   {
     id: 10, codigo: 'FI-010', nombre: 'Torii bajo la luna', categoriaId: 2,
     descripcion: 'Portal torii frente a la luna llena, con pétalos de cerezo al viento.',
-    precio: 45000, precioOferta: null, stock: 3, stockCritico: 2,
+    precio: 22000, precioOferta: null, stock: 3, stockCritico: 2,
     tamano: '14 x 13 cm', duracionHoras: 3, zonas: 'Espalda, muslo, costillas', nivelDolor: 4,
     colorTinta: 'Negro', destacado: false,
     imagen: 'torii-luna',
@@ -139,7 +139,7 @@ const PRODUCTOS = [
   {
     id: 11, codigo: 'FI-011', nombre: 'Corazón tribal', categoriaId: 3,
     descripcion: 'Corazón grueso con espinas y llamas tribales, puro estilo 2000.',
-    precio: 28000, precioOferta: null, stock: 7, stockCritico: 3,
+    precio: 18000, precioOferta: null, stock: 7, stockCritico: 3,
     tamano: '9 x 9 cm', duracionHoras: 2, zonas: 'Espalda baja, antebrazo, hombro', nivelDolor: 3,
     colorTinta: 'Negro', destacado: true,
     imagen: 'corazon-tribal',
@@ -148,7 +148,7 @@ const PRODUCTOS = [
   {
     id: 12, codigo: 'FI-012', nombre: 'Mariposa tribal', categoriaId: 3,
     descripcion: 'Mariposa de alas afiladas en negro sólido, simétrica y llamativa.',
-    precio: 75000, precioOferta: null, stock: 4, stockCritico: 2,
+    precio: 38000, precioOferta: null, stock: 4, stockCritico: 2,
     tamano: '20 x 14 cm', duracionHoras: 4, zonas: 'Espalda baja, espalda, pecho', nivelDolor: 4,
     colorTinta: 'Negro', destacado: false,
     imagen: 'mariposa-tribal',
@@ -157,7 +157,7 @@ const PRODUCTOS = [
   {
     id: 13, codigo: 'FI-013', nombre: 'Flor tribal', categoriaId: 3,
     descripcion: 'Flor de pétalos puntiagudos que giran alrededor de un centro marcado.',
-    precio: 26000, precioOferta: null, stock: 1, stockCritico: 2,
+    precio: 18000, precioOferta: null, stock: 1, stockCritico: 2,
     tamano: '9 x 9 cm', duracionHoras: 2, zonas: 'Pantorrilla, tobillo, hombro', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'flor-tribal',
@@ -166,7 +166,7 @@ const PRODUCTOS = [
   {
     id: 14, codigo: 'FI-014', nombre: 'Brazalete tribal', categoriaId: 3,
     descripcion: 'Banda de puntas que rodea el brazo, como los brazaletes de los 2000.',
-    precio: 42000, precioOferta: 36000, stock: 5, stockCritico: 2,
+    precio: 25000, precioOferta: 21000, stock: 5, stockCritico: 2,
     tamano: '15 x 4 cm', duracionHoras: 3, zonas: 'Brazo, antebrazo, pantorrilla', nivelDolor: 4,
     colorTinta: 'Negro', destacado: false,
     imagen: 'brazalete-tribal',
@@ -175,7 +175,7 @@ const PRODUCTOS = [
   {
     id: 15, codigo: 'FI-015', nombre: 'Estrella tribal', categoriaId: 3,
     descripcion: 'Estrella de cuatro puntas con brazos curvos y gruesos.',
-    precio: 22000, precioOferta: null, stock: 6, stockCritico: 2,
+    precio: 15000, precioOferta: null, stock: 6, stockCritico: 2,
     tamano: '8 x 8 cm', duracionHoras: 1.5, zonas: 'Pantorrilla, tobillo, nuca', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'estrella-tribal',
@@ -184,7 +184,7 @@ const PRODUCTOS = [
   {
     id: 16, codigo: 'FI-016', nombre: 'Fases lunares', categoriaId: 4,
     descripcion: 'Las fases de la luna en línea fina sobre una línea de horizonte.',
-    precio: 30000, precioOferta: null, stock: 5, stockCritico: 2,
+    precio: 18000, precioOferta: null, stock: 5, stockCritico: 2,
     tamano: '14 x 3 cm', duracionHoras: 2, zonas: 'Antebrazo, columna, clavícula', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'fases-lunares',
@@ -193,7 +193,7 @@ const PRODUCTOS = [
   {
     id: 17, codigo: 'FI-017', nombre: 'Sol y rayos', categoriaId: 4,
     descripcion: 'Sol de rayos finos y regulares, sencillo y luminoso.',
-    precio: 15000, precioOferta: null, stock: 2, stockCritico: 2,
+    precio: 10000, precioOferta: null, stock: 2, stockCritico: 2,
     tamano: '6 x 6 cm', duracionHoras: 1.5, zonas: 'Antebrazo, tobillo, nuca', nivelDolor: 2,
     colorTinta: 'Negro', destacado: false,
     imagen: 'sol-y-rayos',
@@ -202,7 +202,7 @@ const PRODUCTOS = [
   {
     id: 18, codigo: 'FI-018', nombre: 'Constelación', categoriaId: 4,
     descripcion: 'Puntos unidos por líneas muy finas, inspirados en el cielo del hemisferio sur.',
-    precio: 32000, precioOferta: 28000, stock: 7, stockCritico: 3,
+    precio: 18000, precioOferta: 15000, stock: 7, stockCritico: 3,
     tamano: '12 x 8 cm', duracionHoras: 2, zonas: 'Hombro, clavícula, espalda', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'constelacion',
@@ -211,7 +211,7 @@ const PRODUCTOS = [
   {
     id: 19, codigo: 'FI-019', nombre: 'Destellos', categoriaId: 4,
     descripcion: 'Grupo de estrellas de cuatro puntas de distintos tamaños, como un brillo.',
-    precio: 18000, precioOferta: null, stock: 8, stockCritico: 3,
+    precio: 12000, precioOferta: null, stock: 8, stockCritico: 3,
     tamano: '7 x 7 cm', duracionHoras: 1, zonas: 'Muñeca, detrás de la oreja, clavícula', nivelDolor: 2,
     colorTinta: 'Negro', destacado: false,
     imagen: 'destellos',
@@ -220,7 +220,7 @@ const PRODUCTOS = [
   {
     id: 20, codigo: 'FI-020', nombre: 'Luna y estrellas colgantes', categoriaId: 4,
     descripcion: 'Luna creciente con tres estrellas que cuelgan de hilos finos.',
-    precio: 40000, precioOferta: null, stock: 5, stockCritico: 2,
+    precio: 22000, precioOferta: null, stock: 5, stockCritico: 2,
     tamano: '12 x 14 cm', duracionHoras: 2.5, zonas: 'Espalda, costillas, muslo', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'luna-y-estrellas',
@@ -229,7 +229,7 @@ const PRODUCTOS = [
   {
     id: 21, codigo: 'FI-021', nombre: 'Sigilo espina', categoriaId: 5,
     descripcion: 'Columna central con ramas afiladas y simétricas. Ideal a lo largo de la espalda.',
-    precio: 70000, precioOferta: null, stock: 4, stockCritico: 2,
+    precio: 35000, precioOferta: null, stock: 4, stockCritico: 2,
     tamano: '17 x 20 cm', duracionHoras: 4, zonas: 'Columna, espalda, esternón', nivelDolor: 5,
     colorTinta: 'Negro', destacado: true,
     imagen: 'sigilo-espina',
@@ -238,7 +238,7 @@ const PRODUCTOS = [
   {
     id: 22, codigo: 'FI-022', nombre: 'Corona afilada', categoriaId: 5,
     descripcion: 'Puntas finas que se abren como una corona oscura.',
-    precio: 30000, precioOferta: null, stock: 6, stockCritico: 2,
+    precio: 18000, precioOferta: null, stock: 6, stockCritico: 2,
     tamano: '10 x 9 cm', duracionHoras: 2, zonas: 'Pantorrilla, nuca, esternón', nivelDolor: 4,
     colorTinta: 'Negro', destacado: false,
     imagen: 'corona-afilada',
@@ -247,7 +247,7 @@ const PRODUCTOS = [
   {
     id: 23, codigo: 'FI-023', nombre: 'Alas sigilo', categoriaId: 5,
     descripcion: 'Alas de líneas cortantes que nacen de un eje central.',
-    precio: 75000, precioOferta: 65000, stock: 3, stockCritico: 2,
+    precio: 35000, precioOferta: 30000, stock: 3, stockCritico: 2,
     tamano: '20 x 18 cm', duracionHoras: 4, zonas: 'Espalda, pecho, esternón', nivelDolor: 5,
     colorTinta: 'Negro', destacado: false,
     imagen: 'alas-sigilo',
@@ -256,7 +256,7 @@ const PRODUCTOS = [
   {
     id: 24, codigo: 'FI-024', nombre: 'Halo roto', categoriaId: 5,
     descripcion: 'Círculos interrumpidos y líneas que lo atraviesan, con un aire futurista.',
-    precio: 36000, precioOferta: null, stock: 5, stockCritico: 2,
+    precio: 18000, precioOferta: null, stock: 5, stockCritico: 2,
     tamano: '11 x 12 cm', duracionHoras: 2.5, zonas: 'Pantorrilla, antebrazo, muslo', nivelDolor: 4,
     colorTinta: 'Negro', destacado: false,
     imagen: 'halo-roto',
@@ -265,7 +265,7 @@ const PRODUCTOS = [
   {
     id: 25, codigo: 'FI-025', nombre: 'Daga sigilo', categoriaId: 5,
     descripcion: 'Daga vertical de hoja fina con ganchos simétricos.',
-    precio: 20000, precioOferta: null, stock: 7, stockCritico: 2,
+    precio: 15000, precioOferta: null, stock: 7, stockCritico: 2,
     tamano: '6 x 12 cm', duracionHoras: 1.5, zonas: 'Antebrazo, dedos, tobillo', nivelDolor: 3,
     colorTinta: 'Negro', destacado: false,
     imagen: 'daga-sigilo',
