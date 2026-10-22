@@ -1,6 +1,7 @@
 -- V1: estructura de la base de datos de producto-service.
 -- Cada microservicio tiene su propia base y sus propios scripts (nunca compartidos).
--- CREATE TABLE IF NOT EXISTS permite ejecutar el script en cada arranque sin errores.
+-- Flyway lo ejecuta una sola vez y lo registra en flyway_schema_history. Si hay que cambiar la
+-- estructura, se crea un script nuevo (V3__...) en vez de modificar este.
 
 CREATE TABLE IF NOT EXISTS categorias (
   id          BIGINT       NOT NULL AUTO_INCREMENT,

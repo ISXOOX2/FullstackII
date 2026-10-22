@@ -39,6 +39,16 @@
             <scope>runtime</scope>
         </dependency>
         <!-- Bean Validation (guía 2.3.1) -->
+        <!-- Flyway: ejecuta los scripts de src/main/resources/db/migration al arrancar (guía 2.2.1).
+             flyway-mysql agrega el soporte para MySQL y MariaDB (XAMPP / Laragon). -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>

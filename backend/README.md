@@ -17,9 +17,10 @@
 Cada microservicio sigue las guías de DSY1103:
 
 - **2.2.1 Migración de script y comunicación entre microservicios:** una base de datos por microservicio;
-  las tablas no las crea Hibernate (`ddl-auto=none`): vienen de scripts versionados en
-  `src/main/resources/db/scripts` (`V1__estructura.sql` y `V2__datos_iniciales.sql`), que Spring Boot ejecuta
-  al arrancar (`spring.sql.init`). carrito-service se comunica con producto-service con **OpenFeign**
+  las tablas no las crea Hibernate (`ddl-auto=none`): las crea **Flyway** con scripts versionados en
+  `src/main/resources/db/migration` (`V1__init.sql` con la estructura y `V2__datos_iniciales.sql` con los datos).
+  Flyway los ejecuta una sola vez al arrancar y anota cuáles aplicó en la tabla `flyway_schema_history`;
+  un script ya ejecutado no se modifica, los cambios van en uno nuevo (`V3__...`). carrito-service se comunica con producto-service con **OpenFeign**
   y tiempos máximos de espera (si producto-service no responde → 503).
 - **2.3.1 ResponseEntity y validaciones:** controladores con `ResponseEntity` y el código HTTP correcto
   (200, 201, 204, 400, 401, 403, 404, 409, 500, 503); DTOs con Bean Validation (`@NotBlank`, `@Size`,
@@ -56,6 +57,21 @@ cd backend/carrito-service  && mvn spring-boot:run     # :8083 (necesita product
 El catálogo muestra **"Catálogo desde producto-service"** cuando está conectado. Si un microservicio está
 apagado, la tienda sigue funcionando con los datos locales (`src/data/db.js`).
 
+## Pruebas unitarias (JUnit 5 + Mockito)
+
+Cada microservicio tiene pruebas en `src/test/java` que no necesitan MySQL ni los otros servicios:
+los repositorios y el cliente Feign se reemplazan por mocks de Mockito.
+
+```bash
+cd backend/producto-service && mvn test
+```
+
+| Servicio | Prueba | Qué verifica |
+|---|---|---|
+| producto | `ProductoServiceTest` | No se crea un producto con código repetido; buscar un id inexistente da "no encontrado" |
+| usuario | `ValidarRunTest`, `RolUtilTest` | Dígito verificador del RUN (incluida la K) y traducción de tipo de usuario a rol |
+| carrito | `CarritoServiceTest` | Usa el precio de oferta que informa producto-service y no deja reservar más cupos de los que hay |
+
 ## Probar con Postman
 
 Importar `backend/postman/ForeverInk.postman_collection.json`. Ejecutar primero
@@ -89,6 +105,8 @@ que requieren rol ADMIN. Cada carpeta incluye casos correctos y de error (400, 4
 
 ## Notas
 
-- Si en la consola aparece un aviso de Hibernate sobre la versión de MariaDB (XAMPP trae MariaDB), es solo
-  informativo: el conector de MySQL funciona igual.
+- Si en la consola aparece un aviso de Hibernate o de Flyway sobre la versión de MariaDB (XAMPP trae MariaDB),
+  es solo informativo: el conector de MySQL funciona igual.
+- Para partir de cero con los datos iniciales: en phpMyAdmin borra la base del servicio (por ejemplo
+  `foreverink_productos`) y vuelve a levantarlo; Flyway la vuelve a crear con V1 y V2.
 - Puertos ocupados: cambia `server.port` en `application.properties` y la URL en `src/services/api.js`.
