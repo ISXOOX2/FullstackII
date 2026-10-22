@@ -3,65 +3,80 @@ package cl.duoc.foreverink.producto.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import cl.duoc.foreverink.producto.dto.ProductoRequest;
-import cl.duoc.foreverink.producto.exception.RecursoNoEncontradoException;
-import cl.duoc.foreverink.producto.exception.ReglaNegocioException;
 import cl.duoc.foreverink.producto.model.Producto;
 import cl.duoc.foreverink.producto.repository.CategoriaRepository;
 import cl.duoc.foreverink.producto.repository.ProductoRepository;
 
 /**
  * Pruebas unitarias de ProductoService con JUnit 5 y Mockito.
- * Los repositorios se reemplazan por mocks: no se necesita MySQL para ejecutarlas.
- * Patrón AAA: Arrange (preparar), Act (actuar), Assert (verificar).
+ * Los repositorios son mocks (@Mock) y se inyectan en el servicio (@InjectMocks):
+ * no se necesita MySQL para ejecutarlas.
  */
+@ExtendWith(MockitoExtension.class)
+@DisplayName("ProductoService - Pruebas unitarias")
 class ProductoServiceTest {
 
+    @Mock
     private ProductoRepository productoRepository;
-    private ProductoService servicio;
+
+    @Mock
+    private CategoriaRepository categoriaRepository;
+
+    @InjectMocks
+    private ProductoService productoService;
+
+    private ProductoRequest dtoTest;
 
     @BeforeEach
-    void preparar() {
-        productoRepository = mock(ProductoRepository.class);
-        CategoriaRepository categoriaRepository = mock(CategoriaRepository.class);
-        servicio = new ProductoService(productoRepository, categoriaRepository);
+    void setUp() {
+        dtoTest = new ProductoRequest();
+        dtoTest.setCodigo("FI-001");
+        dtoTest.setNombre("Mariposa lineal");
+        dtoTest.setCategoriaId(1L);
+        dtoTest.setPrecio(45000);
+        dtoTest.setStock(5);
     }
 
     @Test
     @DisplayName("No deja crear un producto con un código que ya existe (409) y no guarda nada")
-    void crearConCodigoRepetido() {
-        // Arrange: el repositorio dice que el código ya está usado
+    void testCrearConCodigoRepetido() {
+        // given: el repositorio dice que el código ya está usado
         when(productoRepository.existsByCodigoIgnoreCase("FI-001")).thenReturn(true);
-        ProductoRequest datos = new ProductoRequest("FI-001", "Mariposa lineal", null, 1L, 45000, null, 5, 2,
-                null, null, null, null, null, null, false, null, List.of());
 
-        // Act + Assert
-        ReglaNegocioException error = assertThrows(ReglaNegocioException.class, () -> servicio.crear(datos));
-        assertEquals("Ya existe un producto con el código FI-001", error.getMessage());
+        // when & then
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> productoService.crear(dtoTest));
+        assertEquals(409, error.getStatusCode().value());
+        assertEquals("Ya existe un producto con el código FI-001", error.getReason());
         verify(productoRepository, never()).save(any(Producto.class));
     }
 
     @Test
-    @DisplayName("Buscar un producto que no existe lanza RecursoNoEncontrado (404)")
-    void obtenerInexistente() {
-        // Arrange
+    @DisplayName("Buscar un producto que no existe responde 404")
+    void testObtenerProductoInexistente() {
+        // given
         when(productoRepository.findById(999L)).thenReturn(Optional.empty());
 
-        // Act + Assert
-        RecursoNoEncontradoException error = assertThrows(RecursoNoEncontradoException.class,
-                () -> servicio.obtener(999L));
-        assertEquals("No existe el producto con id 999", error.getMessage());
+        // when & then
+        ResponseStatusException error = assertThrows(ResponseStatusException.class,
+                () -> productoService.obtener(999L));
+        assertEquals(404, error.getStatusCode().value());
+        assertEquals("No existe el producto con id 999", error.getReason());
     }
 }

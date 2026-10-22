@@ -4,41 +4,43 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import cl.duoc.foreverink.usuario.dto.ActualizarUsuarioRequest;
 import cl.duoc.foreverink.usuario.dto.LoginRequest;
 import cl.duoc.foreverink.usuario.dto.LoginResponse;
-import cl.duoc.foreverink.usuario.dto.RegistroRequest;
 import cl.duoc.foreverink.usuario.dto.UsuarioDto;
-import cl.duoc.foreverink.usuario.exception.RecursoNoEncontradoException;
-import cl.duoc.foreverink.usuario.exception.ReglaNegocioException;
+import cl.duoc.foreverink.usuario.dto.UsuarioRequest;
 import cl.duoc.foreverink.usuario.model.Usuario;
 import cl.duoc.foreverink.usuario.repository.UsuarioRepository;
 import cl.duoc.foreverink.usuario.security.JwtService;
 
-/** Reglas de negocio de los usuarios: registro, login, edición y eliminación. */
+/**
+ * Reglas de negocio de los usuarios: login, registro, edición y eliminación.
+ * Los errores se lanzan con ResponseStatusException y los convierte el GlobalExceptionHandler.
+ */
 @Service
 public class UsuarioService {
 
     private static final Logger log = LoggerFactory.getLogger(UsuarioService.class);
 
-    private final UsuarioRepository usuarioRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
-                          AuthenticationManager authenticationManager, JwtService jwtService) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
 
     // ─── Login ──────────────────────────────────────────────────────────────
 
@@ -49,9 +51,9 @@ public class UsuarioService {
      */
     @Transactional(readOnly = true)
     public LoginResponse login(LoginRequest datos) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(datos.correo().trim(), datos.password()));
-        Usuario usuario = buscarPorCorreo(datos.correo().trim());
+        String correo = datos.getCorreo().trim();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(correo, datos.getPassword()));
+        Usuario usuario = buscarPorCorreo(correo);
         log.info("Inicio de sesión correcto correo={} tipo={}", usuario.getCorreo(), usuario.getTipo());
         return new LoginResponse(jwtService.generarToken(usuario), "Bearer",
                 jwtService.getExpiracionMinutos(), aDto(usuario));
@@ -61,28 +63,23 @@ public class UsuarioService {
 
     /** Registro. En el registro público el tipo es siempre Cliente; un administrador puede elegirlo. */
     @Transactional
-    public UsuarioDto registrar(RegistroRequest datos, boolean solicitaAdministrador) {
-        validarRun(datos.run());
-        String correo = datos.correo().trim().toLowerCase();
-        String run = datos.run().trim().toUpperCase();
+    public UsuarioDto registrar(UsuarioRequest datos, boolean solicitaAdministrador) {
+        if (datos.getPassword() == null || datos.getPassword().length() < 4) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña debe tener entre 4 y 10 caracteres");
+        }
+        validarRun(datos.getRun());
+        String correo = datos.getCorreo().trim().toLowerCase();
+        String run = datos.getRun().trim().toUpperCase();
         if (usuarioRepository.existsByCorreoIgnoreCase(correo)) {
-            throw new ReglaNegocioException("Ya existe una cuenta con ese correo");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese correo");
         }
         if (usuarioRepository.existsByRunIgnoreCase(run)) {
-            throw new ReglaNegocioException("Ya existe una cuenta con ese RUN");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe una cuenta con ese RUN");
         }
         Usuario usuario = new Usuario();
-        usuario.setRun(run);
-        usuario.setNombre(datos.nombre().trim());
-        usuario.setApellidos(datos.apellidos().trim());
-        usuario.setCorreo(correo);
-        usuario.setPassword(passwordEncoder.encode(datos.password()));
-        usuario.setTelefono(datos.telefono());
-        usuario.setFechaNacimiento(datos.fechaNacimiento());
-        usuario.setRegion(datos.region());
-        usuario.setComuna(datos.comuna());
-        usuario.setDireccion(datos.direccion().trim());
-        usuario.setTipo(solicitaAdministrador && datos.tipo() != null ? datos.tipo() : "Cliente");
+        copiarDatos(datos, usuario);
+        usuario.setPassword(passwordEncoder.encode(datos.getPassword()));
+        usuario.setTipo(solicitaAdministrador && datos.getTipo() != null ? datos.getTipo() : "Cliente");
         Usuario guardado = usuarioRepository.save(usuario);
         log.info("Usuario registrado id={} correo={} tipo={}", guardado.getId(), correo, guardado.getTipo());
         return aDto(guardado);
@@ -104,35 +101,27 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioDto actualizar(Long id, ActualizarUsuarioRequest datos) {
+    public UsuarioDto actualizar(Long id, UsuarioRequest datos) {
         Usuario usuario = buscar(id);
-        validarRun(datos.run());
-        String correo = datos.correo().trim().toLowerCase();
-        String run = datos.run().trim().toUpperCase();
+        validarRun(datos.getRun());
+        String correo = datos.getCorreo().trim().toLowerCase();
+        String run = datos.getRun().trim().toUpperCase();
         if (usuarioRepository.existsByCorreoIgnoreCaseAndIdNot(correo, id)) {
-            throw new ReglaNegocioException("Ya existe otra cuenta con ese correo");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe otra cuenta con ese correo");
         }
         if (usuarioRepository.existsByRunIgnoreCaseAndIdNot(run, id)) {
-            throw new ReglaNegocioException("Ya existe otra cuenta con ese RUN");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe otra cuenta con ese RUN");
         }
-        usuario.setRun(run);
-        usuario.setNombre(datos.nombre().trim());
-        usuario.setApellidos(datos.apellidos().trim());
-        usuario.setCorreo(correo);
+        copiarDatos(datos, usuario);
         // Contraseña en blanco = se conserva la actual
-        if (datos.password() != null && !datos.password().isBlank()) {
-            if (datos.password().length() < 4) {
-                throw new ReglaNegocioException("La contraseña debe tener entre 4 y 10 caracteres");
+        if (datos.getPassword() != null && !datos.getPassword().isBlank()) {
+            if (datos.getPassword().length() < 4) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña debe tener entre 4 y 10 caracteres");
             }
-            usuario.setPassword(passwordEncoder.encode(datos.password()));
+            usuario.setPassword(passwordEncoder.encode(datos.getPassword()));
         }
-        usuario.setTelefono(datos.telefono());
-        usuario.setFechaNacimiento(datos.fechaNacimiento());
-        usuario.setRegion(datos.region());
-        usuario.setComuna(datos.comuna());
-        usuario.setDireccion(datos.direccion().trim());
-        if (datos.tipo() != null) {
-            usuario.setTipo(datos.tipo());
+        if (datos.getTipo() != null) {
+            usuario.setTipo(datos.getTipo());
         }
         log.info("Usuario actualizado id={}", id);
         return aDto(usuarioRepository.save(usuario));
@@ -143,10 +132,10 @@ public class UsuarioService {
     public void eliminar(Long id, String correoSolicitante) {
         Usuario usuario = buscar(id);
         if (usuario.getCorreo().equalsIgnoreCase(correoSolicitante)) {
-            throw new ReglaNegocioException("No puedes eliminar tu propia cuenta");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "No puedes eliminar tu propia cuenta");
         }
         if ("Administrador".equals(usuario.getTipo()) && usuarioRepository.countByTipo("Administrador") <= 1) {
-            throw new ReglaNegocioException("Debe quedar al menos un administrador");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Debe quedar al menos un administrador");
         }
         usuarioRepository.delete(usuario);
         log.info("Usuario eliminado id={} correo={}", id, usuario.getCorreo());
@@ -156,15 +145,28 @@ public class UsuarioService {
 
     private Usuario buscar(Long id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el usuario con id " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe el usuario con id " + id));
     }
 
     private Usuario buscarPorCorreo(String correo) {
         return usuarioRepository.findByCorreoIgnoreCase(correo)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el usuario " + correo));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe el usuario " + correo));
     }
 
-    /** Valida el dígito verificador del RUN con el algoritmo módulo 11. */
+    /** Copia los datos comunes del formulario a la entidad (no toca contraseña ni tipo). */
+    private void copiarDatos(UsuarioRequest datos, Usuario usuario) {
+        usuario.setRun(datos.getRun().trim().toUpperCase());
+        usuario.setNombre(datos.getNombre().trim());
+        usuario.setApellidos(datos.getApellidos().trim());
+        usuario.setCorreo(datos.getCorreo().trim().toLowerCase());
+        usuario.setTelefono(datos.getTelefono());
+        usuario.setFechaNacimiento(datos.getFechaNacimiento());
+        usuario.setRegion(datos.getRegion());
+        usuario.setComuna(datos.getComuna());
+        usuario.setDireccion(datos.getDireccion().trim());
+    }
+
+    /** Valida el dígito verificador del RUN con el algoritmo módulo 11 (400 si no coincide). */
     static void validarRun(String runCompleto) {
         String run = runCompleto.trim().toUpperCase();
         String cuerpo = run.substring(0, run.length() - 1);
@@ -178,7 +180,7 @@ public class UsuarioService {
         int resto = 11 - (suma % 11);
         char esperado = resto == 11 ? '0' : resto == 10 ? 'K' : Character.forDigit(resto, 10);
         if (dv != esperado) {
-            throw new ReglaNegocioException("El dígito verificador del RUN no es válido");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El dígito verificador del RUN no es válido");
         }
     }
 

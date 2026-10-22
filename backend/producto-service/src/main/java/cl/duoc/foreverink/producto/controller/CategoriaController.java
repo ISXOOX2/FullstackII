@@ -2,6 +2,7 @@ package cl.duoc.foreverink.producto.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +17,8 @@ import cl.duoc.foreverink.producto.service.ProductoService;
 @RequestMapping("/api/categorias")
 public class CategoriaController {
 
-    private final ProductoService productoService;
-
-    public CategoriaController(ProductoService productoService) {
-        this.productoService = productoService;
-    }
+    @Autowired
+    private ProductoService productoService;
 
     @GetMapping
     public ResponseEntity<List<CategoriaDto>> listar() {

@@ -3,6 +3,7 @@ package cl.duoc.foreverink.producto.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,17 +24,14 @@ import jakarta.validation.Valid;
 /**
  * API REST de productos. Cada método devuelve un ResponseEntity con el código HTTP correcto
  * (guía 2.3.1): 200 al leer, 201 al crear, 204 al eliminar. Los 400, 404 y 409 los arma el
- * ManejadorGlobalErrores. Leer es público; crear, editar y eliminar requieren rol ADMIN.
+ * GlobalExceptionHandler. Leer es público; crear, editar y eliminar requieren rol ADMIN.
  */
 @RestController
 @RequestMapping("/api/productos")
 public class ProductoController {
 
-    private final ProductoService productoService;
-
-    public ProductoController(ProductoService productoService) {
-        this.productoService = productoService;
-    }
+    @Autowired
+    private ProductoService productoService;
 
     /** GET /api/productos?categoriaId=1&soloOfertas=true */
     @GetMapping
@@ -54,7 +52,7 @@ public class ProductoController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductoDto> crear(@Valid @RequestBody ProductoRequest datos) {
         ProductoDto creado = productoService.crear(datos);
-        return ResponseEntity.created(URI.create("/api/productos/" + creado.id())).body(creado);
+        return ResponseEntity.created(URI.create("/api/productos/" + creado.getId())).body(creado);
     }
 
     /** PUT /api/productos/{id} -> 200 o 404 */

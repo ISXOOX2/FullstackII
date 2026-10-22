@@ -242,41 +242,24 @@
           }
         },
         {
-          "name": "3. Cambiar cantidad (200)",
+          "name": "3. Más de 5 unidades (400)",
           "request": {
-            "method": "PUT",
+            "method": "POST",
             "header": [
               {
                 "key": "Content-Type",
                 "value": "application/json"
               }
             ],
-            "url": "http://localhost:8083/api/carritos/postman-demo/items/1",
+            "url": "http://localhost:8083/api/carritos/postman-demo/items",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"cantidad\": 3\n}"
+              "raw": "{\n  \"productoId\": 1,\n  \"cantidad\": 9\n}"
             }
           }
         },
         {
-          "name": "4. Más de 5 unidades (400)",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": "http://localhost:8083/api/carritos/postman-demo/items/1",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"cantidad\": 9\n}"
-            }
-          }
-        },
-        {
-          "name": "5. Producto inexistente (404)",
+          "name": "4. Producto inexistente (404)",
           "request": {
             "method": "POST",
             "header": [
@@ -293,7 +276,7 @@
           }
         },
         {
-          "name": "6. Quitar ítem (204)",
+          "name": "5. Quitar ítem (204)",
           "request": {
             "method": "DELETE",
             "header": [],
@@ -301,7 +284,7 @@
           }
         },
         {
-          "name": "7. Vaciar carrito (204)",
+          "name": "6. Vaciar carrito (204)",
           "request": {
             "method": "DELETE",
             "header": [],

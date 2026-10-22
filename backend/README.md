@@ -25,13 +25,19 @@ Cada microservicio sigue las guías de DSY1103:
 - **2.3.1 ResponseEntity y validaciones:** controladores con `ResponseEntity` y el código HTTP correcto
   (200, 201, 204, 400, 401, 403, 404, 409, 500, 503); DTOs con Bean Validation (`@NotBlank`, `@Size`,
   `@Pattern`, `@Min`, `@Max`, `@Past`, `@Email`) y `@Valid`; errores centralizados en un
-  `@RestControllerAdvice` que siempre responde el mismo `ErrorDto { status, mensaje, campos }`.
+  `GlobalExceptionHandler` (`@RestControllerAdvice`) que siempre responde el mismo `ErrorDto { status, mensaje, campos }`.
+  En el service los errores se lanzan con `ResponseStatusException(HttpStatus.NOT_FOUND, "mensaje")`, como en Music Shop.
 - **2.3.2 Spring Security y manejo de logs:** API sin sesión (STATELESS) con token **JWT** firmado por
   usuario-service; producto-service valida el mismo token; contraseñas con **BCrypt**; permisos por rol con
   `@PreAuthorize("hasRole('ADMIN')")`; CORS para el frontend; logs con **SLF4J** (`log.info`, `log.warn`).
 
-Estructura de cada microservicio (por capas): `controller` → `service` → `repository` → `model`,
-más `dto`, `exception`, `config` y `security`.
+Estructura de cada microservicio (por capas, igual que en Music Shop): `controller` → `service` → `repository` → `model`,
+más `dto`, `exception` (solo el `GlobalExceptionHandler`), `config` y, en producto y usuario, `security`.
+
+- **Lombok** (`@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`): entidades y DTOs sin getters ni setters escritos a mano.
+- **`@Autowired`** para inyectar repositorios y servicios.
+- La API nunca devuelve entidades: siempre DTOs (guía 2.3.1, buena práctica 4).
+- carrito-service usa **una sola tabla** (`carrito_items`): todas las filas con la misma `clave` forman el carrito de un cliente.
 
 ## Requisitos
 
@@ -60,7 +66,8 @@ apagado, la tienda sigue funcionando con los datos locales (`src/data/db.js`).
 ## Pruebas unitarias (JUnit 5 + Mockito)
 
 Cada microservicio tiene pruebas en `src/test/java` que no necesitan MySQL ni los otros servicios:
-los repositorios y el cliente Feign se reemplazan por mocks de Mockito.
+los repositorios y el cliente Feign se reemplazan por mocks (`@Mock`) y se inyectan en el service con
+`@InjectMocks`, como en Music Shop. Cada prueba sigue el orden given / when / then.
 
 ```bash
 cd backend/producto-service && mvn test
@@ -69,8 +76,8 @@ cd backend/producto-service && mvn test
 | Servicio | Prueba | Qué verifica |
 |---|---|---|
 | producto | `ProductoServiceTest` | No se crea un producto con código repetido; buscar un id inexistente da "no encontrado" |
-| usuario | `ValidarRunTest`, `RolUtilTest` | Dígito verificador del RUN (incluida la K) y traducción de tipo de usuario a rol |
-| carrito | `CarritoServiceTest` | Usa el precio de oferta que informa producto-service y no deja reservar más cupos de los que hay |
+| usuario | `ValidarRunTest`, `UsuarioTest` | Dígito verificador del RUN (incluida la K) y traducción de tipo de usuario a rol |
+| carrito | `CarritoServiceTest` | Usa el precio de oferta que informa producto-service, no deja reservar más cupos de los que hay ni más de 5 unidades |
 
 ## Probar con Postman
 
@@ -100,7 +107,7 @@ que requieren rol ADMIN. Cada carpeta incluye casos correctos y de error (400, 4
 | usuario | `GET /api/usuarios` · `GET/PUT/DELETE /api/usuarios/{id}` | ADMIN | 200/204, 400, 401, 403, 404, 409 |
 | carrito | `GET /api/carritos/{clave}` | público | 200 |
 | carrito | `POST /api/carritos/{clave}/items` | público | 201, 400, 404, 503 |
-| carrito | `PUT /api/carritos/{clave}/items/{productoId}` · `DELETE ...` | público | 200/204, 400, 404 |
+| carrito | `DELETE /api/carritos/{clave}/items/{productoId}` | público | 204, 404 |
 | carrito | `PUT /api/carritos/{clave}` (reemplaza todo) · `DELETE /api/carritos/{clave}` | público | 200/204, 400, 503 |
 
 ## Notas

@@ -5,14 +5,15 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import cl.duoc.foreverink.producto.dto.CategoriaDto;
 import cl.duoc.foreverink.producto.dto.ProductoDto;
 import cl.duoc.foreverink.producto.dto.ProductoRequest;
-import cl.duoc.foreverink.producto.exception.RecursoNoEncontradoException;
-import cl.duoc.foreverink.producto.exception.ReglaNegocioException;
 import cl.duoc.foreverink.producto.model.Categoria;
 import cl.duoc.foreverink.producto.model.Producto;
 import cl.duoc.foreverink.producto.repository.CategoriaRepository;
@@ -21,24 +22,24 @@ import cl.duoc.foreverink.producto.repository.ProductoRepository;
 /**
  * Reglas de negocio del catálogo. El controlador solo recibe y responde; aquí se valida,
  * se guarda en la base y se convierte la entidad en DTO.
+ * Los errores se lanzan con ResponseStatusException y los convierte el GlobalExceptionHandler.
  */
 @Service
 public class ProductoService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductoService.class);
 
-    private final ProductoRepository productoRepository;
-    private final CategoriaRepository categoriaRepository;
+    @Autowired
+    private ProductoRepository productoRepository;
 
-    public ProductoService(ProductoRepository productoRepository, CategoriaRepository categoriaRepository) {
-        this.productoRepository = productoRepository;
-        this.categoriaRepository = categoriaRepository;
-    }
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     // ─── Categorías ──────────────────────────────────────────────────────────
 
     @Transactional(readOnly = true)
     public List<CategoriaDto> listarCategorias() {
+        log.info("Listando categorías");
         return categoriaRepository.findAll().stream().map(this::aDto).toList();
     }
 
@@ -52,6 +53,7 @@ public class ProductoService {
     /** Lista todos, o solo los de una categoría, o solo los que están en oferta. */
     @Transactional(readOnly = true)
     public List<ProductoDto> listar(Long categoriaId, boolean soloOfertas) {
+        log.info("Listando productos categoriaId={} soloOfertas={}", categoriaId, soloOfertas);
         List<Producto> productos = categoriaId != null
                 ? productoRepository.findByCategoriaIdOrderByIdAsc(categoriaId)
                 : productoRepository.findAllByOrderByIdAsc();
@@ -68,8 +70,9 @@ public class ProductoService {
 
     @Transactional
     public ProductoDto crear(ProductoRequest datos) {
-        if (productoRepository.existsByCodigoIgnoreCase(datos.codigo().trim())) {
-            throw new ReglaNegocioException("Ya existe un producto con el código " + datos.codigo().trim().toUpperCase());
+        String codigo = datos.getCodigo().trim().toUpperCase();
+        if (productoRepository.existsByCodigoIgnoreCase(codigo)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un producto con el código " + codigo);
         }
         Producto producto = new Producto();
         copiarDatos(datos, producto);
@@ -81,8 +84,9 @@ public class ProductoService {
     @Transactional
     public ProductoDto actualizar(Long id, ProductoRequest datos) {
         Producto producto = buscarProducto(id);
-        if (productoRepository.existsByCodigoIgnoreCaseAndIdNot(datos.codigo().trim(), id)) {
-            throw new ReglaNegocioException("Ya existe otro producto con el código " + datos.codigo().trim().toUpperCase());
+        String codigo = datos.getCodigo().trim().toUpperCase();
+        if (productoRepository.existsByCodigoIgnoreCaseAndIdNot(codigo, id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe otro producto con el código " + codigo);
         }
         copiarDatos(datos, producto);
         log.info("Producto actualizado id={}", id);
@@ -100,12 +104,12 @@ public class ProductoService {
 
     private Producto buscarProducto(Long id) {
         return productoRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el producto con id " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe el producto con id " + id));
     }
 
     private Categoria buscarCategoria(Long id) {
         return categoriaRepository.findById(id)
-                .orElseThrow(() -> new RecursoNoEncontradoException("No existe la categoría con id " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe la categoría con id " + id));
     }
 
     /** Regla: el precio de oferta solo vale si es menor que el precio normal. */
@@ -114,29 +118,29 @@ public class ProductoService {
     }
 
     private void copiarDatos(ProductoRequest datos, Producto destino) {
-        if (datos.precioOferta() != null && datos.precioOferta() >= datos.precio()) {
-            throw new ReglaNegocioException("El precio de oferta debe ser menor que el precio normal");
+        if (datos.getPrecioOferta() != null && datos.getPrecioOferta() >= datos.getPrecio()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio de oferta debe ser menor que el precio normal");
         }
-        destino.setCodigo(datos.codigo().trim().toUpperCase());
-        destino.setNombre(datos.nombre().trim());
-        destino.setDescripcion(datos.descripcion());
-        destino.setCategoria(buscarCategoria(datos.categoriaId()));
-        destino.setPrecio(datos.precio());
-        destino.setPrecioOferta(datos.precioOferta());
-        destino.setStock(datos.stock());
-        destino.setStockCritico(datos.stockCritico());
-        destino.setTamano(datos.tamano());
-        destino.setDuracionHoras(datos.duracionHoras());
-        destino.setZonas(datos.zonas());
-        destino.setNivelDolor(datos.nivelDolor());
-        destino.setColorTinta(datos.colorTinta() != null ? datos.colorTinta() : "Negro");
-        destino.setTatuadorId(datos.tatuadorId());
-        destino.setDestacado(Boolean.TRUE.equals(datos.destacado()));
-        String imagen = datos.imagen() != null && !datos.imagen().isBlank() ? datos.imagen() : "mariposa-lineal";
+        destino.setCodigo(datos.getCodigo().trim().toUpperCase());
+        destino.setNombre(datos.getNombre().trim());
+        destino.setDescripcion(datos.getDescripcion());
+        destino.setCategoria(buscarCategoria(datos.getCategoriaId()));
+        destino.setPrecio(datos.getPrecio());
+        destino.setPrecioOferta(datos.getPrecioOferta());
+        destino.setStock(datos.getStock());
+        destino.setStockCritico(datos.getStockCritico());
+        destino.setTamano(datos.getTamano());
+        destino.setDuracionHoras(datos.getDuracionHoras());
+        destino.setZonas(datos.getZonas());
+        destino.setNivelDolor(datos.getNivelDolor());
+        destino.setColorTinta(datos.getColorTinta() != null ? datos.getColorTinta() : "Negro");
+        destino.setTatuadorId(datos.getTatuadorId());
+        destino.setDestacado(Boolean.TRUE.equals(datos.getDestacado()));
+        String imagen = datos.getImagen() != null && !datos.getImagen().isBlank() ? datos.getImagen() : "mariposa-lineal";
         destino.setImagen(imagen);
-        List<String> galeria = datos.imagenes() != null && !datos.imagenes().isEmpty()
-                ? new ArrayList<>(datos.imagenes())
-                : new ArrayList<>(List.of(imagen));
+        List<String> galeria = datos.getImagenes() != null && !datos.getImagenes().isEmpty()
+                ? datos.getImagenes()
+                : List.of(imagen);
         destino.getImagenes().clear();
         destino.getImagenes().addAll(galeria);
     }
@@ -151,6 +155,6 @@ public class ProductoService {
                 p.getPrecio(), p.getPrecioOferta(), p.getStock(), p.getStockCritico(),
                 p.getTamano(), p.getDuracionHoras(), p.getZonas(), p.getNivelDolor(),
                 p.getColorTinta(), p.getTatuadorId(), p.getDestacado(), p.getImagen(),
-                List.copyOf(p.getImagenes()));
+                new ArrayList<>(p.getImagenes()));
     }
 }

@@ -1,5 +1,16 @@
 package cl.duoc.foreverink.producto.dto;
 
-/** Datos de una categoría que se exponen por la API. */
-public record CategoriaDto(Long id, String nombre, String descripcion, String imagen) {
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/** DTO de salida: los datos de una categoría que entrega la API. */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CategoriaDto {
+    private Long id;
+    private String nombre;
+    private String descripcion;
+    private String imagen;
 }

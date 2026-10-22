@@ -1,5 +1,6 @@
 package cl.duoc.foreverink.usuario.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,11 +17,8 @@ import cl.duoc.foreverink.usuario.repository.UsuarioRepository;
 @Service
 public class DetallesUsuarioService implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
-
-    public DetallesUsuarioService(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
@@ -28,7 +26,7 @@ public class DetallesUsuarioService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         return User.withUsername(usuario.getCorreo())
                 .password(usuario.getPassword())
-                .roles(RolUtil.rolDe(usuario.getTipo()))
+                .roles(usuario.getRol())
                 .build();
     }
 }

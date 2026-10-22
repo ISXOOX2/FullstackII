@@ -3,6 +3,7 @@ package cl.duoc.foreverink.usuario.controller;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.duoc.foreverink.usuario.dto.ActualizarUsuarioRequest;
-import cl.duoc.foreverink.usuario.dto.RegistroRequest;
+import cl.duoc.foreverink.usuario.dto.UsuarioRequest;
 import cl.duoc.foreverink.usuario.dto.UsuarioDto;
 import cl.duoc.foreverink.usuario.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -34,19 +34,16 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
-
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
-    }
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioDto> registrar(@Valid @RequestBody RegistroRequest datos,
+    public ResponseEntity<UsuarioDto> registrar(@Valid @RequestBody UsuarioRequest datos,
                                                 Authentication autenticacion) {
         boolean esAdmin = autenticacion != null && autenticacion.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
         UsuarioDto creado = usuarioService.registrar(datos, esAdmin);
-        return ResponseEntity.created(URI.create("/api/usuarios/" + creado.id())).body(creado);
+        return ResponseEntity.created(URI.create("/api/usuarios/" + creado.getId())).body(creado);
     }
 
     @GetMapping("/me")
@@ -69,7 +66,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UsuarioDto> actualizar(@PathVariable("id") Long id,
-                                                 @Valid @RequestBody ActualizarUsuarioRequest datos) {
+                                                 @Valid @RequestBody UsuarioRequest datos) {
         return ResponseEntity.ok(usuarioService.actualizar(id, datos));
     }
 

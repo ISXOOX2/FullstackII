@@ -25,13 +25,16 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private final SecretKey clave;
-    private final long expiracionMinutos;
+    /** Clave secreta para firmar los tokens (la misma que usa producto-service). */
+    @Value("${jwt.secret}")
+    private String secreto;
 
-    public JwtService(@Value("${jwt.secret}") String secreto,
-                      @Value("${jwt.expiracion-minutos}") long expiracionMinutos) {
-        this.clave = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secreto));
-        this.expiracionMinutos = expiracionMinutos;
+    /** Minutos que dura un token antes de expirar. */
+    @Value("${jwt.expiracion-minutos}")
+    private long expiracionMinutos;
+
+    private SecretKey clave() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secreto));
     }
 
     public String generarToken(Usuario usuario) {
@@ -39,19 +42,19 @@ public class JwtService {
         Date expira = new Date(ahora.getTime() + expiracionMinutos * 60_000);
         return Jwts.builder()
                 .subject(usuario.getCorreo())
-                .claim("rol", RolUtil.rolDe(usuario.getTipo()))
+                .claim("rol", usuario.getRol())
                 .claim("id", usuario.getId())
                 .claim("nombre", usuario.getNombre())
                 .issuedAt(ahora)
                 .expiration(expira)
-                .signWith(clave)
+                .signWith(clave())
                 .compact();
     }
 
     /** Devuelve los claims del token. Lanza JwtException si la firma no es válida o expiró. */
     public Claims leerClaims(String token) {
         return Jwts.parser()
-                .verifyWith(clave)
+                .verifyWith(clave())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

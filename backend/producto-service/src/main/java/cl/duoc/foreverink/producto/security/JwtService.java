@@ -18,16 +18,18 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private final SecretKey clave;
+    /** Clave secreta compartida con usuario-service (application.properties). */
+    @Value("${jwt.secret}")
+    private String secreto;
 
-    public JwtService(@Value("${jwt.secret}") String secreto) {
-        this.clave = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secreto));
+    private SecretKey clave() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secreto));
     }
 
     /** Devuelve los claims del token. Lanza JwtException si la firma no es válida o expiró. */
     public Claims leerClaims(String token) {
         return Jwts.parser()
-                .verifyWith(clave)
+                .verifyWith(clave())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
