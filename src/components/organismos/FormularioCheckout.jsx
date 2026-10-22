@@ -66,7 +66,7 @@ export default function FormularioCheckout({ valoresIniciales, total, ordenId = 
           >
             <option value="">Elige con quién tatuarte</option>
             {TATUADORES.map((t) => (
-              <option key={t.id} value={t.id}>{t.nombre} · {t.especialidad}</option>
+              <option key={t.id} value={t.id}>{t.nombre}</option>
             ))}
           </CampoFormulario>
         </Col>

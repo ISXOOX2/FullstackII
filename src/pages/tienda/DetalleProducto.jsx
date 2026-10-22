@@ -8,7 +8,6 @@ import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { estaEnOferta, esStockCritico, obtenerProducto, precioFinal, productosRelacionados } from '../../services/productosService.js';
 import { limiteDeCantidad } from '../../services/carritoService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
-import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP } from '../../utils/formato.js';
 
 export default function DetalleProducto({ onAgregar }) {
@@ -43,7 +42,6 @@ export default function DetalleProducto({ onAgregar }) {
     ['Zonas recomendadas', producto.zonas],
     ['Nivel de dolor', `${producto.nivelDolor} de 5`],
     ['Tinta', producto.colorTinta],
-    ['Tatuador/a', nombreTatuador(producto.tatuadorId)],
   ];
 
   return (

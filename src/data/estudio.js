@@ -20,14 +20,6 @@ export const DIAS_ATENCION = [2, 3, 4, 5, 6];
 // Máximo de días hacia adelante en que se puede agendar.
 export const DIAS_MAXIMOS_AGENDA = 180;
 
-// Personas que desarrollan el proyecto (se muestran en la página "Nosotros").
-// Si se suman integrantes al equipo, basta con agregarlos a esta lista.
-export const EQUIPO_DESARROLLO = [
-  { nombre: 'Isabel Cántaro', rol: 'Tienda y compra: catálogo, carrito, checkout con agenda, pago simulado y boleta' },
-  { nombre: 'Eduardo Caro', rol: 'Usuarios y panel: inicio de sesión, registro, roles y mantenedores del administrador' },
-  { nombre: 'Yeremi Vásquez', rol: 'Diseño y base: componentes (Atomic Design), estilos responsivos, datos simulados y pruebas' },
-];
-
 // Credenciales de demostración (también están en el README).
 export const CUENTAS_DEMO = [
   { rol: 'Administrador', correo: 'admin.foreverink@gmail.com', password: 'Admin#123' },

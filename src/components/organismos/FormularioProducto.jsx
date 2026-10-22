@@ -3,12 +3,11 @@ import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
 import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioProducto } from '../../utils/validaciones.js';
-import { TATUADORES } from '../../data/tatuadores.js';
 import { IMAGENES_DISENO } from '../../data/imagenes.js';
 
 const VACIO = {
   codigo: '', nombre: '', descripcion: '', categoriaId: '', precio: '', precioOferta: '', stock: '', stockCritico: '',
-  tamano: '', duracionHoras: '', zonas: '', nivelDolor: '2', colorTinta: 'Negro', tatuadorId: '', destacado: false,
+  tamano: '', duracionHoras: '', zonas: '', nivelDolor: '2', colorTinta: 'Negro', destacado: false,
   imagen: IMAGENES_DISENO[0].valor,
 };
 
@@ -18,7 +17,7 @@ export default function FormularioProducto({ inicial = null, categorias, onEnvia
     ? Object.fromEntries(Object.keys(VACIO).map((k) => [k, inicial[k] ?? VACIO[k]]))
     : VACIO;
   const f = useFormulario(
-    { ...partida, categoriaId: String(partida.categoriaId ?? ''), tatuadorId: String(partida.tatuadorId ?? '') },
+    { ...partida, categoriaId: String(partida.categoriaId ?? '') },
     validarFormularioProducto,
   );
   const [errorGeneral, setErrorGeneral] = useState('');
@@ -61,12 +60,6 @@ export default function FormularioProducto({ inicial = null, categorias, onEnvia
         <Col md={4}>
           <CampoFormulario id="p-tinta" etiqueta="Tinta" tipo="select" {...p('colorTinta')}>
             {['Negro', 'Gris', 'Color'].map((t) => <option key={t} value={t}>{t}</option>)}
-          </CampoFormulario>
-        </Col>
-        <Col md={4}>
-          <CampoFormulario id="p-tatuador" etiqueta="Tatuador/a" tipo="select" {...p('tatuadorId')}>
-            <option value="">Sin asignar</option>
-            {TATUADORES.map((t) => <option key={t.id} value={t.id}>{t.nombre}</option>)}
           </CampoFormulario>
         </Col>
         <Col md={8}>

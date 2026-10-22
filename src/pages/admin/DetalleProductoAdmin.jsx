@@ -3,7 +3,6 @@ import { Col, Row } from 'react-bootstrap';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { esStockCritico, obtenerProducto, precioFinal } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
-import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
@@ -24,7 +23,7 @@ export default function DetalleProductoAdmin({ usuario }) {
     ['Stock', `${p.stock}${esStockCritico(p) ? ' (crítico)' : ''}`], ['Stock crítico', p.stockCritico ?? '—'],
     ['Tamaño', p.tamano || '—'], ['Duración', p.duracionHoras ? `${p.duracionHoras} h` : '—'],
     ['Zonas', p.zonas || '—'], ['Nivel de dolor', p.nivelDolor ?? '—'], ['Tinta', p.colorTinta],
-    ['Tatuador/a', nombreTatuador(p.tatuadorId)], ['Destacado', p.destacado ? 'Sí' : 'No'],
+    ['Destacado', p.destacado ? 'Sí' : 'No'],
   ];
   return (
     <>

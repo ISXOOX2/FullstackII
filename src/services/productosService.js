@@ -41,7 +41,6 @@ export function normalizarProducto(datos) {
     zonas: String(datos.zonas || '').trim(),
     nivelDolor: aNumeroONulo(datos.nivelDolor),
     colorTinta: String(datos.colorTinta || 'Negro').trim(),
-    tatuadorId: aNumeroONulo(datos.tatuadorId),
     destacado: Boolean(datos.destacado),
     imagen: String(datos.imagen || 'neko-chibi').trim(),
   };

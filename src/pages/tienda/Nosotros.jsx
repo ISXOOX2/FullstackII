@@ -1,6 +1,6 @@
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import Migas from '../../components/moleculas/Migas.jsx';
-import { ESTUDIO, EQUIPO_DESARROLLO } from '../../data/estudio.js';
+import { ESTUDIO } from '../../data/estudio.js';
 import { TATUADORES } from '../../data/tatuadores.js';
 import { inicial } from '../../utils/formato.js';
 
@@ -34,7 +34,7 @@ export default function Nosotros() {
         </Col>
       </Row>
 
-      <section aria-labelledby="titulo-equipo" className="mb-5">
+      <section aria-labelledby="titulo-equipo">
         <h2 id="titulo-equipo" className="titulo-seccion">Nuestro equipo</h2>
         <Row xs={1} md={3} className="g-4">
           {TATUADORES.map((t) => (
@@ -43,7 +43,7 @@ export default function Nosotros() {
                 <Card.Body>
                   <span className="avatar" aria-hidden="true">{inicial(t)}</span>
                   <Card.Title as="h3" className="h5">{t.nombre}</Card.Title>
-                  <p className="small text-uppercase text-muted mb-2">{t.especialidad} · {t.experiencia}</p>
+                  <p className="small text-uppercase text-muted mb-2">{t.especialidad}</p>
                   <Card.Text>{t.descripcion}</Card.Text>
                 </Card.Body>
               </Card>
@@ -52,22 +52,6 @@ export default function Nosotros() {
         </Row>
       </section>
 
-      <section aria-labelledby="titulo-desarrolladores">
-        <h2 id="titulo-desarrolladores" className="titulo-seccion">Desarrollo del sitio</h2>
-        <p className="text-muted">Proyecto de la asignatura Desarrollo Fullstack II (DSY1104) · DuocUC.</p>
-        <Row xs={1} md={3} className="g-4">
-          {EQUIPO_DESARROLLO.map((p) => (
-            <Col key={p.nombre}>
-              <Card className="h-100 tarjeta-persona">
-                <Card.Body>
-                  <Card.Title as="h3" className="h5">{p.nombre}</Card.Title>
-                  <Card.Text className="mb-0">{p.rol}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </section>
     </Container>
   );
 }
