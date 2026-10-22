@@ -229,8 +229,8 @@ const PRODUCTOS = [
   {
     id: 21, codigo: 'FI-021', nombre: 'Sigilo espina', categoriaId: 5,
     descripcion: 'Columna central con ramas afiladas y simétricas. Ideal a lo largo de la espalda.',
-    precio: 90000, precioOferta: null, stock: 4, stockCritico: 2,
-    tamano: '22 x 26 cm', duracionHoras: 4.5, zonas: 'Columna, espalda, esternón', nivelDolor: 5,
+    precio: 70000, precioOferta: null, stock: 4, stockCritico: 2,
+    tamano: '17 x 20 cm', duracionHoras: 4, zonas: 'Columna, espalda, esternón', nivelDolor: 5,
     colorTinta: 'Negro', destacado: true,
     imagen: 'sigilo-espina',
     imagenes: ['sigilo-espina', 'sigilo-espina-cuerpo'],
@@ -247,8 +247,8 @@ const PRODUCTOS = [
   {
     id: 23, codigo: 'FI-023', nombre: 'Alas sigilo', categoriaId: 5,
     descripcion: 'Alas de líneas cortantes que nacen de un eje central.',
-    precio: 85000, precioOferta: 75000, stock: 3, stockCritico: 2,
-    tamano: '22 x 20 cm', duracionHoras: 5, zonas: 'Espalda, pecho, esternón', nivelDolor: 5,
+    precio: 75000, precioOferta: 65000, stock: 3, stockCritico: 2,
+    tamano: '20 x 18 cm', duracionHoras: 4, zonas: 'Espalda, pecho, esternón', nivelDolor: 5,
     colorTinta: 'Negro', destacado: false,
     imagen: 'alas-sigilo',
     imagenes: ['alas-sigilo', 'alas-sigilo-cuerpo'],
