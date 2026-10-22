@@ -31,7 +31,7 @@ export function crearCategoria(datos) {
   const categoria = crear(COLECCION, {
     nombre: datos.nombre.trim(),
     descripcion: (datos.descripcion || '').trim(),
-    imagen: datos.imagen || 'mariposa-lineal',
+    imagen: datos.imagen || 'neko-chibi',
   });
   return { ok: true, categoria };
 }

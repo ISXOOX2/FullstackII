@@ -107,14 +107,14 @@ describe('Las 10 pruebas de la defensa', () => {
   // Tarea del Anexo 1: "simula un clic en un botón y comprueba que el estado cambie".
   it('5. Galeria cambia la imagen principal al hacer clic en una miniatura', () => {
     // Arrange: estado inicial = primera imagen
-    render(<Galeria imagenes={['mariposa-lineal', 'mariposa-lineal-cuerpo']} nombre="Mariposa lineal" />);
-    expect(screen.getByAltText(/vista 1 de 2/).getAttribute('src')).toBe(images['mariposa-lineal']);
+    render(<Galeria imagenes={['neko-chibi', 'neko-chibi-cuerpo']} nombre="Neko chibi" />);
+    expect(screen.getByAltText(/vista 1 de 2/).getAttribute('src')).toBe(images['neko-chibi']);
 
     // Act: clic en la segunda miniatura
     fireEvent.click(screen.getByRole('button', { name: 'Ver imagen 2' }));
 
     // Assert: el estado cambió y React volvió a dibujar la imagen grande
-    expect(screen.getByAltText(/vista 2 de 2/).getAttribute('src')).toBe(images['mariposa-lineal-cuerpo']);
+    expect(screen.getByAltText(/vista 2 de 2/).getAttribute('src')).toBe(images['neko-chibi-cuerpo']);
   });
 
   // ─── 6 · HOOK PERSONALIZADO (renderHook + act, guía 2.3.2 paso 11) ──────────

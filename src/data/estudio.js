@@ -3,7 +3,7 @@
 
 export const ESTUDIO = {
   nombre: 'Forever Ink',
-  eslogan: 'Tatuajes de línea fina y diseño minimalista',
+  eslogan: 'Tatuajes kawaii, anime, tribal Y2K, celestial y cybersigilism',
   direccion: 'Av. Providencia 1234, Providencia, Santiago',
   telefono: '+56 9 1234 5678',
   correo: 'hola@foreverink.cl',

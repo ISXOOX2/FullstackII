@@ -6,14 +6,14 @@ const DIAPOSITIVAS = [
   {
     imagen: 'portada-1',
     titulo: 'Tu próximo tatuaje, a una reserva de distancia',
-    texto: 'Elige un diseño, escoge tatuador y agenda tu hora en minutos.',
+    texto: 'Kawaii, anime, tribal Y2K, celestial y cybersigilism: elige tu diseño y agenda tu hora.',
     boton: 'Ver diseños',
     to: '/productos',
   },
   {
     imagen: 'portada-2',
     titulo: 'Ofertas de temporada',
-    texto: 'Diseños seleccionados con precio especial por cupos limitados.',
+    texto: 'Tribales, sigilos y más diseños con precio especial por cupos limitados.',
     boton: 'Ver ofertas',
     to: '/ofertas',
   },

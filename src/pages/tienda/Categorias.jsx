@@ -8,7 +8,7 @@ export default function Categorias() {
     <Container className="py-4">
       <Migas items={[{ texto: 'Home', to: '/' }, { texto: 'Estilos' }]} />
       <h1 className="titulo-seccion">Estilos de tatuaje</h1>
-      <Row xs={1} sm={2} lg={4} className="g-4">
+      <Row xs={1} sm={2} lg={5} className="g-4">
         {listarCategorias().map((c) => (
           <Col key={c.id}>
             <TarjetaCategoria categoria={c} cantidad={contarProductosDeCategoria(c.id)} />

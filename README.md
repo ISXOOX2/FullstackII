@@ -1,7 +1,7 @@
 # Forever Ink · Estudio de tatuajes (tienda + agendamiento de citas)
 
 Proyecto de la asignatura **Desarrollo Fullstack II (DSY1104)** · DuocUC · Evaluación Parcial 2.
-Sitio web de un estudio de tatuajes minimalista: el cliente elige diseños del catálogo, agenda su cita
+Sitio web de un estudio de tatuajes con estética manga: el cliente elige diseños del catálogo, agenda su cita
 (tatuador, fecha y hora) y paga en línea (pago simulado). El personal del estudio administra el catálogo,
 las órdenes y los usuarios desde un panel.
 
@@ -44,6 +44,14 @@ saldría en blanco. Para usar Live Server:
    Live Server que sirva `dist/` y que responda `index.html` en cualquier ruta (necesario con BrowserRouter).
 
 `dist/` no se sube al repositorio porque se genera sola; si cambias el código, vuelve a correr `npm run build`.
+
+## Catálogo y diseño visual
+
+- **5 estilos con 5 diseños cada uno (25 en total):** Kawaii, Anime, Tribal Y2K, Celestial y Cybersigilism.
+  Todos los dibujos son **originales** (SVG en `src/assets/images/disenos`), cada uno con su vista a escala en el cuerpo.
+  No se usan personajes ni marcas de series existentes.
+- **Estética manga** (`src/assets/css/tema.css`): tinta negra, trama de puntos de fondo, tarjetas como viñetas con
+  borde grueso y sombra dura, portada con líneas de velocidad, acento rojo y tipografías Dela Gothic One + Jost.
 
 ## Cuentas de demostración
 
@@ -93,7 +101,7 @@ docs/                      ERS, documento de cobertura de testing, guía de defe
   objeto que se usa como `images.logo`.
 - **Estado en el componente padre** (React II, Generador de Memes): sesión, carrito y avisos viven en `App.jsx` y
   bajan a las páginas por props.
-- **Fuentes de Google Fonts** con `<link>` en el `<head>` de `index.html` (clase Css 2).
+- **Fuentes de Google Fonts** (Dela Gothic One y Jost) con `<link>` en el `<head>` de `index.html` (clase Css 2).
 - **Atomic Design** para organizar los componentes (2.2.1) y principio de responsabilidad única (Anexo 1).
 - **react-bootstrap** con solo el CSS de Bootstrap importado (guía 2.1.2): el JS de Bootstrap no es necesario.
 - **Hoja de estilos** (1.2.4 y 1.2.6): una sola hoja propia, formato estándar, tabla de contenido, mobile first

@@ -25,7 +25,7 @@ export default function Home({ onAgregar }) {
           <h1 className="visually-hidden">{ESTUDIO.nombre}: {ESTUDIO.eslogan}</h1>
           <p className="sobretitulo">Estilos</p>
           <h2 id="titulo-estilos" className="titulo-seccion">Encuentra tu trazo</h2>
-          <Row xs={1} sm={2} lg={4} className="g-4">
+          <Row xs={1} sm={2} lg={5} className="g-4">
             {categorias.map((c) => (
               <Col key={c.id}>
                 <TarjetaCategoria categoria={c} cantidad={contarProductosDeCategoria(c.id)} />

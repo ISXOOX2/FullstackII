@@ -12,7 +12,7 @@ export default function Nosotros() {
       <Row className="g-4 g-md-5 mb-5">
         <Col md={7}>
           <p className="lead">
-            Somos un estudio pequeño de Providencia que cree en los tatuajes de línea fina: pocos trazos, bien pensados, hechos para durar.
+            Somos un estudio pequeño de Providencia con alma de manga: tinta negra, trazos limpios y diseños kawaii, anime, tribal Y2K, celestial y cybersigilism, hechos para durar.
           </p>
           <p>
             Trabajamos con cita previa para dedicar a cada persona el tiempo que merece. Elige un diseño de nuestro catálogo (o cuéntanos tu idea),

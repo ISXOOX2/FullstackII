@@ -37,7 +37,7 @@ export const BLOGS = [
       { tipo: 'h', texto: '1. ¿Qué significa para ti?' },
       { tipo: 'p', texto: 'No hace falta que tenga una gran historia, pero sí que te represente hoy y dentro de diez años. Haz una lista corta de tres ideas y déjala reposar una semana: si sigues pensando en la misma, es una buena señal.' },
       { tipo: 'h', texto: '2. ¿Qué estilo va con la idea?' },
-      { tipo: 'p', texto: 'El fineline es delicado y muy popular en piezas pequeñas; el geométrico y el dotwork piden simetría y orden; el botánico funciona en casi cualquier zona. Revisa el portafolio del tatuador antes de reservar.' },
+      { tipo: 'p', texto: 'El kawaii y el celestial funcionan muy bien en piezas pequeñas; el anime pide espacio para que se lean los detalles; el tribal Y2K y el cybersigilism lucen más en zonas grandes como espalda o brazo. Revisa el portafolio del tatuador antes de reservar.' },
       { tipo: 'h', texto: '3. Tamaño y ubicación' },
       { tipo: 'p', texto: 'Los detalles muy finos pierden definición si el tatuaje es demasiado pequeño. Además, el dolor cambia según la zona: antebrazo y hombro suelen ser más llevaderos que costillas o pies.' },
       { tipo: 'h', texto: '4. Higiene y seguridad' },

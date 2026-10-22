@@ -6,7 +6,7 @@
 // • Atomic Design: es una MOLÉCULA hecha con átomos (imagen, textos y el átomo <Boton>).
 // ───────────────────────────────────────────────────────────────────────────
 import { Link } from 'react-router-dom';
-import { Badge, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import Boton from '../atomos/Boton.jsx';
 import { estaEnOferta, esStockCritico, precioFinal } from '../../services/productosService.js';
 import { formatoCLP } from '../../utils/formato.js';
@@ -26,7 +26,7 @@ export default function TarjetaProducto({ producto, nombreCategoria = '', onAgre
         <Link to={`/productos/${producto.id}`}>
           <Card.Img variant="top" src={images[producto.imagen]} alt={`Diseño ${producto.nombre}`} />
         </Link>
-        {oferta && <Badge bg="dark" className="insignia-oferta">Oferta</Badge>}
+        {oferta && <span className="badge insignia-oferta">Oferta</span>}
       </div>
       <Card.Body className="d-flex flex-column">
         {nombreCategoria && <small className="text-muted text-uppercase">{nombreCategoria}</small>}
@@ -45,7 +45,9 @@ export default function TarjetaProducto({ producto, nombreCategoria = '', onAgre
         {/* Renderizado condicional: avisos según los cupos disponibles. */}
         {sinCupos && <small className="text-danger mb-2">Sin cupos disponibles</small>}
         {!sinCupos && esStockCritico(producto) && (
-          <small className="text-warning-emphasis mb-2">¡Últimos {producto.stock} cupos!</small>
+          <small className="text-warning-emphasis mb-2">
+            {producto.stock === 1 ? '¡Último cupo!' : `¡Últimos ${producto.stock} cupos!`}
+          </small>
         )}
 
         <Boton
