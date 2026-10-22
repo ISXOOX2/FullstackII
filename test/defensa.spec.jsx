@@ -140,11 +140,10 @@ describe('Las 10 pruebas de la defensa', () => {
   });
 
   // ─── 7 · MOCK CON jasmine.createSpyObj (guía 2.3.2 paso 8) ──────────────────
-  it('7. FormularioLogin envía los datos al servicio (mock) y muestra el error que este responde', async () => {
-    // Arrange: un servicio "de mentira" que responde (como usuario-service con 401) que la
-    // contraseña es incorrecta. Devuelve una promesa porque el login real es asíncrono (axios).
+  it('7. FormularioLogin envía los datos al servicio (mock) y muestra el error que este responde', () => {
+    // Arrange: un servicio "de mentira" que responde que la contraseña es incorrecta
     const servicioSesion = jasmine.createSpyObj('ServicioSesion', ['iniciar']);
-    servicioSesion.iniciar.and.returnValue(Promise.resolve('Correo o contraseña incorrectos.'));
+    servicioSesion.iniciar.and.returnValue('Correo o contraseña incorrectos.');
     render(<FormularioLogin onEnviar={servicioSesion.iniciar} />);
     fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { name: 'correo', value: 'ana@gmail.com' } });
     fireEvent.change(screen.getByLabelText('Contraseña'), { target: { name: 'password', value: 'Clave#12' } });
@@ -154,7 +153,7 @@ describe('Las 10 pruebas de la defensa', () => {
 
     // Assert: se llamó al servicio con lo que escribió el usuario y se muestra su respuesta
     expect(servicioSesion.iniciar).toHaveBeenCalledWith({ correo: 'ana@gmail.com', password: 'Clave#12' });
-    await waitFor(() => expect(screen.getByRole('alert').textContent).toContain('Correo o contraseña incorrectos.'));
+    expect(screen.getByRole('alert').textContent).toContain('Correo o contraseña incorrectos.');
   });
 
   // ─── 8 · MOCK de la pasarela de pago (jasmine.createSpy, guía 2.3.5) ────────

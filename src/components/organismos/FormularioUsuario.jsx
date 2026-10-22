@@ -45,12 +45,10 @@ export default function FormularioUsuario({ modo = 'registro', inicial = null, o
     f.cambiar('comuna', ''); // al cambiar de región, la comuna anterior ya no corresponde
   };
 
-  // En el registro onEnviar consulta a usuario-service, por eso se espera (await) su respuesta.
-  const enviar = async (evento) => {
+  const enviar = (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    const error = await onEnviar(f.valores);
-    setErrorGeneral(error || '');
+    setErrorGeneral(onEnviar(f.valores) || '');
   };
 
   const comunas = comunasDeRegion(f.valores.region);

@@ -2,19 +2,19 @@
 // 5 PRUEBAS COMPLEMENTARIAS  (se ejecutan con npm test junto a las 10 de defensa)
 //
 // Cubren lo que pide el Anexo 1 además de los componentes (CRUD del archivo de datos y
-// flujo de compra) y temas de las guías 2.3.3 y 2.3.5 (conexión con los microservicios, manejo de errores),
+// flujo de compra) y temas de las guías 2.3.3 y 2.3.5 (inyección XSS, manejo de errores),
 // y recorren todas las vistas para que el informe de cobertura sea representativo.
 // ════════════════════════════════════════════════════════════════════════════
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import TarjetaProducto from '../src/components/moleculas/TarjetaProducto.jsx';
 import LimiteDeErrores from '../src/components/utilidades/LimiteDeErrores.jsx';
 import { actualizar, crear, eliminar, listar, obtenerPorId } from '../src/data/db.js';
 import { pagosService } from '../src/services/pagosService.js';
-import { api } from '../src/services/api.js';
 import { CLAVE_CARRITO, agregarItem, leerCarrito } from '../src/services/carritoService.js';
 import { horasDisponibles, listarOrdenes } from '../src/services/ordenesService.js';
 import { obtenerProducto } from '../src/services/productosService.js';
 import {
-  iniciarSesionComo, productoDePrueba, proximoMiercoles, reiniciarTodo, renderApp,
+  iniciarSesionComo, productoDePrueba, proximoMiercoles, reiniciarTodo, renderApp, renderConRouter,
 } from './ayudas.jsx';
 
 describe('Pruebas complementarias', () => {
@@ -104,23 +104,19 @@ describe('Pruebas complementarias', () => {
     }
   });
 
-  // ─── 14 · MOCK de producto-service (axios, React V) ──────────────────────────
-  // Se reemplaza la llamada GET /api/productos por un spy que responde una lista controlada:
-  // así se prueba que el catálogo muestra lo que entrega el microservicio sin levantar Spring Boot.
-  it('14. Productos muestra el catálogo que responde producto-service (mock de la API)', async () => {
-    // Arrange: el "microservicio" responde un solo diseño
-    const desdeServicio = { ...productoDePrueba(1), id: 99, nombre: 'Diseño desde producto-service' };
-    api.listarProductos = jasmine.createSpy('listarProductos')
-      .and.returnValue(Promise.resolve([desdeServicio]));
+  // ─── 14 · Seguridad: React escapa el texto (prueba de inyección XSS, guía 2.3.3) ──
+  it('14. Un nombre con código HTML se muestra como texto y no se ejecuta (XSS)', () => {
+    // Arrange: alguien guarda un diseño con un nombre malicioso desde el panel
+    const ataque = '<img src="x" onerror="window.hackeado = true">';
+    const producto = { ...productoDePrueba(1), nombre: ataque };
 
     // Act
-    renderApp('/productos');
+    renderConRouter(<TarjetaProducto producto={producto} onAgregar={() => {}} />);
 
-    // Assert: se llamó a la API y la página muestra el diseño remoto y el origen de los datos
-    expect(api.listarProductos).toHaveBeenCalled();
-    await waitFor(() => expect(screen.getByText('Diseño desde producto-service')).toBeTruthy());
-    expect(screen.getByTestId('origen-catalogo').textContent).toContain('producto-service');
-    expect(screen.queryByText(productoDePrueba(2).nombre)).toBeNull();
+    // Assert: aparece como texto literal y no se creó ninguna etiqueta <img src="x">
+    expect(screen.getByText(ataque)).toBeTruthy();
+    expect(document.querySelector('img[src="x"]')).toBeNull();
+    expect(window.hackeado).toBeUndefined();
   });
 
   // ─── 15 · Manejo de errores: Error Boundary (guía 2.3.5) ────────────────────

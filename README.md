@@ -5,9 +5,8 @@ Sitio web de un estudio de tatuajes minimalista: el cliente elige diseños del c
 (tatuador, fecha y hora) y paga en línea (pago simulado). El personal del estudio administra el catálogo,
 las órdenes y los usuarios desde un panel.
 
-**Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 · axios ·
+**Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 ·
 Jasmine + Karma + Testing Library (pruebas unitarias y cobertura).
-**Backend:** 3 microservicios Spring Boot (Java 17) con MySQL, JWT y OpenFeign → ver [`backend/README.md`](backend/README.md).
 
 ## Equipo y reparto de responsabilidades
 
@@ -16,16 +15,12 @@ Jasmine + Karma + Testing Library (pruebas unitarias y cobertura).
 | Páginas | Home, Productos, Detalle, Categorías, Ofertas, Carrito, Checkout, Compra exitosa, Pago fallido | Login, Registro, Perfil y `pages/admin` | Nosotros, Blogs, Detalle blog, Contacto, 404 |
 | Componentes | ListaProductos, TarjetaProducto, Galeria, TablaCarrito, FormularioCheckout, ResumenOrden, Boleta | FormularioLogin, FormularioUsuario, FormularioProducto, FormularioCategoria, RutaProtegida, LayoutAdmin | Átomos, CampoFormulario, Header, Footer, LayoutTienda, Avisos, LimiteDeErrores |
 | Lógica | Estado del carrito en `App.jsx`, carritoService, ordenesService, pagosService | Sesión en `App.jsx`, usuarios, productos, categorías y reportes, validaciones.js | `data/db.js`, seed.js, images.js, useFormulario.js, `tema.css`, `karma.conf.js` |
-| Microservicio | carrito-service (8083) | usuario-service (8082) | producto-service (8081) |
 | Pruebas | 1, 5, 8, 12, 15 | 6, 7, 9, 10, 13 | 2, 3, 4, 11, 14 |
 
 La presentación es individual: cada integrante debe poder explicar todo el proyecto. El reparto indica
 quién lidera y mantiene cada parte.
 
 ## Cómo ejecutarlo
-
-Para usar los microservicios, primero enciende MySQL (XAMPP/Laragon) y levanta los 3 servicios como dice
-[`backend/README.md`](backend/README.md). Si no están encendidos, la tienda funciona igual con sus datos locales.
 
 ```bash
 npm install            # instala las dependencias (una sola vez)
@@ -81,16 +76,13 @@ src/
   data/                    "Base de datos" simulada: db.js (CRUD sobre localStorage), seed.js y datos fijos
                            (estudio.js: nombre, horarios y reglas de agenda; regiones, tatuadores, blogs)
   services/                Reglas de negocio (productos, carrito, órdenes, usuarios, pagos, reportes…)
-                           y api.js: conexión con los 3 microservicios usando axios
   utils/                   Funciones de apoyo: validaciones.js, formato.js, boleta.js y el hook
                            personalizado useFormulario.js (validación en tiempo real)
 test/
   defensa.spec.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
-  complementarias.spec.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, mock de producto-service
-                           y Error Boundary
+  complementarias.spec.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary
   ayudas.jsx, index.js     Funciones de apoyo y punto de entrada de Karma
 docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
-backend/                   producto-service, usuario-service, carrito-service (Spring Boot) y colección Postman
 ```
 
 ## Decisiones técnicas (según el material de la asignatura)
@@ -110,22 +102,16 @@ backend/                   producto-service, usuario-service, carrito-service (S
 - **Pruebas** con Jasmine y Karma: `karma.conf.js` como la guía 2.3.2 (jasmine, ChromeHeadless, progress y coverage),
   webpack + babel para JSX (2.3.5), `renderHook`, `jasmine.createSpy`,
   `jasmine.createSpyObj`, `MemoryRouter` y comprobaciones `toBe` / `toBeTruthy` (React IV).
-- **Conexión a la API con axios** (React V): `services/api.js` agrupa las peticiones GET/POST/PUT a los
-  microservicios. Catálogo y detalle leen de producto-service, login y registro van a usuario-service (token JWT)
-  y el carrito se guarda en carrito-service. En las pruebas, `api` se reemplaza por mocks (`jasmine.createSpy`).
 
-## Datos: microservicios + respaldo local
+## Persistencia simulada
 
-Con los microservicios encendidos, catálogo, detalle, login, registro y carrito usan sus APIs. El panel de
-administración, las órdenes y la agenda siguen sobre `src/data/db.js`, que además es el respaldo cuando un
-microservicio no responde. `db.js` ofrece un CRUD genérico (`crear`, `listar`, `obtenerPorId`, `actualizar`,
+No hay backend. `src/data/db.js` ofrece un CRUD genérico (`crear`, `listar`, `obtenerPorId`, `actualizar`,
 `eliminar`) sobre `localStorage`, sembrado desde `seed.js`. Para volver a los datos originales basta con borrar
 el almacenamiento del sitio en el navegador (o llamar a `reiniciarBD()`).
 
 
 ## Limitaciones conocidas (proyecto académico)
 
-- En usuario-service las contraseñas se guardan cifradas con BCrypt. La copia local de respaldo (`localStorage`)
-  las guarda en texto plano solo para que la demostración funcione sin backend.
-- El panel de administración y las órdenes todavía trabajan sobre los datos locales.
+- Sin backend: las contraseñas de los usuarios de ejemplo se guardan en texto plano en `localStorage`.
+  En un sistema real se almacenarían cifradas en un servidor.
 - El pago es una **simulación** (`pagosService`): no se cobra dinero real ni se envían correos reales.

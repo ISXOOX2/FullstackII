@@ -20,12 +20,10 @@ export default function FormularioLogin({ onEnviar }) {
   const f = useFormulario({ correo: '', password: '' }, validarFormularioLogin);
   const [errorGeneral, setErrorGeneral] = useState('');
 
-  // async/await: onEnviar puede tardar (consulta a usuario-service), así que se espera su respuesta.
-  const enviar = async (evento) => {
+  const enviar = (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    const error = await onEnviar(f.valores);
-    setErrorGeneral(error || '');
+    setErrorGeneral(onEnviar(f.valores) || '');
   };
 
   return (

@@ -8,8 +8,6 @@
 //     3) avisos   -> los mensajes emergentes (Toast)
 //   Los hijos reciben esos datos por PROPS y avisan los cambios llamando a funciones que también
 //   reciben por props (flujo de datos unidireccional).
-// • Microservicios (axios, clase React V): el login va a usuario-service y el carrito se guarda
-//   en carrito-service. Si no responden, la tienda sigue con los datos locales (db.js).
 // • Las rutas de la tienda comparten la PLANTILLA LayoutTienda (cabecera + <Outlet/> + pie).
 // • Las rutas del panel están protegidas con <RutaProtegida usuario=... roles=[...]>.
 // • Las páginas del panel se cargan con React.lazy (guía 2.3.3); el <Suspense> está en LayoutAdmin.
@@ -23,12 +21,10 @@ import Avisos from './components/organismos/Avisos.jsx';
 import RutaProtegida from './components/utilidades/RutaProtegida.jsx';
 import ScrollArriba from './components/utilidades/ScrollArriba.jsx';
 import LimiteDeErrores from './components/utilidades/LimiteDeErrores.jsx';
-import { autenticar, buscarUsuarioPorCorreo, usuarioPublico } from './services/usuariosService.js';
-import { obtenerProducto } from './services/productosService.js';
-import { api, mensajeDeError, servicioNoDisponible } from './services/api.js';
+import { autenticar } from './services/usuariosService.js';
 import { borrarSesion, guardarSesion, leerSesion } from './services/sesionService.js';
 import {
-  agregarItem, cambiarCantidad as cambiarCantidadItem, cantidadTotal, claveCarrito, guardarCarrito, leerCarrito,
+  agregarItem, cambiarCantidad as cambiarCantidadItem, cantidadTotal, guardarCarrito, leerCarrito,
   quitarItem, totalCarrito, vaciarCarrito,
 } from './services/carritoService.js';
 
@@ -72,32 +68,13 @@ export default function App() {
   // Se recupera de sessionStorage para no perder la sesión al recargar la página.
   const [usuario, setUsuario] = useState(() => leerSesion());
 
-  /** Guarda la sesión en el estado y en sessionStorage. */
-  const abrirSesion = (datos) => {
-    guardarSesion(datos);
-    setUsuario(datos);
-    return { ok: true, usuario: datos };
-  };
-
-  /**
-   * Inicio de sesión. Devuelve { ok, usuario } o { ok: false, error } para el formulario.
-   *  1) Se envían las credenciales a usuario-service (POST /api/auth/login), que responde
-   *     un token JWT. El token queda en la sesión para las siguientes peticiones.
-   *  2) Si responde 401 (credenciales incorrectas), se muestra su mensaje.
-   *  3) Si usuario-service está apagado, se valida con los usuarios locales (db.js).
-   */
-  const iniciarSesion = async (correo, password) => {
-    try {
-      const { token, usuario: remoto } = await api.login(correo, password);
-      // El resto de la tienda (perfil, historial) usa la copia local del mismo usuario.
-      const local = buscarUsuarioPorCorreo(remoto.correo);
-      return abrirSesion({ ...(local ? usuarioPublico(local) : remoto), token });
-    } catch (error) {
-      if (!servicioNoDisponible(error)) return { ok: false, error: mensajeDeError(error) };
-      const encontrado = autenticar(correo, password);
-      if (!encontrado) return { ok: false, error: 'Correo o contraseña incorrectos.' };
-      return abrirSesion(encontrado);
-    }
+  /** Devuelve { ok, usuario } o { ok: false, error } para que el formulario muestre el mensaje. */
+  const iniciarSesion = (correo, password) => {
+    const encontrado = autenticar(correo, password);
+    if (!encontrado) return { ok: false, error: 'Correo o contraseña incorrectos.' };
+    guardarSesion(encontrado);
+    setUsuario(encontrado);
+    return { ok: true, usuario: encontrado };
   };
 
   const cerrarSesion = () => {
@@ -113,37 +90,11 @@ export default function App() {
 
   // ─── ESTADO 2: carrito ─────────────────────────────────────────────────────
   const [items, setItems] = useState(() => leerCarrito());
-  // true cuando ya se intentó leer el carrito guardado en carrito-service
-  const [carritoCargado, setCarritoCargado] = useState(false);
 
-  // Al abrir la tienda: se pide el carrito a carrito-service (GET). Si el navegador no tenía
-  // nada guardado y el microservicio sí, se usa el del microservicio.
-  useEffect(() => {
-    api.obtenerCarrito(claveCarrito())
-      .then((remoto) => {
-        const desdeServicio = remoto.items.map((i) => ({
-          productoId: i.productoId,
-          nombre: i.nombre,
-          imagen: i.imagen,
-          categoriaId: obtenerProducto(i.productoId)?.categoriaId ?? null,
-          precio: i.precio,
-          stock: i.stock,
-          cantidad: i.cantidad,
-        }));
-        setItems((actuales) => (actuales.length === 0 ? desdeServicio : actuales));
-      })
-      .catch(() => {}) // carrito-service apagado: se queda el carrito de localStorage
-      .finally(() => setCarritoCargado(true));
-  }, []);
-
-  // Cada vez que cambian los items: se guardan en localStorage y en carrito-service (PUT).
-  // carrito-service valida los cupos preguntándole a producto-service (Feign).
+  // Cada vez que cambian los items, se guardan en localStorage.
   useEffect(() => {
     guardarCarrito(items);
-    if (!carritoCargado) return; // aún no se lee el carrito remoto: no se sobrescribe
-    const resumen = items.map((i) => ({ productoId: i.productoId, cantidad: i.cantidad }));
-    api.guardarCarrito(claveCarrito(), resumen).catch(() => {});
-  }, [items, carritoCargado]);
+  }, [items]);
 
   // ─── ESTADO 3: avisos emergentes ───────────────────────────────────────────
   const [avisos, setAvisos] = useState([]);

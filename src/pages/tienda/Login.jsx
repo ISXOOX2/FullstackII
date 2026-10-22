@@ -8,8 +8,8 @@ export default function Login({ iniciarSesion, mostrarAviso }) {
   const ubicacion = useLocation();
 
   /** Devuelve '' si el ingreso fue correcto, o el mensaje de error para el formulario. */
-  const ingresar = async ({ correo, password }) => {
-    const resultado = await iniciarSesion(correo, password); // espera la respuesta de usuario-service
+  const ingresar = ({ correo, password }) => {
+    const resultado = iniciarSesion(correo, password);
     if (!resultado.ok) return resultado.error;
     mostrarAviso(`¡Bienvenido/a, ${resultado.usuario.nombre}!`);
     // Admin y vendedor van al panel; el cliente vuelve a donde estaba (o al inicio).

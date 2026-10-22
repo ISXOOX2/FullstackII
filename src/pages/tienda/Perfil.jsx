@@ -10,8 +10,7 @@ import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 /** Mi perfil: editar mis datos e ver el historial de mis reservas. */
 export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
   const [ordenVista, setOrdenVista] = useState(null);
-  // Si el usuario solo existe en usuario-service (sin copia local) se usan los datos de la sesión.
-  const completo = obtenerUsuario(usuario.id) || usuario;
+  const completo = obtenerUsuario(usuario.id);
   const historial = historialDeCompras(usuario.id);
 
   const guardar = (datos) => {
