@@ -56,7 +56,7 @@ export function productosMasReservados(cantidad = 5) {
 
 /** Cantidad de órdenes según su estado. */
 export function ordenesPorEstado() {
-  const conteo = { [ESTADOS.PAGADA]: 0, [ESTADOS.RECHAZADA]: 0, [ESTADOS.PENDIENTE]: 0 };
+  const conteo = { [ESTADOS.PAGADA]: 0, [ESTADOS.RECHAZADA]: 0, [ESTADOS.PENDIENTE]: 0, [ESTADOS.REEMBOLSADA]: 0 };
   listarOrdenes().forEach((o) => {
     conteo[o.estado] = (conteo[o.estado] || 0) + 1;
   });

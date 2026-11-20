@@ -3,7 +3,8 @@
  * Una orden guarda: datos del cliente, datos de la cita, los diseños elegidos y su estado.
  */
 import { listar, obtenerPorId, crear, actualizar } from '../data/db.js';
-import { HORAS_CITA } from '../data/estudio.js';
+import { HORAS_ANTICIPACION_CAMBIO, HORAS_ANTICIPACION_REEMBOLSO, HORAS_CITA } from '../data/estudio.js';
+import { validarFormularioSolicitud } from '../utils/validaciones.js';
 
 const COLECCION = 'ordenes';
 
@@ -11,7 +12,13 @@ export const ESTADOS = {
   PENDIENTE: 'Pendiente',
   PAGADA: 'Pagada',
   RECHAZADA: 'Pago rechazado',
+  REEMBOLSADA: 'Reembolsada',
 };
+
+// Solicitudes que el cliente puede hacer sobre una reserva pagada.
+export const TIPOS_SOLICITUD = { REEMBOLSO: 'reembolso', CAMBIO: 'cambio' };
+export const NOMBRE_SOLICITUD = { reembolso: 'Reembolso', cambio: 'Cambio de fecha y hora' };
+export const ESTADOS_SOLICITUD = { PENDIENTE: 'Pendiente', APROBADA: 'Aprobada', RECHAZADA: 'Rechazada' };
 
 export function totalDeItems(items) {
   return items.reduce((suma, item) => suma + item.precio * item.cantidad, 0);
@@ -96,4 +103,123 @@ export function horasDisponibles(fecha, tatuadorId, ignorarOrdenId = null) {
   if (!fecha || !tatuadorId) return [...HORAS_CITA];
   const ocupadas = horasOcupadas(fecha, tatuadorId, ignorarOrdenId);
   return HORAS_CITA.filter((hora) => !ocupadas.includes(hora));
+}
+
+// ---------------------------------------------------------------------------
+// Solicitudes del cliente sobre una reserva pagada: reembolso o cambio de fecha y hora
+// ---------------------------------------------------------------------------
+// Reglas de negocio:
+//   1. Solo se puede pedir sobre una reserva PAGADA y que no tenga otra solicitud pendiente.
+//   2. Reembolso: hasta HORAS_ANTICIPACION_REEMBOLSO (48) horas antes de la cita.
+//   3. Cambio de fecha y hora: hasta HORAS_ANTICIPACION_CAMBIO (24) horas antes, y la nueva
+//      hora tiene que estar libre para el mismo tatuador.
+//   4. Siempre con motivo y justificativo. El administrador aprueba o rechaza.
+//   5. Reembolso aprobado: la orden pasa a "Reembolsada" y la hora queda libre para otros.
+//      Cambio aprobado: la cita se mueve a la nueva fecha y hora.
+
+/** Fecha y hora de la cita como objeto Date (hora local del estudio). */
+export function fechaHoraCita(orden) {
+  return new Date(`${orden.cita.fecha}T${orden.cita.hora}:00`);
+}
+
+/** Horas que faltan para la cita (negativo si ya pasó). */
+export function horasHastaCita(orden, ahora = new Date()) {
+  return (fechaHoraCita(orden).getTime() - ahora.getTime()) / 3600000;
+}
+
+export function tieneSolicitudPendiente(orden) {
+  return orden?.solicitud?.estado === ESTADOS_SOLICITUD.PENDIENTE;
+}
+
+/** '' si el cliente puede hacer esa solicitud; si no, el motivo por el que no puede. */
+export function puedeSolicitar(orden, tipo, ahora = new Date()) {
+  if (!orden) return 'La reserva no existe.';
+  if (orden.estado !== ESTADOS.PAGADA) return 'Solo se pueden modificar reservas pagadas.';
+  if (tieneSolicitudPendiente(orden)) return 'Esta reserva ya tiene una solicitud en revisión.';
+  const horas = horasHastaCita(orden, ahora);
+  if (horas <= 0) return 'La cita ya pasó.';
+  const minimo = tipo === TIPOS_SOLICITUD.REEMBOLSO ? HORAS_ANTICIPACION_REEMBOLSO : HORAS_ANTICIPACION_CAMBIO;
+  if (horas < minimo) {
+    return tipo === TIPOS_SOLICITUD.REEMBOLSO
+      ? `El reembolso se puede pedir hasta ${minimo} horas antes de la cita.`
+      : `El cambio de fecha se puede pedir hasta ${minimo} horas antes de la cita.`;
+  }
+  return '';
+}
+
+/**
+ * El cliente envía una solicitud. datos = { tipo, motivo, justificativo, fecha?, hora? }.
+ * Devuelve { ok, error, orden }.
+ */
+export function crearSolicitud(ordenId, datos, ahora = new Date()) {
+  const orden = obtenerOrden(ordenId);
+  const noPuede = puedeSolicitar(orden, datos.tipo, ahora);
+  if (noPuede) return { ok: false, error: noPuede };
+
+  const errores = validarFormularioSolicitud(datos, ahora);
+  if (Object.keys(errores).length > 0) return { ok: false, error: Object.values(errores)[0] };
+
+  const esCambio = datos.tipo === TIPOS_SOLICITUD.CAMBIO;
+  if (esCambio) {
+    if (datos.fecha === orden.cita.fecha && datos.hora === orden.cita.hora) {
+      return { ok: false, error: 'Elige una fecha u hora distinta a la actual.' };
+    }
+    if (!horasDisponibles(datos.fecha, orden.cita.tatuadorId, orden.id).includes(datos.hora)) {
+      return { ok: false, error: 'Esa hora ya está ocupada para tu tatuador/a. Elige otra.' };
+    }
+  }
+
+  const solicitud = {
+    tipo: datos.tipo,
+    motivo: datos.motivo,
+    justificativo: String(datos.justificativo).trim(),
+    nuevaFecha: esCambio ? datos.fecha : null,
+    nuevaHora: esCambio ? datos.hora : null,
+    estado: ESTADOS_SOLICITUD.PENDIENTE,
+    fechaSolicitud: ahora.toISOString(),
+    respuesta: '',
+  };
+  return { ok: true, error: '', orden: actualizar(COLECCION, orden.id, { solicitud }) };
+}
+
+/** Órdenes con una solicitud esperando respuesta (para el panel del administrador). */
+export function ordenesConSolicitudPendiente() {
+  return listarOrdenes().filter(tieneSolicitudPendiente);
+}
+
+/**
+ * El administrador responde la solicitud. aprobar = true o false; respuesta = comentario opcional.
+ * Devuelve { ok, error, orden }.
+ */
+export function responderSolicitud(ordenId, aprobar, respuesta = '', ahora = new Date()) {
+  const orden = obtenerOrden(ordenId);
+  if (!tieneSolicitudPendiente(orden)) return { ok: false, error: 'No hay una solicitud pendiente.' };
+  const { solicitud } = orden;
+  const respondida = {
+    ...solicitud,
+    estado: aprobar ? ESTADOS_SOLICITUD.APROBADA : ESTADOS_SOLICITUD.RECHAZADA,
+    respuesta: String(respuesta).trim(),
+    fechaRespuesta: ahora.toISOString(),
+  };
+
+  if (!aprobar) return { ok: true, error: '', orden: actualizar(COLECCION, orden.id, { solicitud: respondida }) };
+
+  if (solicitud.tipo === TIPOS_SOLICITUD.REEMBOLSO) {
+    return {
+      ok: true, error: '',
+      orden: actualizar(COLECCION, orden.id, { estado: ESTADOS.REEMBOLSADA, solicitud: respondida }),
+    };
+  }
+  // Cambio: se revisa otra vez que la hora siga libre (alguien pudo tomarla mientras tanto).
+  if (!horasDisponibles(solicitud.nuevaFecha, orden.cita.tatuadorId, orden.id).includes(solicitud.nuevaHora)) {
+    return { ok: false, error: 'La nueva hora ya fue tomada por otra reserva. Recházala o pide otra hora al cliente.' };
+  }
+  const cita = {
+    ...orden.cita,
+    fechaAnterior: orden.cita.fecha,
+    horaAnterior: orden.cita.hora,
+    fecha: solicitud.nuevaFecha,
+    hora: solicitud.nuevaHora,
+  };
+  return { ok: true, error: '', orden: actualizar(COLECCION, orden.id, { cita, solicitud: respondida }) };
 }

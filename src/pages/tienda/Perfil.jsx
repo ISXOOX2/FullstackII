@@ -2,14 +2,21 @@ import { useState } from 'react';
 import { Button, Col, Container, Modal, Row, Table } from 'react-bootstrap';
 import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
 import Boleta from '../../components/organismos/Boleta.jsx';
+import FormularioSolicitud from '../../components/organismos/FormularioSolicitud.jsx';
 import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { actualizarUsuario, historialDeCompras, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';
+import { NOMBRE_SOLICITUD, TIPOS_SOLICITUD, crearSolicitud, puedeSolicitar } from '../../services/ordenesService.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 
-/** Mi perfil: editar mis datos e ver el historial de mis reservas. */
+/** El cliente puede gestionar una reserva si al menos uno de los dos tipos de solicitud está permitido. */
+const puedeGestionar = (orden) =>
+  !puedeSolicitar(orden, TIPOS_SOLICITUD.CAMBIO) || !puedeSolicitar(orden, TIPOS_SOLICITUD.REEMBOLSO);
+
+/** Mi perfil: editar mis datos, ver el historial de mis reservas y pedir un cambio de fecha o un reembolso. */
 export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
   const [ordenVista, setOrdenVista] = useState(null);
+  const [ordenGestion, setOrdenGestion] = useState(null);
   const completo = obtenerUsuario(usuario.id);
   const historial = historialDeCompras(usuario.id);
 
@@ -18,6 +25,15 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
     if (!resultado.ok) return resultado.error;
     actualizarSesion(usuarioPublico(resultado.usuario));
     mostrarAviso('Tus datos se actualizaron correctamente.');
+    return '';
+  };
+
+  /** Envía la solicitud; si alguna regla lo impide, el formulario muestra el error. */
+  const enviarSolicitud = (datos) => {
+    const resultado = crearSolicitud(ordenGestion.id, datos);
+    if (!resultado.ok) return resultado.error;
+    setOrdenGestion(null);
+    mostrarAviso('Tu solicitud se envió. El estudio la revisará y verás la respuesta aquí.');
     return '';
   };
 
@@ -36,15 +52,29 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
           ) : (
             <div className="table-responsive">
               <Table size="sm" className="align-middle">
-                <thead><tr><th scope="col">N° orden</th><th scope="col">Cita</th><th scope="col" className="text-end">Total</th><th scope="col">Estado</th><th scope="col"><span className="visually-hidden">Ver</span></th></tr></thead>
+                <thead><tr><th scope="col">N° orden</th><th scope="col">Cita</th><th scope="col" className="text-end">Total</th><th scope="col">Estado</th><th scope="col"><span className="visually-hidden">Acciones</span></th></tr></thead>
                 <tbody>
                   {historial.map((o) => (
                     <tr key={o.id}>
                       <td>{o.numero}</td>
                       <td>{formatoFecha(o.cita.fecha)} {o.cita.hora}</td>
                       <td className="text-end">{formatoCLP(o.total)}</td>
-                      <td><InsigniaEstado estado={o.estado} /></td>
-                      <td><Button variant="link" size="sm" className="p-0" onClick={() => setOrdenVista(o)}>Ver boleta</Button></td>
+                      <td>
+                        <InsigniaEstado estado={o.estado} />
+                        {o.solicitud && (
+                          <small className="d-block text-muted">
+                            {NOMBRE_SOLICITUD[o.solicitud.tipo]}: {o.solicitud.estado}
+                          </small>
+                        )}
+                      </td>
+                      <td className="text-nowrap">
+                        <Button variant="link" size="sm" className="p-0" onClick={() => setOrdenVista(o)}>Ver boleta</Button>
+                        {puedeGestionar(o) && (
+                          <Button variant="link" size="sm" className="p-0 ms-2" onClick={() => setOrdenGestion(o)}>
+                            Cambiar o reembolsar
+                          </Button>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -57,6 +87,15 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
       <Modal show={Boolean(ordenVista)} onHide={() => setOrdenVista(null)} size="lg" centered>
         <Modal.Header closeButton><Modal.Title as="h2" className="h5">Detalle de la reserva</Modal.Title></Modal.Header>
         <Modal.Body>{ordenVista && <Boleta orden={ordenVista} />}</Modal.Body>
+      </Modal>
+
+      <Modal show={Boolean(ordenGestion)} onHide={() => setOrdenGestion(null)} centered>
+        <Modal.Header closeButton><Modal.Title as="h2" className="h5">Cambiar fecha o pedir reembolso</Modal.Title></Modal.Header>
+        <Modal.Body>
+          {ordenGestion && (
+            <FormularioSolicitud orden={ordenGestion} onEnviar={enviarSolicitud} onCancelar={() => setOrdenGestion(null)} />
+          )}
+        </Modal.Body>
       </Modal>
     </Container>
   );

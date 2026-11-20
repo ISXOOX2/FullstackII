@@ -4,6 +4,7 @@ const VARIANTES = {
   Pagada: 'success',
   'Pago rechazado': 'danger',
   Pendiente: 'warning',
+  Reembolsada: 'secondary',
 };
 
 /** Etiqueta de color según el estado de una orden. */

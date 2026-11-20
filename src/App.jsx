@@ -185,7 +185,7 @@ export default function App() {
         >
           <Route index element={<Dashboard usuario={usuario} />} />
           <Route path="ordenes" element={<Ordenes />} />
-          <Route path="ordenes/:id" element={<DetalleOrden />} />
+          <Route path="ordenes/:id" element={<DetalleOrden usuario={usuario} mostrarAviso={mostrarAviso} />} />
           <Route path="productos" element={<ProductosAdmin usuario={usuario} mostrarAviso={mostrarAviso} />} />
           <Route path="productos/:id" element={<DetalleProductoAdmin usuario={usuario} />} />
           {/* Lo siguiente solo lo puede usar el administrador */}

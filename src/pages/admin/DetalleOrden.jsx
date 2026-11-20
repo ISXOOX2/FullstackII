@@ -1,11 +1,17 @@
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import Boleta from '../../components/organismos/Boleta.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { obtenerOrden } from '../../services/ordenesService.js';
+import TarjetaSolicitud from '../../components/moleculas/TarjetaSolicitud.jsx';
+import { obtenerOrden, responderSolicitud } from '../../services/ordenesService.js';
 
-export default function DetalleOrden() {
+/** Detalle de una orden. Si el cliente pidió un reembolso o un cambio de fecha, el administrador lo responde aquí. */
+export default function DetalleOrden({ usuario, mostrarAviso }) {
   const { id } = useParams();
+  // "version" solo sirve para volver a leer la orden después de responder la solicitud.
+  const [version, setVersion] = useState(0);
+  const [error, setError] = useState('');
   const orden = obtenerOrden(id);
 
   if (!orden) {
@@ -15,6 +21,17 @@ export default function DetalleOrden() {
       </MensajeVacio>
     );
   }
+  const responder = (aprobar, respuesta) => {
+    const resultado = responderSolicitud(orden.id, aprobar, respuesta);
+    if (!resultado.ok) {
+      setError(resultado.error);
+      return;
+    }
+    setError('');
+    setVersion(version + 1);
+    mostrarAviso?.(aprobar ? 'La solicitud fue aprobada.' : 'La solicitud fue rechazada.');
+  };
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center mb-3 d-print-none">
@@ -24,6 +41,13 @@ export default function DetalleOrden() {
           <Link to="/admin/ordenes" className="btn btn-dark btn-sm">Volver</Link>
         </div>
       </div>
+      {error && <Alert variant="danger" role="alert">{error}</Alert>}
+      <TarjetaSolicitud
+        key={version}
+        solicitud={orden.solicitud}
+        puedeResponder={usuario?.tipo === 'Administrador'}
+        onResponder={responder}
+      />
       <Boleta orden={orden} />
     </>
   );

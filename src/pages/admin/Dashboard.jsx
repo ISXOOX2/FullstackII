@@ -5,7 +5,7 @@ import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.js
 import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
 import { resumenGeneral } from '../../services/reportesService.js';
 import { productosCriticos } from '../../services/productosService.js';
-import { listarOrdenes } from '../../services/ordenesService.js';
+import { listarOrdenes, ordenesConSolicitudPendiente } from '../../services/ordenesService.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 
 export default function Dashboard({ usuario }) {
@@ -14,11 +14,18 @@ export default function Dashboard({ usuario }) {
 
   const resumen = resumenGeneral();
   const ultimas = listarOrdenes().slice(0, 5);
+  const solicitudes = ordenesConSolicitudPendiente();
 
   return (
     <>
       <h1 className="titulo-seccion">Dashboard</h1>
       <AlertaStockCritico productos={productosCriticos()} puedeEditar />
+      {solicitudes.length > 0 && (
+        <div className="alert alert-warning" role="status">
+          Tienes <strong>{solicitudes.length}</strong> solicitud(es) de reembolso o cambio de fecha por revisar.{' '}
+          <Link to="/admin/ordenes" state={{ filtro: 'solicitud' }}>Ver órdenes</Link>
+        </div>
+      )}
       <Row xs={1} sm={2} xl={4} className="g-3 mb-4">
         <Col><TarjetaResumen titulo="Órdenes pagadas" valor={resumen.ordenesPagadas} nota={`${resumen.ordenesTotales} órdenes en total`} /></Col>
         <Col><TarjetaResumen titulo="Ingresos" valor={formatoCLP(resumen.ingresos)} nota={`Ticket promedio ${formatoCLP(resumen.ticketPromedio)}`} /></Col>

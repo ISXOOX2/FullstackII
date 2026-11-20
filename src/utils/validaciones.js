@@ -286,3 +286,22 @@ export function validarTamanoPersonalizado(datos) {
     altoCm: validarMedidaCm(datos.altoCm, 'El alto'),
   });
 }
+
+/**
+ * Formulario de solicitud sobre una reserva pagada: reembolso o cambio de fecha y hora.
+ *  - motivo: obligatorio (se elige de una lista).
+ *  - justificativo: obligatorio, entre 10 y 300 caracteres (explica la razón).
+ *  - Si es un cambio: la nueva fecha sigue las reglas de la agenda y la hora es obligatoria.
+ * Que la hora esté libre y el plazo de anticipación los revisa ordenesService (necesitan la agenda).
+ */
+export function validarFormularioSolicitud(datos, ahora = new Date()) {
+  const errores = {
+    motivo: datos.motivo ? '' : 'Elige el motivo de tu solicitud.',
+    justificativo: validarTexto(datos.justificativo, { etiqueta: 'El justificativo', min: 10, max: 300 }),
+  };
+  if (datos.tipo === 'cambio') {
+    errores.fecha = validarFechaCita(datos.fecha, ahora);
+    errores.hora = datos.hora ? '' : 'Elige la nueva hora.';
+  }
+  return soloErrores(errores);
+}

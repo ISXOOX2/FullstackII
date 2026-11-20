@@ -25,6 +25,19 @@ export const DIAS_MAXIMOS_AGENDA = 180;
 export const TAMANO_MIN_CM = 1;
 export const TAMANO_MAX_CM = 20;
 
+// Solicitudes sobre una reserva ya pagada (las revisa el administrador):
+// • Reembolso: hasta 48 horas antes de la cita.
+// • Cambio de fecha y hora: hasta 24 horas antes de la cita, con un justificativo.
+export const HORAS_ANTICIPACION_REEMBOLSO = 48;
+export const HORAS_ANTICIPACION_CAMBIO = 24;
+export const MOTIVOS_SOLICITUD = [
+  'Problema de salud',
+  'Tuve un imprevisto (trabajo, estudios o viaje)',
+  'Me equivoqué al hacer la reserva',
+  'Quiero cambiar de diseño o de tatuador',
+  'Otro motivo',
+];
+
 // Credenciales de demostración (también están en el README).
 export const CUENTAS_DEMO = [
   { rol: 'Administrador', correo: 'admin.foreverink@gmail.com', password: 'Admin#123' },

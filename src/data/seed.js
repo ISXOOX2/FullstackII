@@ -327,7 +327,32 @@ const USUARIOS = [
 function linea(productoId, cantidad = 1) {
   const p = PRODUCTOS.find((x) => x.id === productoId);
   const precio = p.precioOferta !== null ? p.precioOferta : p.precio;
-  return { productoId, nombre: p.nombre, imagen: p.imagen, categoriaId: p.categoriaId, precio, cantidad };
+  return {
+    productoId, nombre: p.nombre, imagen: p.imagen, categoriaId: p.categoriaId, precio, cantidad,
+    anchoCm: p.anchoCm, altoCm: p.altoCm,
+  };
+}
+
+// Fechas relativas a HOY, para que siempre existan reservas futuras con las que probar
+// el reembolso y el cambio de fecha (si fueran fijas, con el tiempo quedarían en el pasado).
+function fechaLocal(fecha) {
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  return `${fecha.getFullYear()}-${mes}-${dia}`;
+}
+
+/** Primer día de atención (martes a sábado) a partir de "dentro de N días". */
+function diaDeAtencionEn(dias) {
+  const fecha = new Date();
+  fecha.setDate(fecha.getDate() + dias);
+  while (fecha.getDay() === 0 || fecha.getDay() === 1) fecha.setDate(fecha.getDate() + 1);
+  return fechaLocal(fecha);
+}
+
+function compraHace(dias) {
+  const fecha = new Date();
+  fecha.setDate(fecha.getDate() - dias);
+  return `${fechaLocal(fecha)}T10:30:00`;
 }
 
 function orden(id, usuarioId, fechaCompra, estado, lineas, cita) {
@@ -368,6 +393,11 @@ const ORDENES = [
     { fecha: '2026-10-23', hora: '15:30', tatuadorId: 1, zonaCuerpo: 'Antebrazo y tobillo', indicaciones: '' }),
   orden(9, 3, '2026-10-08T18:20:00', 'Pagada', [linea(11)],
     { fecha: '2026-10-30', hora: '12:30', tatuadorId: 3, zonaCuerpo: 'Muñeca', indicaciones: '' }),
+  // Reservas futuras del cliente demo: sirven para probar el reembolso y el cambio de fecha.
+  orden(10, 3, compraHace(2), 'Pagada', [linea(3)],
+    { fecha: diaDeAtencionEn(14), hora: '14:00', tatuadorId: 2, zonaCuerpo: 'Antebrazo derecho', indicaciones: '' }),
+  orden(11, 3, compraHace(1), 'Pagada', [linea(7)],
+    { fecha: diaDeAtencionEn(21), hora: '11:00', tatuadorId: 1, zonaCuerpo: 'Tobillo', indicaciones: 'Lo quiero un poco más chico' }),
 ];
 
 export const SEMILLA = {

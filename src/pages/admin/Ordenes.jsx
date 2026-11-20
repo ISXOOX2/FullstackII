@@ -1,15 +1,21 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Form, Table } from 'react-bootstrap';
 import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { ESTADOS, listarOrdenes } from '../../services/ordenesService.js';
+import { ESTADOS, NOMBRE_SOLICITUD, listarOrdenes, tieneSolicitudPendiente } from '../../services/ordenesService.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 
 export default function Ordenes() {
-  const [estado, setEstado] = useState('');
-  const ordenes = listarOrdenes().filter((o) => !estado || o.estado === estado);
+  // Si llega desde el aviso del Dashboard, parte filtrando las solicitudes pendientes.
+  const { state } = useLocation();
+  const [estado, setEstado] = useState(state?.filtro || '');
+  // Además de los estados de la orden, se puede filtrar las que tienen una solicitud por revisar.
+  const ordenes = listarOrdenes().filter((o) => {
+    if (estado === 'solicitud') return tieneSolicitudPendiente(o);
+    return !estado || o.estado === estado;
+  });
 
   return (
     <>
@@ -19,6 +25,7 @@ export default function Ordenes() {
         <Form.Select value={estado} onChange={(e) => setEstado(e.target.value)}>
           <option value="">Todos</option>
           {Object.values(ESTADOS).map((e) => <option key={e} value={e}>{e}</option>)}
+          <option value="solicitud">Con solicitud pendiente</option>
         </Form.Select>
       </Form.Group>
 
@@ -39,7 +46,12 @@ export default function Ordenes() {
                   <td>{formatoFecha(o.cita.fecha)} {o.cita.hora}</td>
                   <td>{nombreTatuador(o.cita.tatuadorId)}</td>
                   <td className="text-end">{formatoCLP(o.total)}</td>
-                  <td><InsigniaEstado estado={o.estado} /></td>
+                  <td>
+                    <InsigniaEstado estado={o.estado} />
+                    {tieneSolicitudPendiente(o) && (
+                      <small className="d-block text-warning-emphasis">{NOMBRE_SOLICITUD[o.solicitud.tipo]} por revisar</small>
+                    )}
+                  </td>
                   <td><Link to={`/admin/ordenes/${o.id}`}>Ver detalle</Link></td>
                 </tr>
               ))}
