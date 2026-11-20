@@ -8,7 +8,7 @@
 import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 import Boton from '../atomos/Boton.jsx';
-import { estaEnOferta, esStockCritico, precioFinal } from '../../services/productosService.js';
+import { estaEnOferta, esStockCritico, precioFinal, textoTamano } from '../../services/productosService.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
@@ -35,7 +35,7 @@ export default function TarjetaProducto({ producto, nombreCategoria = '', onAgre
             {producto.nombre}
           </Link>
         </Card.Title>
-        <small className="text-muted mb-2">{producto.tamano} · {producto.duracionHoras} h</small>
+        <small className="text-muted mb-2">{textoTamano(producto)} · {producto.duracionHoras} h</small>
 
         <div className="mb-2">
           <span className="precio">{formatoCLP(precioFinal(producto))}</span>

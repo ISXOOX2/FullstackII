@@ -24,6 +24,15 @@ export function esStockCritico(producto) {
   return tieneValor(producto.stockCritico) && Number(producto.stock) <= Number(producto.stockCritico);
 }
 
+/**
+ * Texto del tamaño para mostrar: "7 x 6 cm" (ancho x alto). Recibe un diseño o un ítem del carrito.
+ * Si un registro antiguo todavía trae el tamaño como texto, se muestra ese texto.
+ */
+export function textoTamano(medidas) {
+  if (tieneValor(medidas?.anchoCm) && tieneValor(medidas?.altoCm)) return `${medidas.anchoCm} x ${medidas.altoCm} cm`;
+  return medidas?.tamano || 'Sin medida';
+}
+
 /** Convierte lo que escribió el usuario en el formulario (texto) a los tipos correctos. */
 export function normalizarProducto(datos) {
   const aNumeroONulo = (v) => (tieneValor(v) ? Number(v) : null);
@@ -36,7 +45,8 @@ export function normalizarProducto(datos) {
     precioOferta: aNumeroONulo(datos.precioOferta),
     stock: Number(datos.stock),
     stockCritico: aNumeroONulo(datos.stockCritico),
-    tamano: String(datos.tamano || '').trim(),
+    anchoCm: aNumeroONulo(datos.anchoCm),
+    altoCm: aNumeroONulo(datos.altoCm),
     duracionHoras: aNumeroONulo(datos.duracionHoras),
     zonas: String(datos.zonas || '').trim(),
     nivelDolor: aNumeroONulo(datos.nivelDolor),
@@ -118,7 +128,7 @@ export function buscarProductos({ texto = '', categoriaId = '', precioMax = '', 
   const buscado = normalizarTexto(texto);
   let resultado = listarProductos().filter((p) => {
     if (buscado) {
-      const contenido = normalizarTexto(`${p.nombre} ${p.descripcion} ${p.zonas} ${p.tamano}`);
+      const contenido = normalizarTexto(`${p.nombre} ${p.descripcion} ${p.zonas} ${textoTamano(p)}`);
       if (!contenido.includes(buscado)) return false;
     }
     if (tieneValor(categoriaId) && p.categoriaId !== Number(categoriaId)) return false;

@@ -14,6 +14,8 @@
  *   2. Máximo 5 unidades de un mismo diseño por reserva.
  *   3. La cantidad mínima de un ítem es 1 (para quitarlo se usa "Eliminar").
  *   4. El carrito se guarda en localStorage para no perderlo al recargar la página.
+ *   5. Cada ítem guarda el tamaño que pidió el cliente (ancho y alto en cm). Si no elige uno,
+ *      se usa el tamaño original del diseño. Si vuelve a agregar el mismo diseño, queda el último tamaño.
  */
 import { precioFinal } from './productosService.js';
 
@@ -27,9 +29,14 @@ export function limiteDeCantidad(stock) {
 
 /**
  * Agrega un producto al carrito (o suma una unidad si ya estaba).
+ * medidas = { anchoCm, altoCm } que pidió el cliente; si no llega, se usa el tamaño del diseño.
  * Devuelve { items, mensaje }. Si hay mensaje, la regla impidió el cambio.
  */
-export function agregarItem(items, producto, cantidad = 1) {
+export function agregarItem(items, producto, cantidad = 1, medidas = null) {
+  const tamano = {
+    anchoCm: Number(medidas?.anchoCm ?? producto.anchoCm) || null,
+    altoCm: Number(medidas?.altoCm ?? producto.altoCm) || null,
+  };
   if (producto.stock <= 0) {
     return { items, mensaje: 'Este diseño no tiene cupos disponibles.' };
   }
@@ -42,7 +49,7 @@ export function agregarItem(items, producto, cantidad = 1) {
   }
   if (existente) {
     return {
-      items: items.map((i) => (i.productoId === producto.id ? { ...i, cantidad: nuevaCantidad } : i)),
+      items: items.map((i) => (i.productoId === producto.id ? { ...i, ...tamano, cantidad: nuevaCantidad } : i)),
       mensaje: '',
     };
   }
@@ -53,6 +60,7 @@ export function agregarItem(items, producto, cantidad = 1) {
     categoriaId: producto.categoriaId,
     precio: precioFinal(producto),
     stock: producto.stock,
+    ...tamano,
     cantidad,
   };
   return { items: [...items, nuevo], mensaje: '' };

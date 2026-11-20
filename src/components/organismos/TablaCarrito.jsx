@@ -1,5 +1,6 @@
 import { Button, Form, Table } from 'react-bootstrap';
 import { limiteDeCantidad } from '../../services/carritoService.js';
+import { textoTamano } from '../../services/productosService.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
@@ -28,7 +29,10 @@ export default function TablaCarrito({ items, onCambiarCantidad, onQuitar }) {
                 <td>
                   <div className="d-flex align-items-center gap-3">
                     <img src={images[item.imagen]} alt="" width="64" height="64" className="miniatura" />
-                    <span>{item.nombre}</span>
+                    <span>
+                      {item.nombre}
+                      <small className="d-block text-muted">Tamaño: {textoTamano(item)}</small>
+                    </span>
                   </div>
                 </td>
                 <td className="text-end">{formatoCLP(item.precio)}</td>

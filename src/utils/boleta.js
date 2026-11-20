@@ -2,10 +2,11 @@
 import { formatoCLP, formatoFechaLarga } from './formato.js';
 import { nombreTatuador } from '../data/tatuadores.js';
 import { ESTUDIO } from '../data/estudio.js';
+import { textoTamano } from '../services/productosService.js';
 
 export function construirMailtoBoleta(orden) {
   const lineas = orden.items.map(
-    (i) => `- ${i.nombre} x${i.cantidad}: ${formatoCLP(i.precio * i.cantidad)}`,
+    (i) => `- ${i.nombre} (${textoTamano(i)}) x${i.cantidad}: ${formatoCLP(i.precio * i.cantidad)}`,
   );
   const cuerpo = [
     `Hola ${orden.cliente.nombre}, gracias por reservar en ${ESTUDIO.nombre}.`,

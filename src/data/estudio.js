@@ -20,6 +20,11 @@ export const DIAS_ATENCION = [2, 3, 4, 5, 6];
 // Máximo de días hacia adelante en que se puede agendar.
 export const DIAS_MAXIMOS_AGENDA = 180;
 
+// Tamaño de un tatuaje: ancho y alto SIEMPRE en centímetros (no se aceptan metros).
+// El estudio trabaja piezas de hasta 20 cm por lado; más grande se cotiza aparte.
+export const TAMANO_MIN_CM = 1;
+export const TAMANO_MAX_CM = 20;
+
 // Credenciales de demostración (también están en el README).
 export const CUENTAS_DEMO = [
   { rol: 'Administrador', correo: 'admin.foreverink@gmail.com', password: 'Admin#123' },

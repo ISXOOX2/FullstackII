@@ -4,10 +4,11 @@ import CampoFormulario from '../moleculas/CampoFormulario.jsx';
 import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioProducto } from '../../utils/validaciones.js';
 import { IMAGENES_DISENO } from '../../data/imagenes.js';
+import { TAMANO_MAX_CM, TAMANO_MIN_CM } from '../../data/estudio.js';
 
 const VACIO = {
   codigo: '', nombre: '', descripcion: '', categoriaId: '', precio: '', precioOferta: '', stock: '', stockCritico: '',
-  tamano: '', duracionHoras: '', zonas: '', nivelDolor: '2', colorTinta: 'Negro', destacado: false,
+  anchoCm: '', altoCm: '', duracionHoras: '', zonas: '', nivelDolor: '2', colorTinta: 'Negro', destacado: false,
   imagen: IMAGENES_DISENO[0].valor,
 };
 
@@ -49,7 +50,9 @@ export default function FormularioProducto({ inicial = null, categorias, onEnvia
         <Col md={4}><CampoFormulario id="p-oferta" etiqueta="Precio de oferta" tipo="number" min={0} opcional {...p('precioOferta')} /></Col>
         <Col md={4}><CampoFormulario id="p-stock" etiqueta="Stock (cupos)" tipo="number" min={0} {...p('stock')} /></Col>
         <Col md={4}><CampoFormulario id="p-critico" etiqueta="Stock crítico" tipo="number" min={0} opcional {...p('stockCritico')} ayuda="Se alerta cuando el stock es igual o menor." /></Col>
-        <Col md={4}><CampoFormulario id="p-tamano" etiqueta="Tamaño" placeholder="7 x 6 cm" opcional {...p('tamano')} /></Col>
+        {/* Tamaño en dos campos numéricos: ancho y alto, siempre en centímetros */}
+        <Col xs={6} md={2}><CampoFormulario id="p-ancho" etiqueta="Ancho (cm)" tipo="number" min={TAMANO_MIN_CM} max={TAMANO_MAX_CM} step={0.5} {...p('anchoCm')} /></Col>
+        <Col xs={6} md={2}><CampoFormulario id="p-alto" etiqueta="Alto (cm)" tipo="number" min={TAMANO_MIN_CM} max={TAMANO_MAX_CM} step={0.5} {...p('altoCm')} /></Col>
         <Col md={4}><CampoFormulario id="p-duracion" etiqueta="Duración (horas)" tipo="number" min={0.5} step={0.5} opcional {...p('duracionHoras')} /></Col>
         <Col md={4}><CampoFormulario id="p-zonas" etiqueta="Zonas recomendadas" opcional {...p('zonas')} /></Col>
         <Col md={4}>

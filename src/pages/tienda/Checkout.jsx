@@ -64,6 +64,7 @@ export default function Checkout({ carrito, usuario }) {
       cita: { fecha: v.fecha, hora: v.hora, tatuadorId: Number(v.tatuadorId), zonaCuerpo: v.zonaCuerpo.trim(), indicaciones: v.indicaciones.trim() },
       items: items.map((i) => ({
         productoId: i.productoId, nombre: i.nombre, imagen: i.imagen, categoriaId: i.categoriaId, precio: i.precio, cantidad: i.cantidad,
+        anchoCm: i.anchoCm ?? null, altoCm: i.altoCm ?? null,
       })),
     };
     // Si es un reintento se reutiliza la misma orden; si no, se crea una nueva en estado Pendiente.

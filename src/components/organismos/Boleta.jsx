@@ -4,6 +4,7 @@ import Logo from '../atomos/Logo.jsx';
 import { ESTUDIO } from '../../data/estudio.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP, formatoFecha, formatoFechaLarga } from '../../utils/formato.js';
+import { textoTamano } from '../../services/productosService.js';
 
 /** Boleta / detalle de una orden. Se usa en la compra exitosa, el pago fallido y el panel admin. */
 export default function Boleta({ orden }) {
@@ -47,7 +48,7 @@ export default function Boleta({ orden }) {
           <tbody>
             {orden.items.map((i) => (
               <tr key={i.productoId}>
-                <td>{i.nombre}</td>
+                <td>{i.nombre} <small className="text-muted">({textoTamano(i)})</small></td>
                 <td className="text-end">{formatoCLP(i.precio)}</td>
                 <td className="text-center">{i.cantidad}</td>
                 <td className="text-end">{formatoCLP(i.precio * i.cantidad)}</td>

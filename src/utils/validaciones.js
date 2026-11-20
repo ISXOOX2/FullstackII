@@ -9,7 +9,7 @@
  * un objeto { campo: 'mensaje' } solo con los campos que tienen error.
  * Son funciones "puras" (no tocan la pantalla), por eso son fáciles de probar con Vitest.
  */
-import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, HORAS_CITA } from '../data/estudio.js';
+import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, HORAS_CITA, TAMANO_MAX_CM, TAMANO_MIN_CM } from '../data/estudio.js';
 import { fechaISO, sumarDias } from './formato.js';
 
 // RFC 2822 (versión práctica): usuario@dominio.extension
@@ -108,13 +108,29 @@ export function validarFechaNacimiento(valor, ahora = new Date()) {
 }
 
 /** Número con mínimo (y opcionalmente solo enteros). */
-export function validarNumero(valor, { etiqueta, obligatorio = true, min = 0, entero = false } = {}) {
+export function validarNumero(valor, { etiqueta, obligatorio = true, min = 0, max, entero = false } = {}) {
   const texto = String(valor ?? '').trim();
   if (texto === '') return obligatorio ? `${etiqueta} es obligatorio.` : '';
   const numero = Number(texto);
   if (Number.isNaN(numero)) return `${etiqueta} debe ser un número.`;
   if (entero && !Number.isInteger(numero)) return `${etiqueta} debe ser un número entero.`;
   if (numero < min) return `${etiqueta} no puede ser menor que ${min}.`;
+  if (max !== undefined && numero > max) return `${etiqueta} no puede ser mayor que ${max}.`;
+  return '';
+}
+
+/**
+ * Medida de un tatuaje (ancho o alto). Regla del estudio: SIEMPRE en centímetros, entre
+ * TAMANO_MIN_CM y TAMANO_MAX_CM. Así nadie puede ingresar metros ni texto como "grande".
+ */
+export function validarMedidaCm(valor, etiqueta) {
+  const texto = String(valor ?? '').trim();
+  if (texto === '') return `${etiqueta} es obligatorio.`;
+  const numero = Number(texto);
+  if (Number.isNaN(numero)) return `${etiqueta} debe ser un número en centímetros (ej: 7).`;
+  if (numero < TAMANO_MIN_CM || numero > TAMANO_MAX_CM) {
+    return `${etiqueta} debe estar entre ${TAMANO_MIN_CM} y ${TAMANO_MAX_CM} cm.`;
+  }
   return '';
 }
 
@@ -224,7 +240,8 @@ export function validarFormularioProducto(datos) {
       etiqueta: 'El stock crítico', obligatorio: false, min: 0, entero: true,
     }),
     categoriaId: datos.categoriaId ? '' : 'Debes seleccionar una categoría.',
-    tamano: validarTexto(datos.tamano, { etiqueta: 'El tamaño', obligatorio: false, max: 30 }),
+    anchoCm: validarMedidaCm(datos.anchoCm, 'El ancho'),
+    altoCm: validarMedidaCm(datos.altoCm, 'El alto'),
     zonas: validarTexto(datos.zonas, { etiqueta: 'Las zonas', obligatorio: false, max: 100 }),
     duracionHoras: validarNumero(datos.duracionHoras, {
       etiqueta: 'La duración', obligatorio: false, min: 0.5,
@@ -259,5 +276,13 @@ export function validarFormularioCheckout(datos, ahora = new Date()) {
     tatuadorId: datos.tatuadorId ? '' : 'Elige con quién quieres tatuarte.',
     zonaCuerpo: validarTexto(datos.zonaCuerpo, { etiqueta: 'La zona del cuerpo', max: 60 }),
     indicaciones: validarTexto(datos.indicaciones, { etiqueta: 'Las indicaciones', obligatorio: false, max: 300 }),
+  });
+}
+
+/** Tamaño que pide el cliente en el detalle del diseño: ancho y alto en centímetros. */
+export function validarTamanoPersonalizado(datos) {
+  return soloErrores({
+    anchoCm: validarMedidaCm(datos.anchoCm, 'El ancho'),
+    altoCm: validarMedidaCm(datos.altoCm, 'El alto'),
   });
 }

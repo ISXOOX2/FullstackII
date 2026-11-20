@@ -108,9 +108,9 @@ export default function App() {
     setAvisos((actuales) => actuales.filter((a) => a.id !== id));
   };
 
-  /** Agrega un diseño al carrito y avisa si se pudo o qué regla lo impidió (máx. 5, cupos). */
-  const agregarAlCarrito = (producto, cantidad = 1) => {
-    const resultado = agregarItem(items, producto, cantidad);
+  /** Agrega un diseño al carrito (con el tamaño que pidió el cliente) y avisa si se pudo o qué regla lo impidió. */
+  const agregarAlCarrito = (producto, cantidad = 1, medidas = null) => {
+    const resultado = agregarItem(items, producto, cantidad, medidas);
     if (resultado.mensaje) {
       mostrarAviso(resultado.mensaje, 'danger');
       return false;
