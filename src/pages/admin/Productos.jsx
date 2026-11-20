@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Badge, Button, Form, Table } from 'react-bootstrap';
-import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.jsx';
+import { Button, Table } from 'react-bootstrap';
 import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
-import { eliminarProducto, esStockCritico, listarProductos, productosCriticos } from '../../services/productosService.js';
+import { eliminarProducto, listarProductos } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
@@ -12,10 +11,9 @@ import images from '../../assets/images.js';
 export default function Productos({ usuario, mostrarAviso }) {
   const puedeEditar = usuario.tipo === 'Administrador';
   const [version, setVersion] = useState(0); // al cambiar, la lista se vuelve a leer de la base
-  const [soloCriticos, setSoloCriticos] = useState(false);
   const [aEliminar, setAEliminar] = useState(null);
 
-  const productos = listarProductos().filter((p) => !soloCriticos || esStockCritico(p));
+  const productos = listarProductos();
 
   const confirmarEliminar = () => {
     eliminarProducto(aEliminar.id);
@@ -31,19 +29,14 @@ export default function Productos({ usuario, mostrarAviso }) {
         {puedeEditar && <Link to="/admin/productos/nuevo" className="btn btn-dark">Nuevo diseño</Link>}
       </div>
       {!puedeEditar && <p className="text-muted small">Tu rol (Vendedor) permite consultar el catálogo, pero no modificarlo.</p>}
-      <AlertaStockCritico productos={productosCriticos()} puedeEditar={puedeEditar} />
-      <Form.Check
-        id="solo-criticos" type="switch" className="mb-3" label="Mostrar solo stock crítico"
-        checked={soloCriticos} onChange={(e) => setSoloCriticos(e.target.checked)}
-      />
       <div className="table-responsive">
         <Table hover size="sm" className="align-middle" data-version={version}>
           <thead>
-            <tr><th scope="col">Código</th><th scope="col">Diseño</th><th scope="col">Estilo</th><th scope="col" className="text-end">Precio</th><th scope="col" className="text-center">Stock</th><th scope="col">Acciones</th></tr>
+            <tr><th scope="col">Código</th><th scope="col">Diseño</th><th scope="col">Estilo</th><th scope="col" className="text-end">Precio</th><th scope="col">Acciones</th></tr>
           </thead>
           <tbody>
             {productos.map((p) => (
-              <tr key={p.id} className={esStockCritico(p) ? 'fila-critica' : ''}>
+              <tr key={p.id}>
                 <td>{p.codigo}</td>
                 <td>
                   <img src={images[p.imagen]} alt="" width="36" height="36" className="miniatura me-2" />
@@ -51,9 +44,6 @@ export default function Productos({ usuario, mostrarAviso }) {
                 </td>
                 <td>{nombreCategoria(p.categoriaId)}</td>
                 <td className="text-end">{formatoCLP(p.precioOferta ?? p.precio)}</td>
-                <td className="text-center">
-                  {p.stock} {esStockCritico(p) && <Badge bg="warning" text="dark">Crítico</Badge>}
-                </td>
                 <td className="text-nowrap">
                   <Link to={`/admin/productos/${p.id}`} className="me-3">Ver</Link>
                   {puedeEditar && (

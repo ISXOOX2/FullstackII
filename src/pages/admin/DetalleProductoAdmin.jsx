@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { Col, Row } from 'react-bootstrap';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { esStockCritico, obtenerProducto, precioFinal, textoTamano } from '../../services/productosService.js';
+import { obtenerProducto, precioFinal, textoTamano } from '../../services/productosService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
@@ -20,7 +20,6 @@ export default function DetalleProductoAdmin({ usuario }) {
   const filas = [
     ['Código', p.codigo], ['Estilo', nombreCategoria(p.categoriaId)], ['Precio', formatoCLP(p.precio)],
     ['Precio de oferta', p.precioOferta ? formatoCLP(precioFinal(p)) : '—'],
-    ['Stock', `${p.stock}${esStockCritico(p) ? ' (crítico)' : ''}`], ['Stock crítico', p.stockCritico ?? '—'],
     ['Tamaño', textoTamano(p)], ['Duración', p.duracionHoras ? `${p.duracionHoras} h` : '—'],
     ['Zonas', p.zonas || '—'], ['Nivel de dolor', p.nivelDolor ?? '—'], ['Tinta', p.colorTinta],
     ['Destacado', p.destacado ? 'Sí' : 'No'],

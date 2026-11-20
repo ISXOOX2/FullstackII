@@ -12,7 +12,7 @@ import { Button } from 'react-bootstrap';
  *  - onClick        : función que se ejecuta al hacer clic (la decide el padre).
  *  - variante       : estilo de Bootstrap ('dark' por defecto, 'outline-dark', 'danger'…).
  *  - tipo           : 'button' (por defecto) o 'submit' dentro de un formulario.
- *  - deshabilitado  : true para bloquearlo (por ejemplo, sin cupos).
+ *  - deshabilitado  : true para bloquearlo (por ejemplo, mientras se procesa un pago).
  *  - tamano         : 'sm' o 'lg' (opcional).
  *  - className      : clases extra (por ejemplo 'w-100').
  *  - ariaLabel      : texto para lectores de pantalla cuando la etiqueta no basta (opcional).

@@ -24,6 +24,11 @@ export const DIAS_MAXIMOS_AGENDA = 180;
 // se rechazan (no se aceptan con permiso de los padres).
 export const EDAD_MINIMA = 18;
 
+// Alerta de agenda: si a un tatuador le quedan HORAS_LIBRES_CRITICAS horas libres o menos en los
+// próximos DIAS_ALERTA_AGENDA días de atención, se avisa en el panel y al cliente cuando reserva.
+export const DIAS_ALERTA_AGENDA = 6;
+export const HORAS_LIBRES_CRITICAS = 6;
+
 // Tamaño de un tatuaje: ancho y alto SIEMPRE en centímetros (no se aceptan metros).
 // El estudio trabaja piezas de hasta 20 cm por lado; más grande se cotiza aparte.
 export const TAMANO_MIN_CM = 1;

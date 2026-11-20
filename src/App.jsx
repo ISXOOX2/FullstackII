@@ -59,6 +59,7 @@ const Usuarios = lazy(() => import('./pages/admin/Usuarios.jsx'));
 const FormularioUsuarioPagina = lazy(() => import('./pages/admin/FormularioUsuarioPagina.jsx'));
 const HistorialUsuario = lazy(() => import('./pages/admin/HistorialUsuario.jsx'));
 const Reportes = lazy(() => import('./pages/admin/Reportes.jsx'));
+const Insumos = lazy(() => import('./pages/admin/Insumos.jsx'));
 
 const SOLO_ADMIN = ['Administrador'];
 const PERSONAL = ['Administrador', 'Vendedor'];
@@ -197,6 +198,7 @@ export default function App() {
           <Route path="usuarios/:id/editar" element={soloAdmin(<FormularioUsuarioPagina usuario={usuario} actualizarSesion={actualizarSesion} mostrarAviso={mostrarAviso} />)} />
           <Route path="usuarios/:id/historial" element={soloAdmin(<HistorialUsuario />)} />
           <Route path="reportes" element={soloAdmin(<Reportes />)} />
+          <Route path="insumos" element={soloAdmin(<Insumos mostrarAviso={mostrarAviso} />)} />
         </Route>
       </Routes>
       <Avisos avisos={avisos} onCerrar={cerrarAviso} />

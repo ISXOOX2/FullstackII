@@ -140,6 +140,15 @@ simulada; cuando los microservicios de Spring Boot estén listos, cada servicio 
 - **Cambio manual de estado de una orden** (solo administrador, con motivo e historial). Cambios permitidos:
   Pendiente → Pagada o Pago rechazado · Pagada → Pago rechazado o Reembolsada · Pago rechazado → Pagada o
   Pendiente · Reembolsada no cambia más. Pasar a Pagada solo se permite si la hora sigue libre.
+- **Se venden reservas, no productos con stock:** un diseño (por ejemplo, la nubecita kawaii) no se acaba; lo que
+  se limita es la agenda. Por eso los diseños no tienen stock y el máximo es de 5 por reserva.
+- **Insumos con stock crítico** (`/admin/insumos`, solo administrador): tintas, agujas, guantes, film, etc. Cada
+  insumo tiene stock y stock crítico; cuando el stock es igual o menor al crítico aparece la alerta en el panel.
+- **Alerta de agenda:** el panel muestra las horas libres de cada tatuador en los próximos 6 días de atención y
+  avisa cuando a alguno le quedan 6 horas o menos. En el pago también se avisa al cliente si el tatuador elegido
+  tiene pocas horas.
+- **Usuarios mayores de 18:** la fecha de nacimiento y el teléfono son obligatorios (registro y panel). No se
+  aceptan menores de edad.
 - **Pruébalo en 3D:** el detalle de cada diseño enlaza a TryTattoo3D, un simulador gratuito para ver el tatuaje
   sobre un cuerpo en 3D.
 

@@ -1,6 +1,7 @@
 /** Reportes del panel de administración (todo se calcula con las órdenes pagadas). */
 import { listarOrdenes, ESTADOS } from './ordenesService.js';
-import { listarProductos, productosCriticos } from './productosService.js';
+import { listarProductos } from './productosService.js';
+import { insumosCriticos } from './insumosService.js';
 import { listarUsuarios } from './usuariosService.js';
 import { listarCategorias } from './categoriasService.js';
 
@@ -18,7 +19,7 @@ export function resumenGeneral() {
     ingresos,
     ticketPromedio: pagadas.length ? Math.round(ingresos / pagadas.length) : 0,
     productos: listarProductos().length,
-    productosCriticos: productosCriticos().length,
+    insumosCriticos: insumosCriticos().length,
     usuarios: listarUsuarios().length,
     clientes: listarUsuarios().filter((u) => u.tipo === 'Cliente').length,
   };

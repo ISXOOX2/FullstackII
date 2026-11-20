@@ -4,8 +4,9 @@ import TarjetaResumen from '../../components/moleculas/TarjetaResumen.jsx';
 import AlertaStockCritico from '../../components/moleculas/AlertaStockCritico.jsx';
 import InsigniaEstado from '../../components/atomos/InsigniaEstado.jsx';
 import { resumenGeneral } from '../../services/reportesService.js';
-import { productosCriticos } from '../../services/productosService.js';
-import { listarOrdenes, ordenesConSolicitudPendiente } from '../../services/ordenesService.js';
+import { insumosCriticos } from '../../services/insumosService.js';
+import { agendaPorTatuador, listarOrdenes, ordenesConSolicitudPendiente } from '../../services/ordenesService.js';
+import { DIAS_ALERTA_AGENDA } from '../../data/estudio.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 
 export default function Dashboard({ usuario }) {
@@ -15,11 +16,19 @@ export default function Dashboard({ usuario }) {
   const resumen = resumenGeneral();
   const ultimas = listarOrdenes().slice(0, 5);
   const solicitudes = ordenesConSolicitudPendiente();
+  const agenda = agendaPorTatuador();
+  const conPocasHoras = agenda.filter((a) => a.pocas);
 
   return (
     <>
       <h1 className="titulo-seccion">Dashboard</h1>
-      <AlertaStockCritico productos={productosCriticos()} puedeEditar />
+      <AlertaStockCritico insumos={insumosCriticos()} />
+      {conPocasHoras.length > 0 && (
+        <div className="alert alert-warning" role="status">
+          <strong>Pocas horas disponibles</strong> en los próximos {DIAS_ALERTA_AGENDA} días de atención:{' '}
+          {conPocasHoras.map((a) => `${a.nombre} (${a.libres} libres)`).join(', ')}.
+        </div>
+      )}
       {solicitudes.length > 0 && (
         <div className="alert alert-warning" role="status">
           Tienes <strong>{solicitudes.length}</strong> solicitud(es) de reembolso o cambio de fecha por revisar.{' '}
@@ -30,9 +39,25 @@ export default function Dashboard({ usuario }) {
         <Col><TarjetaResumen titulo="Órdenes pagadas" valor={resumen.ordenesPagadas} nota={`${resumen.ordenesTotales} órdenes en total`} /></Col>
         <Col><TarjetaResumen titulo="Ingresos" valor={formatoCLP(resumen.ingresos)} nota={`Ticket promedio ${formatoCLP(resumen.ticketPromedio)}`} /></Col>
         <Col><TarjetaResumen titulo="Diseños" valor={resumen.productos} nota="en el catálogo" /></Col>
-        <Col><TarjetaResumen titulo="Stock crítico" valor={resumen.productosCriticos} nota="diseños por reponer" destacada={resumen.productosCriticos > 0} /></Col>
+        <Col><TarjetaResumen titulo="Insumos críticos" valor={resumen.insumosCriticos} nota="por reponer" destacada={resumen.insumosCriticos > 0} /></Col>
         <Col><TarjetaResumen titulo="Usuarios" valor={resumen.usuarios} nota={`${resumen.clientes} clientes`} /></Col>
       </Row>
+
+      <h2 className="h5">Agenda de los próximos {DIAS_ALERTA_AGENDA} días de atención</h2>
+      <div className="table-responsive mb-4">
+        <Table size="sm" className="align-middle">
+          <thead><tr><th scope="col">Tatuador/a</th><th scope="col" className="text-end">Horas libres</th><th scope="col" className="text-end">Ocupación</th></tr></thead>
+          <tbody>
+            {agenda.map((a) => (
+              <tr key={a.tatuadorId} className={a.pocas ? 'fila-critica' : ''}>
+                <td>{a.nombre}</td>
+                <td className="text-end">{a.libres} de {a.total}</td>
+                <td className="text-end">{Math.round(((a.total - a.libres) / a.total) * 100)} %</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
 
       <h2 className="h5">Últimas órdenes</h2>
       <div className="table-responsive">

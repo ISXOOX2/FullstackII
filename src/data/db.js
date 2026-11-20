@@ -21,7 +21,8 @@ import { SEMILLA } from './seed.js';
 // v3: catálogo nuevo (Kawaii, Anime, Tribal Y2K, Celestial y Cybersigilism, 5 diseños cada uno).
 // v4: precios según tamaño (máximo 20 cm) y sin tatuador asignado por diseño.
 // v5: el tamaño pasa de texto ('7 x 6 cm') a dos números: anchoCm y altoCm.
-export const CLAVE_BD = 'foreverInk_bd_v5';
+// v6: los diseños ya no tienen stock; se agrega la colección de insumos con su stock crítico.
+export const CLAVE_BD = 'foreverInk_bd_v6';
 
 function clonar(objeto) {
   return JSON.parse(JSON.stringify(objeto));

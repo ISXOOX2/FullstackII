@@ -8,7 +8,7 @@ export default function Ofertas({ onAgregar }) {
     <Container className="py-4">
       <Migas items={[{ texto: 'Home', to: '/' }, { texto: 'Ofertas' }]} />
       <h1 className="titulo-seccion">Ofertas</h1>
-      <p className="text-muted mb-4">Diseños con precio especial mientras queden cupos.</p>
+      <p className="text-muted mb-4">Diseños con precio especial por tiempo limitado.</p>
       <ListaProductos
         productos={productosEnOferta()}
         onAgregar={onAgregar}

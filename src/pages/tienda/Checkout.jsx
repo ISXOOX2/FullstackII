@@ -5,7 +5,7 @@ import FormularioCheckout from '../../components/organismos/FormularioCheckout.j
 import ResumenOrden from '../../components/moleculas/ResumenOrden.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
 import { actualizarDatosOrden, crearOrden, marcarPagada, marcarRechazada, obtenerOrden } from '../../services/ordenesService.js';
-import { descontarCupos, obtenerProducto } from '../../services/productosService.js';
+import { obtenerProducto } from '../../services/productosService.js';
 import { pagosService } from '../../services/pagosService.js';
 
 /** Valores con los que se pre-llena el formulario: orden anterior (reintento) o datos del usuario. */
@@ -48,13 +48,10 @@ export default function Checkout({ carrito, usuario }) {
 
   const pagar = async (v) => {
     setError('');
-    // Regla: se revisa el stock real justo antes de pagar.
-    const sinCupos = items.find((i) => {
-      const actual = obtenerProducto(i.productoId);
-      return !actual || actual.stock < i.cantidad;
-    });
-    if (sinCupos) {
-      setError(`Ya no quedan cupos suficientes de «${sinCupos.nombre}». Ajusta tu reserva e inténtalo de nuevo.`);
+    // Regla: justo antes de pagar se revisa que los diseños sigan en el catálogo.
+    const retirado = items.find((i) => !obtenerProducto(i.productoId));
+    if (retirado) {
+      setError(`«${retirado.nombre}» ya no está en el catálogo. Quítalo de tu reserva e inténtalo de nuevo.`);
       return;
     }
 
@@ -73,7 +70,6 @@ export default function Checkout({ carrito, usuario }) {
     const respuesta = await pagosService.procesar({ total: orden.total, resultado: v.resultadoPago });
     if (respuesta.aprobado) {
       marcarPagada(orden.id);
-      descontarCupos(datos.items);
       vaciar();
       navegar(`/compra-exitosa/${orden.id}`, { replace: true });
     } else {

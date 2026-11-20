@@ -25,7 +25,7 @@ import { validarFormularioLogin, validarRun } from '../src/utils/validaciones.js
 import { listarProductos, obtenerProducto } from '../src/services/productosService.js';
 import { pagosService } from '../src/services/pagosService.js';
 import { CLAVE_CARRITO, agregarItem, leerCarrito } from '../src/services/carritoService.js';
-import { listarOrdenes } from '../src/services/ordenesService.js';
+import { horasDisponibles, listarOrdenes } from '../src/services/ordenesService.js';
 import { productoDePrueba, proximoMiercoles, reiniciarTodo, renderApp, renderConRouter } from './ayudas.jsx';
 
 describe('Las 10 pruebas de la defensa', () => {
@@ -160,8 +160,8 @@ describe('Las 10 pruebas de la defensa', () => {
   // ─── 8 · MOCK de la pasarela de pago (vi.fn) ────────
   // Se reemplaza la pasarela por una respuesta controlada para probar el caso "rechazado"
   // sin esperar ni depender de un servicio externo.
-  it('8. Checkout con pago RECHAZADO: la orden queda rechazada, el stock no cambia y el carrito se conserva', async () => {
-    // Arrange: el mock responde "rechazado" y el carrito tiene 1 diseño (stock inicial 8)
+  it('8. Checkout con pago RECHAZADO: la orden queda rechazada, la hora sigue libre y el carrito se conserva', async () => {
+    // Arrange: el mock responde "rechazado" y el carrito tiene 1 diseño
     pagosService.procesar = vi.fn().mockReturnValue(Promise.resolve({ aprobado: false, motivo: 'Rechazada' }));
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(agregarItem([], productoDePrueba(1)).items));
     renderApp('/checkout');
@@ -171,7 +171,8 @@ describe('Las 10 pruebas de la defensa', () => {
     escribir('Correo electrónico', 'ana@gmail.com');
     escribir('Teléfono', '+56912345678');
     escribir('Tatuador/a', '1');
-    escribir('Fecha', proximoMiercoles());
+    const fecha = proximoMiercoles();
+    escribir('Fecha', fecha);
     escribir('Horario', '14:00');
     escribir('Zona del cuerpo', 'Antebrazo');
     escribir('Resultado de la pasarela de pago', 'rechazado');
@@ -179,11 +180,11 @@ describe('Las 10 pruebas de la defensa', () => {
     // Act: el cliente presiona "Pagar ahora"
     fireEvent.click(screen.getByRole('button', { name: /Pagar ahora/ }));
 
-    // Assert: mensaje de error, orden rechazada, stock intacto y carrito conservado
+    // Assert: mensaje de error, orden rechazada, la hora NO se ocupa y el carrito se conserva
     await waitFor(() => expect(screen.getByText(/No pudimos procesar tu pago/)).toBeTruthy());
     expect(pagosService.procesar).toHaveBeenCalledTimes(1);
     expect(listarOrdenes()[0].estado).toBe('Pago rechazado');
-    expect(obtenerProducto(1).stock).toBe(8);
+    expect(horasDisponibles(fecha, 1)).toContain('14:00');
     expect(leerCarrito().length).toBe(1);
   });
 

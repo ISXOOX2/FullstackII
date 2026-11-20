@@ -23,7 +23,7 @@ export default function TablaCarrito({ items, onCambiarCantidad, onQuitar }) {
         </thead>
         <tbody>
           {items.map((item) => {
-            const limite = limiteDeCantidad(item.stock);
+            const limite = limiteDeCantidad();
             return (
               <tr key={item.productoId}>
                 <td>

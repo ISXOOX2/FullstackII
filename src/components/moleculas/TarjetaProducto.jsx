@@ -2,13 +2,13 @@
 // • Es un COMPONENTE: una función que devuelve JSX (HTML dentro de JavaScript).
 // • Recibe PROPS (producto, onAgregar): datos que le pasa el padre. Es de solo lectura.
 // • No guarda estado: solo dibuja. Cuando el cliente hace clic, llama a onAgregar y el padre decide.
-// • Renderizado condicional: `{oferta && ...}` muestra el cartel solo si hay oferta.
+// • Renderizado condicional: `{oferta && ...}` muestra el cartel y el precio tachado solo si hay oferta.
 // • Atomic Design: es una MOLÉCULA hecha con átomos (imagen, textos y el átomo <Boton>).
 // ───────────────────────────────────────────────────────────────────────────
 import { Link } from 'react-router-dom';
 import { Card } from 'react-bootstrap';
 import Boton from '../atomos/Boton.jsx';
-import { estaEnOferta, esStockCritico, precioFinal, textoTamano } from '../../services/productosService.js';
+import { estaEnOferta, precioFinal, textoTamano } from '../../services/productosService.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
@@ -17,7 +17,6 @@ import images from '../../assets/images.js';
  * es un componente de presentación fácil de probar: no conoce el carrito ni la sesión.
  */
 export default function TarjetaProducto({ producto, nombreCategoria = '', onAgregar }) {
-  const sinCupos = producto.stock <= 0;
   const oferta = estaEnOferta(producto);
 
   return (
@@ -42,18 +41,9 @@ export default function TarjetaProducto({ producto, nombreCategoria = '', onAgre
           {oferta && <span className="precio-tachado ms-2">{formatoCLP(producto.precio)}</span>}
         </div>
 
-        {/* Renderizado condicional: avisos según los cupos disponibles. */}
-        {sinCupos && <small className="text-danger mb-2">Sin cupos disponibles</small>}
-        {!sinCupos && esStockCritico(producto) && (
-          <small className="text-warning-emphasis mb-2">
-            {producto.stock === 1 ? '¡Último cupo!' : `¡Últimos ${producto.stock} cupos!`}
-          </small>
-        )}
-
         <Boton
           etiqueta="Añadir a mi reserva"
           className="mt-auto"
-          deshabilitado={sinCupos}
           onClick={() => onAgregar && onAgregar(producto)}
         />
       </Card.Body>

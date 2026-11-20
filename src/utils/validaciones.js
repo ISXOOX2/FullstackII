@@ -242,10 +242,6 @@ export function validarFormularioProducto(datos) {
     nombre: validarTexto(datos.nombre, { etiqueta: 'El nombre', max: 100 }),
     descripcion: validarTexto(datos.descripcion, { etiqueta: 'La descripción', obligatorio: false, max: 500 }),
     precio: validarNumero(datos.precio, { etiqueta: 'El precio', min: 0 }),
-    stock: validarNumero(datos.stock, { etiqueta: 'El stock', min: 0, entero: true }),
-    stockCritico: validarNumero(datos.stockCritico, {
-      etiqueta: 'El stock crítico', obligatorio: false, min: 0, entero: true,
-    }),
     categoriaId: datos.categoriaId ? '' : 'Debes seleccionar una categoría.',
     anchoCm: validarMedidaCm(datos.anchoCm, 'El ancho'),
     altoCm: validarMedidaCm(datos.altoCm, 'El alto'),
@@ -319,4 +315,15 @@ export function validarFormularioSolicitud(datos, ahora = new Date()) {
     errores.hora = datos.hora ? '' : 'Elige la nueva hora.';
   }
   return soloErrores(errores);
+}
+
+/** Insumo del estudio (tinta, agujas, guantes…). El stock crítico es el nivel que dispara la alerta. */
+export function validarFormularioInsumo(datos) {
+  return soloErrores({
+    nombre: validarTexto(datos.nombre, { etiqueta: 'El nombre', max: 100 }),
+    tipo: datos.tipo ? '' : 'Elige el tipo de insumo.',
+    unidad: validarTexto(datos.unidad, { etiqueta: 'La unidad', max: 30 }),
+    stock: validarNumero(datos.stock, { etiqueta: 'El stock', min: 0, entero: true }),
+    stockCritico: validarNumero(datos.stockCritico, { etiqueta: 'El stock crítico', min: 0, entero: true }),
+  });
 }

@@ -2,9 +2,9 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
 import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioCheckout, validarFechaCita } from '../../utils/validaciones.js';
-import { horasDisponibles } from '../../services/ordenesService.js';
+import { horasDisponibles, horasLibresProximas } from '../../services/ordenesService.js';
 import { TATUADORES } from '../../data/tatuadores.js';
-import { DIAS_MAXIMOS_AGENDA, HORAS_CITA } from '../../data/estudio.js';
+import { DIAS_ALERTA_AGENDA, DIAS_MAXIMOS_AGENDA, HORAS_CITA, HORAS_LIBRES_CRITICAS } from '../../data/estudio.js';
 import { fechaISO, formatoCLP, sumarDias } from '../../utils/formato.js';
 
 /**
@@ -69,6 +69,12 @@ export default function FormularioCheckout({ valoresIniciales, total, ordenId = 
               <option key={t.id} value={t.id}>{t.nombre}</option>
             ))}
           </CampoFormulario>
+          {/* Aviso al cliente: si al tatuador le quedan pocas horas esta semana, se lo decimos */}
+          {tatuadorId && horasLibresProximas(tatuadorId) <= HORAS_LIBRES_CRITICAS && (
+            <p className="small text-warning-emphasis mt-n2 mb-3" role="status">
+              ¡Quedan pocas horas! Solo {horasLibresProximas(tatuadorId)} disponible(s) en los próximos {DIAS_ALERTA_AGENDA} días de atención.
+            </p>
+          )}
         </Col>
         <Col md={6}>
           <CampoFormulario

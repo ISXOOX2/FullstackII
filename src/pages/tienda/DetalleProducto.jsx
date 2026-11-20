@@ -6,7 +6,7 @@ import CampoFormulario from '../../components/moleculas/CampoFormulario.jsx';
 import ListaProductos from '../../components/organismos/ListaProductos.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
-import { estaEnOferta, esStockCritico, obtenerProducto, precioFinal, productosRelacionados, textoTamano } from '../../services/productosService.js';
+import { estaEnOferta, obtenerProducto, precioFinal, productosRelacionados, textoTamano } from '../../services/productosService.js';
 import { limiteDeCantidad } from '../../services/carritoService.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
@@ -46,8 +46,7 @@ function ContenidoDetalle({ producto, onAgregar }) {
     validarTamanoPersonalizado,
   );
 
-  const limite = Math.max(1, limiteDeCantidad(producto.stock));
-  const sinCupos = producto.stock <= 0;
+  const limite = limiteDeCantidad();
   const oferta = estaEnOferta(producto);
 
   const manejarCantidad = (evento) => {
@@ -117,14 +116,7 @@ function ContenidoDetalle({ producto, onAgregar }) {
             ))}
           </dl>
 
-          {sinCupos ? (
-            <p className="text-danger">Este diseño no tiene cupos disponibles por ahora.</p>
-          ) : (
-            <>
-              <p className={esStockCritico(producto) ? 'text-warning-emphasis' : 'text-muted'}>
-                {esStockCritico(producto) ? `¡Quedan solo ${producto.stock} cupos!` : `${producto.stock} cupos disponibles`}
-              </p>
-
+          <>
               {/* El cliente puede pedir el diseño en otro tamaño: ancho y alto, siempre en centímetros */}
               <fieldset className="tamano-personalizado mb-2">
                 <legend className="etiqueta-campo">Tamaño que quieres (en centímetros)</legend>
@@ -156,9 +148,8 @@ function ContenidoDetalle({ producto, onAgregar }) {
                   Añadir a mi reserva
                 </Button>
               </div>
-              <small className="text-muted d-block mt-2">Máximo {limite} por reserva.</small>
-            </>
-          )}
+              <small className="text-muted d-block mt-2">Máximo {limite} por reserva. La fecha, hora y tatuador/a los eliges al pagar.</small>
+          </>
 
           {/* Herramienta gratuita externa: ver el tatuaje sobre un cuerpo en 3D. Se abre en otra pestaña. */}
           <div className="probar-3d mt-4">

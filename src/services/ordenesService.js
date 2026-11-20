@@ -3,7 +3,12 @@
  * Una orden guarda: datos del cliente, datos de la cita, los diseños elegidos y su estado.
  */
 import { listar, obtenerPorId, crear, actualizar } from '../data/db.js';
-import { HORAS_ANTICIPACION_CAMBIO, HORAS_ANTICIPACION_REEMBOLSO, HORAS_CITA } from '../data/estudio.js';
+import {
+  DIAS_ALERTA_AGENDA, DIAS_ATENCION, HORAS_ANTICIPACION_CAMBIO, HORAS_ANTICIPACION_REEMBOLSO, HORAS_CITA,
+  HORAS_LIBRES_CRITICAS,
+} from '../data/estudio.js';
+import { TATUADORES } from '../data/tatuadores.js';
+import { fechaISO, sumarDias } from '../utils/formato.js';
 import { validarCambioEstado, validarFormularioSolicitud } from '../utils/validaciones.js';
 
 const COLECCION = 'ordenes';
@@ -103,6 +108,35 @@ export function horasDisponibles(fecha, tatuadorId, ignorarOrdenId = null) {
   if (!fecha || !tatuadorId) return [...HORAS_CITA];
   const ocupadas = horasOcupadas(fecha, tatuadorId, ignorarOrdenId);
   return HORAS_CITA.filter((hora) => !ocupadas.includes(hora));
+}
+
+/** Los próximos N días de atención (martes a sábado) desde mañana, en formato AAAA-MM-DD. */
+export function proximosDiasDeAtencion(cantidad = DIAS_ALERTA_AGENDA, ahora = new Date()) {
+  const dias = [];
+  let fecha = sumarDias(fechaISO(ahora), 1);
+  while (dias.length < cantidad) {
+    if (DIAS_ATENCION.includes(new Date(fecha + 'T00:00:00').getDay())) dias.push(fecha);
+    fecha = sumarDias(fecha, 1);
+  }
+  return dias;
+}
+
+/** Horas libres que le quedan a un tatuador en los próximos días de atención. */
+export function horasLibresProximas(tatuadorId, ahora = new Date()) {
+  return proximosDiasDeAtencion(DIAS_ALERTA_AGENDA, ahora)
+    .reduce((suma, fecha) => suma + horasDisponibles(fecha, tatuadorId).length, 0);
+}
+
+/**
+ * Resumen de agenda por tatuador para la alerta de "pocas horas disponibles".
+ * Lo que se agota en el estudio son las HORAS de cada tatuador, no los diseños.
+ */
+export function agendaPorTatuador(ahora = new Date()) {
+  const total = DIAS_ALERTA_AGENDA * HORAS_CITA.length;
+  return TATUADORES.map((t) => {
+    const libres = horasLibresProximas(t.id, ahora);
+    return { tatuadorId: t.id, nombre: t.nombre, libres, total, pocas: libres <= HORAS_LIBRES_CRITICAS };
+  });
 }
 
 // ---------------------------------------------------------------------------

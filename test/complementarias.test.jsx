@@ -50,7 +50,7 @@ describe('Pruebas complementarias', () => {
   });
 
   // ─── 12 · Flujo completo de compra APROBADA (integración + mock) ────────────
-  it('12. Checkout con pago APROBADO: muestra la boleta, descuenta cupos, vacía el carrito y ocupa la hora', async () => {
+  it('12. Checkout con pago APROBADO: muestra la boleta, guarda el tamaño, vacía el carrito y ocupa la hora', async () => {
     // Arrange: pasarela aprobada (mock) y 2 unidades del diseño 1 en el carrito
     pagosService.procesar = vi.fn().mockReturnValue(Promise.resolve({ aprobado: true, metodo: 'Tarjeta (simulado)' }));
     const conDos = agregarItem(agregarItem([], productoDePrueba(1)).items, productoDePrueba(1)).items;
@@ -73,7 +73,7 @@ describe('Pruebas complementarias', () => {
     // Assert
     await waitFor(() => expect(screen.getByText('Compra exitosa')).toBeTruthy());
     expect(listarOrdenes()[0].estado).toBe('Pagada');
-    expect(obtenerProducto(1).stock).toBe(6); // 8 - 2
+    expect(listarOrdenes()[0].items[0].anchoCm).toBe(obtenerProducto(1).anchoCm); // el tamaño queda en la orden
     expect(leerCarrito().length).toBe(0);
     expect(horasDisponibles(fecha, 1)).not.toContain('11:00');
   });

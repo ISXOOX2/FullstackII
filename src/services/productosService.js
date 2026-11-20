@@ -1,7 +1,7 @@
 /**
  * Servicio de productos (diseños de tatuaje).
  * Usa el CRUD genérico de db.js y agrega las reglas propias del catálogo:
- * ofertas, stock crítico, búsqueda con filtros y descuento de cupos al pagar.
+ * ofertas y búsqueda con filtros. Los diseños no tienen stock: se pueden tatuar las veces que se quiera.
  */
 import { listar, obtenerPorId, crear, actualizar, eliminar } from '../data/db.js';
 import { normalizarTexto } from '../utils/formato.js';
@@ -17,11 +17,6 @@ export function precioFinal(producto) {
 
 export function estaEnOferta(producto) {
   return tieneValor(producto.precioOferta) && Number(producto.precioOferta) < Number(producto.precio);
-}
-
-/** Regla de stock crítico: se alerta cuando el stock es IGUAL O INFERIOR al stock crítico. */
-export function esStockCritico(producto) {
-  return tieneValor(producto.stockCritico) && Number(producto.stock) <= Number(producto.stockCritico);
 }
 
 /**
@@ -43,8 +38,6 @@ export function normalizarProducto(datos) {
     categoriaId: Number(datos.categoriaId),
     precio: Number(datos.precio),
     precioOferta: aNumeroONulo(datos.precioOferta),
-    stock: Number(datos.stock),
-    stockCritico: aNumeroONulo(datos.stockCritico),
     anchoCm: aNumeroONulo(datos.anchoCm),
     altoCm: aNumeroONulo(datos.altoCm),
     duracionHoras: aNumeroONulo(datos.duracionHoras),
@@ -150,17 +143,3 @@ export function buscarProductos({ texto = '', categoriaId = '', precioMax = '', 
   return resultado;
 }
 
-/** Productos cuyo stock llegó al nivel crítico (o menos). */
-export function productosCriticos() {
-  return listarProductos().filter(esStockCritico);
-}
-
-/** Resta cupos al pagar una reserva. items: [{ productoId, cantidad }] */
-export function descontarCupos(items) {
-  items.forEach((item) => {
-    const producto = obtenerProducto(item.productoId);
-    if (producto) {
-      actualizar(COLECCION, producto.id, { stock: Math.max(0, producto.stock - item.cantidad) });
-    }
-  });
-}

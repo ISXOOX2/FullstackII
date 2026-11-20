@@ -10,7 +10,8 @@
  * modificar el original. Así React detecta el cambio de estado y es fácil probarlas.
  *
  * Reglas de negocio definidas por el equipo:
- *   1. No se pueden reservar más unidades que los cupos (stock) disponibles del diseño.
+ *   1. Los diseños no tienen stock (se pueden tatuar las veces que se quiera); lo que se limita
+ *      es la agenda: cada reserva ocupa una hora de un tatuador (ver ordenesService).
  *   2. Máximo 5 unidades de un mismo diseño por reserva.
  *   3. La cantidad mínima de un ítem es 1 (para quitarlo se usa "Eliminar").
  *   4. El carrito se guarda en localStorage para no perderlo al recargar la página.
@@ -22,9 +23,9 @@ import { precioFinal } from './productosService.js';
 export const CLAVE_CARRITO = 'foreverInk_carrito_v2';
 export const MAXIMO_POR_ITEM = 5;
 
-/** Cantidad máxima que se puede reservar de un producto. */
-export function limiteDeCantidad(stock) {
-  return Math.min(Number(stock), MAXIMO_POR_ITEM);
+/** Cantidad máxima que se puede reservar de un mismo diseño en una reserva. */
+export function limiteDeCantidad() {
+  return MAXIMO_POR_ITEM;
 }
 
 /**
@@ -37,12 +38,9 @@ export function agregarItem(items, producto, cantidad = 1, medidas = null) {
     anchoCm: Number(medidas?.anchoCm ?? producto.anchoCm) || null,
     altoCm: Number(medidas?.altoCm ?? producto.altoCm) || null,
   };
-  if (producto.stock <= 0) {
-    return { items, mensaje: 'Este diseño no tiene cupos disponibles.' };
-  }
   const existente = items.find((i) => i.productoId === producto.id);
   const nuevaCantidad = (existente ? existente.cantidad : 0) + cantidad;
-  const limite = limiteDeCantidad(producto.stock);
+  const limite = limiteDeCantidad();
 
   if (nuevaCantidad > limite) {
     return { items, mensaje: `Solo puedes reservar hasta ${limite} unidad(es) de este diseño.` };
@@ -59,18 +57,17 @@ export function agregarItem(items, producto, cantidad = 1, medidas = null) {
     imagen: producto.imagen,
     categoriaId: producto.categoriaId,
     precio: precioFinal(producto),
-    stock: producto.stock,
     ...tamano,
     cantidad,
   };
   return { items: [...items, nuevo], mensaje: '' };
 }
 
-/** Cambia la cantidad de un ítem respetando el mínimo (1) y el límite por cupos. */
+/** Cambia la cantidad de un ítem respetando el mínimo (1) y el máximo por diseño. */
 export function cambiarCantidad(items, productoId, cantidad) {
   return items.map((item) => {
     if (item.productoId !== productoId) return item;
-    const limite = limiteDeCantidad(item.stock);
+    const limite = limiteDeCantidad();
     const valida = Math.min(Math.max(1, Number(cantidad) || 1), limite);
     return { ...item, cantidad: valida };
   });

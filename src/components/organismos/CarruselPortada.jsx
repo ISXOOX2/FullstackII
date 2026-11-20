@@ -13,7 +13,7 @@ const DIAPOSITIVAS = [
   {
     imagen: 'portada-2',
     titulo: 'Ofertas de temporada',
-    texto: 'Tribales, sigilos y más diseños con precio especial por cupos limitados.',
+    texto: 'Tribales, sigilos y más diseños con precio especial por tiempo limitado.',
     boton: 'Ver ofertas',
     to: '/ofertas',
   },
