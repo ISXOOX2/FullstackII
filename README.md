@@ -118,6 +118,26 @@ No hay backend. `src/data/db.js` ofrece un CRUD genérico (`crear`, `listar`, `o
 `eliminar`) sobre `localStorage`, sembrado desde `seed.js`. Para volver a los datos originales basta con borrar
 el almacenamiento del sitio en el navegador (o llamar a `reiniciarBD()`).
 
+### Preparado para el backend (axios)
+
+`src/services/api.js` tiene **una instancia de axios por microservicio** (usuarios, catálogo, reservas y blog),
+cada una con su dirección base y un interceptor que agrega el token JWT de la sesión. Las direcciones se
+configuran en un archivo `.env` (ver `.env.example`). Mientras `VITE_USAR_API=false`, la app sigue usando la base
+simulada; cuando los microservicios de Spring Boot estén listos, cada servicio del front pasa a usar su instancia.
+
+## Reglas de negocio agregadas por la retroalimentación
+
+- **Tamaño en centímetros:** cada diseño tiene ancho y alto (`anchoCm`, `altoCm`) entre 1 y 20 cm. El cliente
+  puede pedir su propio tamaño en el detalle del diseño, y queda en el carrito, la orden y la boleta.
+- **Cambio de fecha y hora:** desde *Mi perfil*, hasta 24 horas antes de la cita, con motivo y justificativo.
+  La nueva hora tiene que estar libre para el mismo tatuador.
+- **Reembolso:** hasta 48 horas antes de la cita, con motivo y justificativo. Si se aprueba, la orden queda
+  *Reembolsada* y la hora se libera.
+- El **administrador** aprueba o rechaza las solicitudes desde el detalle de la orden (el vendedor solo las ve).
+  Los plazos están en `src/data/estudio.js`.
+- **Pruébalo en 3D:** el detalle de cada diseño enlaza a TryTattoo3D, un simulador gratuito para ver el tatuaje
+  sobre un cuerpo en 3D.
+
 
 ## Limitaciones conocidas (proyecto académico)
 
