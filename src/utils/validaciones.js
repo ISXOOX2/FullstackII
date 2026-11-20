@@ -7,7 +7,7 @@
  *
  * Las funciones validarFormulario... reciben el objeto completo del formulario y devuelven
  * un objeto { campo: 'mensaje' } solo con los campos que tienen error.
- * Son funciones "puras" (no tocan la pantalla), por eso son fáciles de probar con Jasmine.
+ * Son funciones "puras" (no tocan la pantalla), por eso son fáciles de probar con Vitest.
  */
 import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, HORAS_CITA } from '../data/estudio.js';
 import { fechaISO, sumarDias } from './formato.js';

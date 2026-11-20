@@ -6,7 +6,7 @@ Sitio web de un estudio de tatuajes con estética manga: el cliente elige diseñ
 las órdenes y los usuarios desde un panel.
 
 **Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 ·
-Jasmine + Karma + Testing Library (pruebas unitarias y cobertura).
+Vitest + Testing Library + jsdom (pruebas unitarias y cobertura, clase React IV).
 
 ## Equipo y reparto de responsabilidades
 
@@ -14,7 +14,7 @@ Jasmine + Karma + Testing Library (pruebas unitarias y cobertura).
 |---|---|---|---|
 | Páginas | Home, Productos, Detalle, Categorías, Ofertas, Carrito, Checkout, Compra exitosa, Pago fallido | Login, Registro, Perfil y `pages/admin` | Nosotros, Blogs, Detalle blog, Contacto, 404 |
 | Componentes | ListaProductos, TarjetaProducto, Galeria, TablaCarrito, FormularioCheckout, ResumenOrden, Boleta | FormularioLogin, FormularioUsuario, FormularioProducto, FormularioCategoria, RutaProtegida, LayoutAdmin | Átomos, CampoFormulario, Header, Footer, LayoutTienda, Avisos, LimiteDeErrores |
-| Lógica | Estado del carrito en `App.jsx`, carritoService, ordenesService, pagosService | Sesión en `App.jsx`, usuarios, productos, categorías y reportes, validaciones.js | `data/db.js`, seed.js, images.js, useFormulario.js, `tema.css`, `karma.conf.js` |
+| Lógica | Estado del carrito en `App.jsx`, carritoService, ordenesService, pagosService | Sesión en `App.jsx`, usuarios, productos, categorías y reportes, validaciones.js | `data/db.js`, seed.js, images.js, useFormulario.js, `tema.css`, `vite.config.js` (pruebas) |
 | Pruebas | 1, 5, 8, 12, 15 | 6, 7, 9, 10, 13 | 2, 3, 4, 11, 14 |
 
 La presentación es individual: cada integrante debe poder explicar todo el proyecto. El reparto indica
@@ -27,11 +27,12 @@ npm install            # instala las dependencias (una sola vez)
 npm run dev            # servidor de desarrollo -> http://localhost:5173
 npm run build          # genera la versión final en /dist
 npm run preview        # sirve /dist para revisarla
-npm test               # corre las 15 pruebas (Karma + Jasmine) y genera el informe en /coverage
+npm test               # corre las 15 pruebas con Vitest
+npm run test:watch     # modo interactivo: vuelve a correr las pruebas al guardar
+npm run test:coverage  # pruebas + informe de cobertura (resumen en la terminal y coverage/index.html)
 ```
 
-> `npm test` usa Chrome sin ventana (ChromeHeadless). Si Chrome no está en la ruta habitual,
-> indica el ejecutable con la variable `CHROME_BIN`.
+> Las pruebas corren en Node con **jsdom**, que simula el navegador: no hace falta tener Chrome abierto.
 
 ### ¿Y con "Open with Live Server" de VS Code?
 
@@ -87,9 +88,9 @@ src/
   utils/                   Funciones de apoyo: validaciones.js, formato.js, boleta.js y el hook
                            personalizado useFormulario.js (validación en tiempo real)
 test/
-  defensa.spec.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
-  complementarias.spec.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary
-  ayudas.jsx, index.js     Funciones de apoyo y punto de entrada de Karma
+  defensa.test.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
+  complementarias.test.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary
+  ayudas.jsx, setup.js     Funciones de apoyo y configuración inicial de Vitest (matchers de jest-dom)
 docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
 ```
 
@@ -107,9 +108,9 @@ docs/                      ERS, documento de cobertura de testing, guía de defe
 - **Hoja de estilos** (1.2.4 y 1.2.6): una sola hoja propia, formato estándar, tabla de contenido, mobile first
   (`min-width`), imágenes con `max-width: 100%` y sin estilos en línea ni `!important`.
 - **Error Boundary** (2.3.5) y **carga diferida** del panel con `React.lazy` + `Suspense` (2.3.3).
-- **Pruebas** con Jasmine y Karma: `karma.conf.js` como la guía 2.3.2 (jasmine, ChromeHeadless, progress y coverage),
-  webpack + babel para JSX (2.3.5), `renderHook`, `jasmine.createSpy`,
-  `jasmine.createSpyObj`, `MemoryRouter` y comprobaciones `toBe` / `toBeTruthy` (React IV).
+- **Pruebas con Vitest** (clase React IV, por indicación del docente en lugar de Jasmine y Karma): se configura en
+  `vite.config.js` con `environment: 'jsdom'`, archivos `*.test.jsx`, `describe` / `it` / `expect`, mocks con `vi.fn()`,
+  `renderHook`, `MemoryRouter` y comprobaciones `toBe` / `toBeTruthy` / `toContain`. Cobertura con `@vitest/coverage-v8`.
 
 ## Persistencia simulada
 

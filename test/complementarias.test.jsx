@@ -5,6 +5,7 @@
 // flujo de compra) y temas de las guías 2.3.3 y 2.3.5 (inyección XSS, manejo de errores),
 // y recorren todas las vistas para que el informe de cobertura sea representativo.
 // ════════════════════════════════════════════════════════════════════════════
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import TarjetaProducto from '../src/components/moleculas/TarjetaProducto.jsx';
 import LimiteDeErrores from '../src/components/utilidades/LimiteDeErrores.jsx';
@@ -51,8 +52,7 @@ describe('Pruebas complementarias', () => {
   // ─── 12 · Flujo completo de compra APROBADA (integración + mock) ────────────
   it('12. Checkout con pago APROBADO: muestra la boleta, descuenta cupos, vacía el carrito y ocupa la hora', async () => {
     // Arrange: pasarela aprobada (mock) y 2 unidades del diseño 1 en el carrito
-    pagosService.procesar = jasmine.createSpy('procesar')
-      .and.returnValue(Promise.resolve({ aprobado: true, metodo: 'Tarjeta (simulado)' }));
+    pagosService.procesar = vi.fn().mockReturnValue(Promise.resolve({ aprobado: true, metodo: 'Tarjeta (simulado)' }));
     const conDos = agregarItem(agregarItem([], productoDePrueba(1)).items, productoDePrueba(1)).items;
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(conDos));
     const fecha = proximoMiercoles();
@@ -123,7 +123,7 @@ describe('Pruebas complementarias', () => {
   it('15. LimiteDeErrores muestra un mensaje amable si un componente falla al dibujarse', () => {
     // Arrange: un componente que siempre falla. console.error se reemplaza por un spy
     // porque React informa el error en la consola aunque esté controlado.
-    console.error = jasmine.createSpy('console.error');
+    console.error = vi.fn();
     function ComponenteRoto() {
       throw new Error('Falla de prueba');
     }

@@ -1,14 +1,15 @@
 // ════════════════════════════════════════════════════════════════════════════
 // LAS 10 PRUEBAS DE LA DEFENSA
 //
-// Siguen la "Propuesta de pruebas con Jasmine" del Anexo 1 de la Evaluación 2:
+// Siguen la "Propuesta de pruebas" del Anexo 1 de la Evaluación 2:
 //   renderizado correcto · renderizado condicional · props · estado · eventos
 // y los conceptos de las guías 2.3.2 y 2.3.5: hooks personalizados (renderHook), mocks con
-// jasmine.createSpy / jasmine.createSpyObj, lógica de validación y rutas protegidas.
-// Las comprobaciones usan toBe, toBeTruthy, not y toContain, como en la clase React IV.
+// vi.fn() de Vitest, lógica de validación y rutas protegidas.
+// Las comprobaciones usan toBe, toBeTruthy, not y toContain, como en la clase React IV (Vitest).
 //
 // Todas usan el patrón AAA:  Arrange (preparar) · Act (actuar) · Assert (verificar).
 // ════════════════════════════════════════════════════════════════════════════
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { Route, Routes } from 'react-router-dom';
 import Boton from '../src/components/atomos/Boton.jsx';
@@ -75,7 +76,7 @@ describe('Las 10 pruebas de la defensa', () => {
   // Tarea del Anexo 1: "un componente de botón recibe la etiqueta y la función onClick".
   it('3. El átomo Boton muestra la etiqueta recibida y llama a onClick al hacer clic', () => {
     // Arrange: un espía (spy) registra cada vez que se llama a la función
-    const alHacerClic = jasmine.createSpy('alHacerClic');
+    const alHacerClic = vi.fn();
     render(<Boton etiqueta="Agendar cita" onClick={alHacerClic} />);
     const boton = screen.getByText('Agendar cita');
     expect(boton).toBeTruthy(); // la prop "etiqueta" llegó
@@ -139,11 +140,11 @@ describe('Las 10 pruebas de la defensa', () => {
     expect(sePuedeEnviar).toBe(false);
   });
 
-  // ─── 7 · MOCK CON jasmine.createSpyObj (guía 2.3.2 paso 8) ──────────────────
+  // ─── 7 · MOCK de un servicio con vi.fn() ──────────────────
   it('7. FormularioLogin envía los datos al servicio (mock) y muestra el error que este responde', () => {
     // Arrange: un servicio "de mentira" que responde que la contraseña es incorrecta
-    const servicioSesion = jasmine.createSpyObj('ServicioSesion', ['iniciar']);
-    servicioSesion.iniciar.and.returnValue('Correo o contraseña incorrectos.');
+    const servicioSesion = { iniciar: vi.fn() };
+    servicioSesion.iniciar.mockReturnValue('Correo o contraseña incorrectos.');
     render(<FormularioLogin onEnviar={servicioSesion.iniciar} />);
     fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { name: 'correo', value: 'ana@gmail.com' } });
     fireEvent.change(screen.getByLabelText('Contraseña'), { target: { name: 'password', value: 'Clave#12' } });
@@ -156,13 +157,12 @@ describe('Las 10 pruebas de la defensa', () => {
     expect(screen.getByRole('alert').textContent).toContain('Correo o contraseña incorrectos.');
   });
 
-  // ─── 8 · MOCK de la pasarela de pago (jasmine.createSpy, guía 2.3.5) ────────
+  // ─── 8 · MOCK de la pasarela de pago (vi.fn) ────────
   // Se reemplaza la pasarela por una respuesta controlada para probar el caso "rechazado"
   // sin esperar ni depender de un servicio externo.
   it('8. Checkout con pago RECHAZADO: la orden queda rechazada, el stock no cambia y el carrito se conserva', async () => {
     // Arrange: el mock responde "rechazado" y el carrito tiene 1 diseño (stock inicial 8)
-    pagosService.procesar = jasmine.createSpy('procesar')
-      .and.returnValue(Promise.resolve({ aprobado: false, motivo: 'Rechazada' }));
+    pagosService.procesar = vi.fn().mockReturnValue(Promise.resolve({ aprobado: false, motivo: 'Rechazada' }));
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(agregarItem([], productoDePrueba(1)).items));
     renderApp('/checkout');
     const escribir = (etiqueta, valor) => fireEvent.change(screen.getByLabelText(etiqueta), { target: { value: valor } });
