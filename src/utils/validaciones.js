@@ -9,7 +9,7 @@
  * un objeto { campo: 'mensaje' } solo con los campos que tienen error.
  * Son funciones "puras" (no tocan la pantalla), por eso son fáciles de probar con Vitest.
  */
-import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, HORAS_CITA, TAMANO_MAX_CM, TAMANO_MIN_CM } from '../data/estudio.js';
+import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, EDAD_MINIMA, HORAS_CITA, TAMANO_MAX_CM, TAMANO_MIN_CM } from '../data/estudio.js';
 import { fechaISO, sumarDias } from './formato.js';
 
 // RFC 2822 (versión práctica): usuario@dominio.extension
@@ -97,13 +97,20 @@ export function validarTelefono(telefono, { obligatorio = false } = {}) {
   return '';
 }
 
-/** Fecha de nacimiento: opcional, no puede ser futura. */
+/**
+ * Fecha de nacimiento: OBLIGATORIA y solo mayores de EDAD_MINIMA (18) años.
+ * Regla del estudio: no se tatúa a menores, por eso tampoco pueden tener cuenta.
+ */
 export function validarFechaNacimiento(valor, ahora = new Date()) {
-  if (!valor) return '';
+  if (!valor) return 'La fecha de nacimiento es obligatoria.';
   const fecha = new Date(valor + 'T00:00:00');
   if (Number.isNaN(fecha.getTime())) return 'La fecha de nacimiento no es válida.';
   if (fecha > ahora) return 'La fecha de nacimiento no puede ser futura.';
   if (fecha.getFullYear() < 1900) return 'La fecha de nacimiento no es válida.';
+  // Se suman 18 años a la fecha de nacimiento: si ese cumpleaños todavía no llega, es menor de edad.
+  const cumpleMayoria = new Date(fecha);
+  cumpleMayoria.setFullYear(cumpleMayoria.getFullYear() + EDAD_MINIMA);
+  if (cumpleMayoria > ahora) return `Debes tener al menos ${EDAD_MINIMA} años para registrarte.`;
   return '';
 }
 
@@ -189,7 +196,7 @@ export function validarFormularioUsuario(
     nombre: validarTexto(datos.nombre, { etiqueta: 'El nombre', max: 50 }),
     apellidos: validarTexto(datos.apellidos, { etiqueta: 'Los apellidos', max: 100 }),
     correo: validarCorreo(datos.correo, { restringirDominios: true }),
-    telefono: validarTelefono(datos.telefono),
+    telefono: validarTelefono(datos.telefono, { obligatorio: true }),
     fechaNacimiento: validarFechaNacimiento(datos.fechaNacimiento),
     region: datos.region ? '' : 'Debes seleccionar una región.',
     comuna: datos.comuna ? '' : 'Debes seleccionar una comuna.',

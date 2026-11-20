@@ -72,7 +72,7 @@ export default function FormularioUsuario({ modo = 'registro', inicial = null, o
           />
         </Col>
         <Col md={6}>
-          <CampoFormulario id="u-fecha" etiqueta="Fecha de nacimiento" tipo="date" opcional {...comunPropiedades('fechaNacimiento')} />
+          <CampoFormulario id="u-fecha" etiqueta="Fecha de nacimiento" tipo="date" ayuda="Debes ser mayor de 18 años." {...comunPropiedades('fechaNacimiento')} />
         </Col>
         <Col md={6}>
           <CampoFormulario id="u-nombre" etiqueta="Nombre" maxLength={50} {...comunPropiedades('nombre')} />
@@ -104,7 +104,7 @@ export default function FormularioUsuario({ modo = 'registro', inicial = null, o
           </Col>
         )}
         <Col md={6}>
-          <CampoFormulario id="u-telefono" etiqueta="Teléfono" tipo="tel" opcional placeholder="+56912345678" {...comunPropiedades('telefono')} />
+          <CampoFormulario id="u-telefono" etiqueta="Teléfono" tipo="tel" placeholder="+56912345678" {...comunPropiedades('telefono')} />
         </Col>
         {pedirTipo && (
           <Col md={6}>

@@ -285,7 +285,7 @@ const USUARIOS = [
   },
   {
     id: 2, run: '111111111', nombre: 'Vendedor', apellidos: 'Recepción',
-    correo: 'vendedor.foreverink@gmail.com', password: 'Venta#123', telefono: '',
+    correo: 'vendedor.foreverink@gmail.com', password: 'Venta#123', telefono: '+56955556666',
     fechaNacimiento: '1995-03-02', tipo: 'Vendedor',
     region: 'Metropolitana de Santiago', comuna: 'Providencia', direccion: 'Av. Providencia 1234',
   },
@@ -303,7 +303,7 @@ const USUARIOS = [
   },
   {
     id: 5, run: '201234565', nombre: 'Joaquín', apellidos: 'Araya Soto',
-    correo: 'joaquin.araya@gmail.com', password: 'Cliente#1', telefono: '',
+    correo: 'joaquin.araya@gmail.com', password: 'Cliente#1', telefono: '+56966667777',
     fechaNacimiento: '2001-02-17', tipo: 'Cliente',
     region: 'Metropolitana de Santiago', comuna: 'Maipú', direccion: 'Pasaje Las Rosas 321',
   },

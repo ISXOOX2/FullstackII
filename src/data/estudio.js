@@ -20,6 +20,10 @@ export const DIAS_ATENCION = [2, 3, 4, 5, 6];
 // Máximo de días hacia adelante en que se puede agendar.
 export const DIAS_MAXIMOS_AGENDA = 180;
 
+// Edad mínima para tener cuenta y tatuarse en el estudio. Decisión del equipo: los menores de 18
+// se rechazan (no se aceptan con permiso de los padres).
+export const EDAD_MINIMA = 18;
+
 // Tamaño de un tatuaje: ancho y alto SIEMPRE en centímetros (no se aceptan metros).
 // El estudio trabaja piezas de hasta 20 cm por lado; más grande se cotiza aparte.
 export const TAMANO_MIN_CM = 1;
