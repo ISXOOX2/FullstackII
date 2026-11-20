@@ -294,6 +294,14 @@ export function validarTamanoPersonalizado(datos) {
  *  - Si es un cambio: la nueva fecha sigue las reglas de la agenda y la hora es obligatoria.
  * Que la hora esté libre y el plazo de anticipación los revisa ordenesService (necesitan la agenda).
  */
+/** Cambio manual del estado de una orden (panel): nuevo estado y motivo obligatorios. */
+export function validarCambioEstado(datos) {
+  return soloErrores({
+    estado: datos.estado ? '' : 'Elige el nuevo estado.',
+    motivo: validarTexto(datos.motivo, { etiqueta: 'El motivo', min: 10, max: 300 }),
+  });
+}
+
 export function validarFormularioSolicitud(datos, ahora = new Date()) {
   const errores = {
     motivo: datos.motivo ? '' : 'Elige el motivo de tu solicitud.',

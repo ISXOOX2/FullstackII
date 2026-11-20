@@ -4,7 +4,7 @@
  */
 import { listar, obtenerPorId, crear, actualizar } from '../data/db.js';
 import { HORAS_ANTICIPACION_CAMBIO, HORAS_ANTICIPACION_REEMBOLSO, HORAS_CITA } from '../data/estudio.js';
-import { validarFormularioSolicitud } from '../utils/validaciones.js';
+import { validarCambioEstado, validarFormularioSolicitud } from '../utils/validaciones.js';
 
 const COLECCION = 'ordenes';
 
@@ -222,4 +222,64 @@ export function responderSolicitud(ordenId, aprobar, respuesta = '', ahora = new
     hora: solicitud.nuevaHora,
   };
   return { ok: true, error: '', orden: actualizar(COLECCION, orden.id, { cita, solicitud: respondida }) };
+}
+
+// ---------------------------------------------------------------------------
+// Cambio manual del estado de una orden (solo el administrador)
+// ---------------------------------------------------------------------------
+// Reglas de negocio:
+//   1. Solo se permiten los cambios de la tabla TRANSICIONES (por ejemplo, una orden reembolsada
+//      ya no puede volver a pagada porque el dinero se devolvió).
+//   2. Siempre con un motivo (10 a 300 caracteres) y queda en el historial: quién, cuándo y por qué.
+//   3. Si la orden tiene una solicitud del cliente pendiente, primero hay que responderla.
+//   4. Pasar a "Pagada" ocupa la hora en la agenda: solo se permite si esa hora sigue libre.
+//      Pasar a "Pago rechazado" o "Reembolsada" libera la hora para otros clientes.
+
+export const TRANSICIONES = {
+  [ESTADOS.PENDIENTE]: [ESTADOS.PAGADA, ESTADOS.RECHAZADA],
+  [ESTADOS.PAGADA]: [ESTADOS.RECHAZADA, ESTADOS.REEMBOLSADA],
+  [ESTADOS.RECHAZADA]: [ESTADOS.PAGADA, ESTADOS.PENDIENTE],
+  [ESTADOS.REEMBOLSADA]: [],
+};
+
+/** Estados a los que puede pasar una orden desde su estado actual. */
+export function estadosPermitidos(orden) {
+  return TRANSICIONES[orden?.estado] || [];
+}
+
+/**
+ * Cambia el estado de una orden. responsable = nombre de quien hizo el cambio (para el historial).
+ * Devuelve { ok, error, orden }.
+ */
+export function cambiarEstadoOrden(ordenId, nuevoEstado, motivo, responsable = '', ahora = new Date()) {
+  const orden = obtenerOrden(ordenId);
+  if (!orden) return { ok: false, error: 'La orden no existe.' };
+  if (tieneSolicitudPendiente(orden)) {
+    return { ok: false, error: 'La orden tiene una solicitud del cliente pendiente: respóndela primero.' };
+  }
+  const errores = validarCambioEstado({ estado: nuevoEstado, motivo });
+  if (Object.keys(errores).length > 0) return { ok: false, error: Object.values(errores)[0] };
+  if (!estadosPermitidos(orden).includes(nuevoEstado)) {
+    return { ok: false, error: `No se puede pasar de "${orden.estado}" a "${nuevoEstado}".` };
+  }
+  if (nuevoEstado === ESTADOS.PAGADA &&
+      !horasDisponibles(orden.cita.fecha, orden.cita.tatuadorId, orden.id).includes(orden.cita.hora)) {
+    return { ok: false, error: 'La hora de esta cita ya está ocupada por otra reserva pagada.' };
+  }
+
+  const registro = {
+    de: orden.estado,
+    a: nuevoEstado,
+    motivo: String(motivo).trim(),
+    responsable,
+    fecha: ahora.toISOString(),
+  };
+  return {
+    ok: true,
+    error: '',
+    orden: actualizar(COLECCION, orden.id, {
+      estado: nuevoEstado,
+      historialEstados: [...(orden.historialEstados || []), registro],
+    }),
+  };
 }

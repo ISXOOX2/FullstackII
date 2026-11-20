@@ -135,6 +135,11 @@ simulada; cuando los microservicios de Spring Boot estén listos, cada servicio 
   *Reembolsada* y la hora se libera.
 - El **administrador** aprueba o rechaza las solicitudes desde el detalle de la orden (el vendedor solo las ve).
   Los plazos están en `src/data/estudio.js`.
+- **Código de producto automático:** al crear un diseño se asigna el siguiente (`FI-026`, `FI-027`…) y no se
+  puede editar.
+- **Cambio manual de estado de una orden** (solo administrador, con motivo e historial). Cambios permitidos:
+  Pendiente → Pagada o Pago rechazado · Pagada → Pago rechazado o Reembolsada · Pago rechazado → Pagada o
+  Pendiente · Reembolsada no cambia más. Pasar a Pagada solo se permite si la hora sigue libre.
 - **Pruébalo en 3D:** el detalle de cada diseño enlaza a TryTattoo3D, un simulador gratuito para ver el tatuaje
   sobre un cuerpo en 3D.
 

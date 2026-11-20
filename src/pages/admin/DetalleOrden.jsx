@@ -4,7 +4,8 @@ import { Alert, Button } from 'react-bootstrap';
 import Boleta from '../../components/organismos/Boleta.jsx';
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import TarjetaSolicitud from '../../components/moleculas/TarjetaSolicitud.jsx';
-import { obtenerOrden, responderSolicitud } from '../../services/ordenesService.js';
+import FormularioCambioEstado from '../../components/organismos/FormularioCambioEstado.jsx';
+import { cambiarEstadoOrden, obtenerOrden, responderSolicitud } from '../../services/ordenesService.js';
 
 /** Detalle de una orden. Si el cliente pidió un reembolso o un cambio de fecha, el administrador lo responde aquí. */
 export default function DetalleOrden({ usuario, mostrarAviso }) {
@@ -32,6 +33,18 @@ export default function DetalleOrden({ usuario, mostrarAviso }) {
     mostrarAviso?.(aprobar ? 'La solicitud fue aprobada.' : 'La solicitud fue rechazada.');
   };
 
+  /** Cambio manual de estado: devuelve '' si salió bien o el mensaje de error para el formulario. */
+  const cambiarEstado = (estado, motivo) => {
+    const responsable = `${usuario?.nombre ?? ''} ${usuario?.apellidos ?? ''}`.trim();
+    const resultado = cambiarEstadoOrden(orden.id, estado, motivo, responsable);
+    if (!resultado.ok) return resultado.error;
+    setVersion(version + 1);
+    mostrarAviso?.(`La orden pasó a «${estado}».`);
+    return '';
+  };
+
+  const esAdmin = usuario?.tipo === 'Administrador';
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center mb-3 d-print-none">
@@ -45,9 +58,10 @@ export default function DetalleOrden({ usuario, mostrarAviso }) {
       <TarjetaSolicitud
         key={version}
         solicitud={orden.solicitud}
-        puedeResponder={usuario?.tipo === 'Administrador'}
+        puedeResponder={esAdmin}
         onResponder={responder}
       />
+      <FormularioCambioEstado key={`estado-${version}`} orden={orden} puedeCambiar={esAdmin} onCambiar={cambiarEstado} />
       <Boleta orden={orden} />
     </>
   );
