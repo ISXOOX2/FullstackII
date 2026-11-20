@@ -81,7 +81,7 @@ describe('Pruebas complementarias', () => {
   // ─── 13 · Navegación: todas las vistas de la tienda y del panel se dibujan ──
   it('13. Todas las rutas de la tienda y del panel muestran su título (sin errores)', async () => {
     const vistasTienda = [
-      '/', '/productos', '/productos?q=luna', '/productos/1', '/categorias', '/categorias/1', '/ofertas',
+      '/', '/productos', '/productos?q=luna', '/productos/1', '/mi-proyecto', '/tienda', '/resenas', '/ofertas',
       '/carrito', '/login', '/registro', '/nosotros', '/blogs', '/blogs/1', '/contacto', '/ruta-inexistente',
     ];
     for (const ruta of vistasTienda) {
@@ -95,7 +95,7 @@ describe('Pruebas complementarias', () => {
     const vistasPanel = [
       '/admin', '/admin/ordenes', '/admin/ordenes/1', '/admin/productos', '/admin/productos/1',
       '/admin/productos/nuevo', '/admin/productos/1/editar', '/admin/categorias', '/admin/usuarios',
-      '/admin/usuarios/nuevo', '/admin/usuarios/1/editar', '/admin/usuarios/1/historial', '/admin/reportes', '/perfil',
+      '/admin/usuarios/nuevo', '/admin/usuarios/1/editar', '/admin/usuarios/1/historial', '/admin/reportes', '/admin/insumos', '/admin/proyectos', '/perfil',
     ];
     for (const ruta of vistasPanel) {
       const vista = renderApp(ruta);

@@ -31,7 +31,7 @@ export default function HistorialUsuario() {
                 <tr key={o.id}>
                   <td>{o.numero}</td>
                   <td>{formatoFecha(o.fecha)}</td>
-                  <td>{formatoFecha(o.cita.fecha)} {o.cita.hora}</td>
+                  <td>{o.cita ? `${formatoFecha(o.cita.fecha)} ${o.cita.hora}` : 'Solo tienda'}</td>
                   <td className="text-end">{formatoCLP(o.total)}</td>
                   <td><InsigniaEstado estado={o.estado} /></td>
                   <td><Link to={`/admin/ordenes/${o.id}`}>Ver detalle</Link></td>

@@ -44,7 +44,7 @@ export function ventasPorCategoria() {
 export function productosMasReservados(cantidad = 5) {
   const mapa = {};
   ordenesPagadas().forEach((orden) => {
-    orden.items.forEach((item) => {
+    orden.items.filter((item) => (item.tipo ?? 'diseno') === 'diseno').forEach((item) => { // solo diseños
       if (!mapa[item.productoId]) mapa[item.productoId] = { nombre: item.nombre, unidades: 0, monto: 0 };
       mapa[item.productoId].unidades += item.cantidad;
       mapa[item.productoId].monto += item.precio * item.cantidad;

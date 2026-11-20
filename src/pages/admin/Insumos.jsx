@@ -6,6 +6,7 @@ import FormularioInsumo from '../../components/organismos/FormularioInsumo.jsx';
 import {
   actualizarInsumo, crearInsumo, eliminarInsumo, esInsumoCritico, insumosCriticos, listarInsumos,
 } from '../../services/insumosService.js';
+import { formatoCLP } from '../../utils/formato.js';
 
 /**
  * Mantenedor de insumos (solo administrador): lo que el estudio usa para tatuar y SÍ se acaba.
@@ -42,8 +43,9 @@ export default function Insumos({ mostrarAviso }) {
     <>
       <h1 className="titulo-seccion">Insumos</h1>
       <p className="text-muted">
-        Materiales del estudio. A diferencia de los diseños, los insumos se acaban: cuando llegan al stock crítico
-        aparecen en la alerta.
+        Materiales del estudio y artículos de la Tienda. A diferencia de los diseños, los insumos se acaban:
+        cuando llegan al stock crítico aparecen en la alerta. Los marcados «A la venta» los compran los clientes
+        y su stock baja con cada compra pagada.
       </p>
       <AlertaStockCritico insumos={insumosCriticos()} enlazar={false} />
 
@@ -69,7 +71,7 @@ export default function Insumos({ mostrarAviso }) {
           <thead>
             <tr>
               <th scope="col">Código</th><th scope="col">Insumo</th><th scope="col">Tipo</th>
-              <th scope="col" className="text-center">Stock</th><th scope="col" className="text-center">Crítico</th>
+              <th scope="col" className="text-center">Stock</th><th scope="col" className="text-center">Crítico</th><th scope="col">Venta</th>
               <th scope="col">Acciones</th>
             </tr>
           </thead>
@@ -83,6 +85,7 @@ export default function Insumos({ mostrarAviso }) {
                   {i.stock} {i.unidad} {esInsumoCritico(i) && <Badge bg="warning" text="dark">Crítico</Badge>}
                 </td>
                 <td className="text-center">{i.stockCritico}</td>
+                <td>{i.aLaVenta ? <Badge bg="dark">{formatoCLP(i.precio)}</Badge> : <span className="text-muted small">Uso interno</span>}</td>
                 <td className="text-nowrap">
                   <Button variant="link" className="p-0 me-3 align-baseline" onClick={() => setEditando(i)}>Editar</Button>
                   <Button variant="link" className="text-danger p-0 align-baseline" onClick={() => setAEliminar(i)}>Eliminar</Button>

@@ -10,9 +10,9 @@ export default function Carrito({ carrito, mostrarAviso }) {
   const { items, total, cambiarCantidad, quitar, vaciar } = carrito;
   const navegar = useNavigate();
 
-  const quitarConAviso = (productoId) => {
-    quitar(productoId);
-    mostrarAviso('Diseño quitado de tu reserva.', 'secondary');
+  const quitarConAviso = (clave) => {
+    quitar(clave);
+    mostrarAviso('Producto quitado del carrito.', 'secondary');
   };
 
   return (
@@ -21,8 +21,9 @@ export default function Carrito({ carrito, mostrarAviso }) {
       <h1 className="titulo-seccion">Mi reserva</h1>
 
       {items.length === 0 ? (
-        <MensajeVacio titulo="Tu reserva está vacía" texto="Agrega uno o más diseños para agendar tu cita.">
-          <Link to="/productos" className="btn btn-dark">Explorar diseños</Link>
+        <MensajeVacio titulo="Tu reserva está vacía" texto="Agrega un diseño para agendar tu cita o un producto de la tienda.">
+          <Link to="/productos" className="btn btn-dark me-2">Explorar diseños</Link>
+          <Link to="/tienda" className="btn btn-outline-dark">Ir a la tienda</Link>
         </MensajeVacio>
       ) : (
         <Row className="g-4">

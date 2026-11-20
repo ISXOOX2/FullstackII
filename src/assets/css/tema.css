@@ -12,23 +12,24 @@
      usan min-width para ir agregando cambios en pantallas más grandes.
 
    TABLA DE CONTENIDO (sección · línea donde comienza)
-    1. Variables                                           35
-    2. Base                                                67
-    3. Botones y formularios                               113
-    4. Títulos, textos y contenedores                      167
-    5. Cabecera de la tienda                               204
-    6. Pie de página                                       279
-    7. Carrusel de portada                                 316
-    8. Tarjetas e imágenes                                 360
-    9. Home                                                465
-   10. Detalle de producto                                 483
-   11. Migas de pan y mensajes                             526
-   12. Carrito y checkout                                  545
-   13. Páginas informativas y blog                         579
-   14. Avisos y boleta                                     605
-   15. Panel de administración                             622
-   16. Puntos de interrupción · mobile first               686
-   17. Impresión                                           720
+    1. Variables                                          36
+    2. Base                                               68
+    3. Botones y formularios                              114
+    4. Títulos, textos y contenedores                     168
+    5. Cabecera de la tienda                              205
+    6. Pie de página                                      280
+    7. Carrusel de portada                                317
+    8. Tarjetas e imágenes                                361
+    9. Home                                               466
+   10. Detalle de producto                                484
+   11. Migas de pan y mensajes                            527
+   12. Carrito y checkout                                 546
+   13. Páginas informativas y blog                        580
+   14. Avisos y boleta                                    606
+   15. Panel de administración                            623
+   16. Reseñas, tienda y Mi proyecto                      687
+   17. Puntos de interrupción · mobile first              763
+   18. Impresión                                          797
    ========================================================================== */
 
 
@@ -683,7 +684,83 @@ img {
 }
 
 
-/* 16. PUNTOS DE INTERRUPCIÓN · MOBILE FIRST (mismos quiebres de Bootstrap)
+/* 16. RESEÑAS, TIENDA Y MI PROYECTO
+   ========================================================================== */
+.estrellas {
+  color: var(--tf-linea);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.estrellas-lg {
+  font-size: 1.5rem;
+}
+
+.estrella-llena {
+  color: var(--tf-acento);
+}
+
+.estrella-vacia {
+  color: var(--tf-borde-campo);
+}
+
+/* Selector de estrellas: los radio buttons están ocultos y la estrella es la etiqueta */
+.selector-estrellas {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.selector-estrellas label {
+  cursor: pointer;
+  padding: 0 0.1rem;
+}
+
+.selector-estrellas label:focus-within {
+  outline: 2px solid var(--tf-tinta);
+  outline-offset: 2px;
+}
+
+.tarjeta-resena blockquote {
+  font-size: 0.95rem;
+}
+
+.foto-resena {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-bottom: 2px solid var(--tf-tinta);
+}
+
+.etiqueta-barra {
+  width: 4.5rem;
+}
+
+.vista-previa {
+  display: block;
+  max-height: 12rem;
+  border: 2px solid var(--tf-tinta);
+}
+
+.miniatura-proyecto {
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border: 2px solid var(--tf-tinta);
+}
+
+.nav-pills .nav-link {
+  color: var(--tf-tinta);
+  border: 2px solid var(--tf-tinta);
+}
+
+.nav-pills .nav-link.active {
+  background-color: var(--tf-tinta);
+  color: var(--tf-papel);
+}
+
+
+/* 17. PUNTOS DE INTERRUPCIÓN · MOBILE FIRST (mismos quiebres de Bootstrap)
    ========================================================================== */
 
 /* Tablets horizontales, 768px y más (md) */
@@ -717,7 +794,7 @@ img {
 }
 
 
-/* 17. IMPRESIÓN (boleta en PDF)
+/* 18. IMPRESIÓN (boleta en PDF)
    Lo que no se imprime usa la clase d-print-none de Bootstrap en el JSX.
    ========================================================================== */
 @media print {

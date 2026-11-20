@@ -24,7 +24,9 @@ export default function Footer({ mostrarAviso }) {
             <h2 className="h6 text-uppercase">Explora</h2>
             <ul className="list-unstyled small">
               <li><Link to="/productos">Diseños</Link></li>
-              <li><Link to="/categorias">Estilos</Link></li>
+              <li><Link to="/mi-proyecto">Mi proyecto</Link></li>
+              <li><Link to="/tienda">Tienda</Link></li>
+              <li><Link to="/resenas">Reseñas</Link></li>
               <li><Link to="/ofertas">Ofertas</Link></li>
               <li><Link to="/blogs">Blog</Link></li>
             </ul>

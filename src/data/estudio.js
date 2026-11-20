@@ -53,3 +53,19 @@ export const CUENTAS_DEMO = [
   { rol: 'Vendedor', correo: 'vendedor.foreverink@gmail.com', password: 'Venta#123' },
   { rol: 'Cliente', correo: 'cliente.demo@gmail.com', password: 'Cliente#1' },
 ];
+
+// Zonas del cuerpo que el cliente puede elegir (lista desplegable, no se escribe a mano).
+export const ZONAS_CUERPO = [
+  'Antebrazo', 'Brazo (bíceps o tríceps)', 'Hombro', 'Muñeca', 'Mano', 'Dedos',
+  'Clavícula', 'Pecho', 'Costillas', 'Abdomen', 'Espalda alta', 'Espalda baja',
+  'Nuca', 'Detrás de la oreja', 'Cadera', 'Muslo', 'Rodilla', 'Pantorrilla', 'Tobillo', 'Pie',
+];
+export const LADOS_CUERPO = ['Izquierdo', 'Derecho', 'Centro'];
+
+// "Mi proyecto": el estudio responde a una idea propia en un máximo de 3 días hábiles (lunes a viernes).
+export const DIAS_HABILES_CONTACTO = 3;
+
+// Imágenes que suben los clientes (reseñas y Mi proyecto). Se guardan en localStorage,
+// por eso se limita el peso: 1 MB como máximo y solo JPG, PNG o WEBP.
+export const TIPOS_IMAGEN = ['image/jpeg', 'image/png', 'image/webp'];
+export const MAX_IMAGEN_BYTES = 1024 * 1024;

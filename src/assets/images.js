@@ -64,6 +64,14 @@ import solYRayos from './images/disenos/sol-y-rayos.svg';
 import solYRayosCuerpo from './images/disenos/sol-y-rayos-cuerpo.svg';
 import toriiLuna from './images/disenos/torii-luna.svg';
 import toriiLunaCuerpo from './images/disenos/torii-luna-cuerpo.svg';
+// Artículos de la tienda (cuidado del tatuaje y gift cards)
+import tiendaBalsamo from './images/tienda/balsamo.svg';
+import tiendaCrema from './images/tienda/crema.svg';
+import tiendaFilm from './images/tienda/film.svg';
+import tiendaGiftcard from './images/tienda/giftcard.svg';
+import tiendaJabon from './images/tienda/jabon.svg';
+import tiendaKit from './images/tienda/kit.svg';
+import tiendaProtector from './images/tienda/protector.svg';
 
 // La key es el nombre del archivo sin extensión: así se guarda en la base de datos simulada.
 const images = {
@@ -123,6 +131,13 @@ const images = {
   'sol-y-rayos-cuerpo': solYRayosCuerpo,
   'torii-luna': toriiLuna,
   'torii-luna-cuerpo': toriiLunaCuerpo,
+  'tienda-balsamo': tiendaBalsamo,
+  'tienda-crema': tiendaCrema,
+  'tienda-film': tiendaFilm,
+  'tienda-giftcard': tiendaGiftcard,
+  'tienda-jabon': tiendaJabon,
+  'tienda-kit': tiendaKit,
+  'tienda-protector': tiendaProtector,
 };
 
 export default images;

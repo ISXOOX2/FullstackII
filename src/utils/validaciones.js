@@ -9,7 +9,10 @@
  * un objeto { campo: 'mensaje' } solo con los campos que tienen error.
  * Son funciones "puras" (no tocan la pantalla), por eso son fáciles de probar con Vitest.
  */
-import { DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, EDAD_MINIMA, HORAS_CITA, TAMANO_MAX_CM, TAMANO_MIN_CM } from '../data/estudio.js';
+import {
+  DIAS_ATENCION, DIAS_MAXIMOS_AGENDA, EDAD_MINIMA, HORAS_CITA, LADOS_CUERPO, MAX_IMAGEN_BYTES, TAMANO_MAX_CM, TAMANO_MIN_CM,
+  TIPOS_IMAGEN, ZONAS_CUERPO,
+} from '../data/estudio.js';
 import { fechaISO, sumarDias } from './formato.js';
 
 // RFC 2822 (versión práctica): usuario@dominio.extension
@@ -268,18 +271,34 @@ export function validarFormularioCategoria(datos) {
 }
 
 /** Checkout: datos del cliente y datos de la cita. */
-export function validarFormularioCheckout(datos, ahora = new Date()) {
-  return soloErrores({
+/** La zona tiene que ser una de la lista del estudio (se elige en un select, no se escribe). */
+export function validarZona(valor) {
+  if (!valor) return 'Elige la zona del cuerpo.';
+  return ZONAS_CUERPO.includes(valor) ? '' : 'Elige una zona de la lista.';
+}
+
+/**
+ * Datos del checkout. Si conCita es false (el carrito solo tiene artículos de la tienda),
+ * no se piden tatuador, fecha, hora ni zona.
+ */
+export function validarFormularioCheckout(datos, ahora = new Date(), { conCita = true } = {}) {
+  const errores = {
     nombre: validarTexto(datos.nombre, { etiqueta: 'El nombre', max: 50 }),
     apellidos: validarTexto(datos.apellidos, { etiqueta: 'Los apellidos', max: 100 }),
     correo: validarCorreo(datos.correo),
     telefono: validarTelefono(datos.telefono, { obligatorio: true }),
-    fecha: validarFechaCita(datos.fecha, ahora),
-    hora: HORAS_CITA.includes(datos.hora) ? '' : 'Elige un horario disponible.',
-    tatuadorId: datos.tatuadorId ? '' : 'Elige con quién quieres tatuarte.',
-    zonaCuerpo: validarTexto(datos.zonaCuerpo, { etiqueta: 'La zona del cuerpo', max: 60 }),
-    indicaciones: validarTexto(datos.indicaciones, { etiqueta: 'Las indicaciones', obligatorio: false, max: 300 }),
-  });
+  };
+  if (conCita) {
+    Object.assign(errores, {
+      fecha: validarFechaCita(datos.fecha, ahora),
+      hora: HORAS_CITA.includes(datos.hora) ? '' : 'Elige un horario disponible.',
+      tatuadorId: datos.tatuadorId ? '' : 'Elige con quién quieres tatuarte.',
+      zonaCuerpo: validarZona(datos.zonaCuerpo),
+      ladoCuerpo: datos.ladoCuerpo && !LADOS_CUERPO.includes(datos.ladoCuerpo) ? 'Elige un lado de la lista.' : '',
+      indicaciones: validarTexto(datos.indicaciones, { etiqueta: 'Las indicaciones', obligatorio: false, max: 300 }),
+    });
+  }
+  return soloErrores(errores);
 }
 
 /** Tamaño que pide el cliente en el detalle del diseño: ancho y alto en centímetros. */
@@ -325,5 +344,51 @@ export function validarFormularioInsumo(datos) {
     unidad: validarTexto(datos.unidad, { etiqueta: 'La unidad', max: 30 }),
     stock: validarNumero(datos.stock, { etiqueta: 'El stock', min: 0, entero: true }),
     stockCritico: validarNumero(datos.stockCritico, { etiqueta: 'El stock crítico', min: 0, entero: true }),
+    // Si se vende en la Tienda, el precio y la descripción son obligatorios.
+    precio: datos.aLaVenta ? validarNumero(datos.precio, { etiqueta: 'El precio', min: 1000, entero: true }) : '',
+    descripcion: datos.aLaVenta ? validarTexto(datos.descripcion, { etiqueta: 'La descripción', max: 200 }) : '',
+    imagen: datos.aLaVenta && !datos.imagen ? 'Elige una imagen para la Tienda.' : '',
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Imágenes que suben los clientes, reseñas y "Mi proyecto"
+// ---------------------------------------------------------------------------
+
+/** Revisa un archivo de imagen ANTES de leerlo: tipo (JPG, PNG o WEBP) y peso (máx. 1 MB). */
+export function validarArchivoImagen(archivo) {
+  if (!archivo) return '';
+  if (!TIPOS_IMAGEN.includes(archivo.type)) return 'La imagen debe ser JPG, PNG o WEBP.';
+  if (archivo.size > MAX_IMAGEN_BYTES) return 'La imagen no puede pesar más de 1 MB.';
+  return '';
+}
+
+/** Reseña: estrellas de 1 (la peor) a 5 (la mejor) y un comentario de 10 a 400 caracteres. */
+export function validarFormularioResena(datos) {
+  const estrellas = Number(datos.estrellas);
+  const comentario = String(datos.comentario ?? '').trim();
+  return soloErrores({
+    estrellas: Number.isInteger(estrellas) && estrellas >= 1 && estrellas <= 5 ? '' : 'Elige de 1 a 5 estrellas.',
+    comentario: !comentario
+      ? 'Cuéntanos cómo te fue.'
+      : comentario.length < 10
+        ? 'El comentario debe tener al menos 10 caracteres.'
+        : comentario.length > 400 ? 'El comentario no puede superar los 400 caracteres.' : '',
+  });
+}
+
+/** Mi proyecto: nombre, correo, zona (de la lista) y la idea (20 a 600 caracteres). */
+export function validarFormularioProyecto(datos) {
+  const idea = String(datos.idea ?? '').trim();
+  return soloErrores({
+    nombre: validarTexto(datos.nombre, { etiqueta: 'El nombre', max: 80 }),
+    correo: validarCorreo(datos.correo),
+    zonaCuerpo: validarZona(datos.zonaCuerpo),
+    lado: datos.lado && !LADOS_CUERPO.includes(datos.lado) ? 'Elige un lado de la lista.' : '',
+    idea: !idea
+      ? 'Describe tu idea.'
+      : idea.length < 20
+        ? 'Cuéntanos un poco más (mínimo 20 caracteres).'
+        : idea.length > 600 ? 'La idea no puede superar los 600 caracteres.' : '',
   });
 }

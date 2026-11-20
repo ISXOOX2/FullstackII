@@ -43,8 +43,8 @@ export default function Ordenes() {
                   <td>{o.numero}</td>
                   <td>{formatoFecha(o.fecha)}</td>
                   <td>{o.cliente.nombre} {o.cliente.apellidos}</td>
-                  <td>{formatoFecha(o.cita.fecha)} {o.cita.hora}</td>
-                  <td>{nombreTatuador(o.cita.tatuadorId)}</td>
+                  <td>{o.cita ? `${formatoFecha(o.cita.fecha)} ${o.cita.hora}` : 'Solo tienda'}</td>
+                  <td>{o.cita ? nombreTatuador(o.cita.tatuadorId) : '—'}</td>
                   <td className="text-end">{formatoCLP(o.total)}</td>
                   <td>
                     <InsigniaEstado estado={o.estado} />

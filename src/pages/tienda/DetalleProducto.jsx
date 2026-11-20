@@ -86,7 +86,7 @@ function ContenidoDetalle({ producto, onAgregar }) {
       <Migas
         items={[
           { texto: 'Home', to: '/' },
-          { texto: nombreCategoria(producto.categoriaId), to: `/categorias/${producto.categoriaId}` },
+          { texto: 'Diseños', to: '/productos' },
           { texto: producto.nombre },
         ]}
       />

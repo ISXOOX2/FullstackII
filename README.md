@@ -12,7 +12,7 @@ Vitest + Testing Library + jsdom (pruebas unitarias y cobertura, clase React IV)
 
 | | Isabel Cántaro · Tienda y compra | Eduardo Caro · Usuarios y panel | Yeremi Vásquez · Diseño, componentes base y datos |
 |---|---|---|---|
-| Páginas | Home, Productos, Detalle, Categorías, Ofertas, Carrito, Checkout, Compra exitosa, Pago fallido | Login, Registro, Perfil y `pages/admin` | Nosotros, Blogs, Detalle blog, Contacto, 404 |
+| Páginas | Home, Productos, Detalle, Tienda, Mi proyecto, Reseñas, Ofertas, Carrito, Checkout, Compra exitosa, Pago fallido | Login, Registro, Perfil y `pages/admin` | Nosotros, Blogs, Detalle blog, Contacto, 404 |
 | Componentes | ListaProductos, TarjetaProducto, Galeria, TablaCarrito, FormularioCheckout, ResumenOrden, Boleta | FormularioLogin, FormularioUsuario, FormularioProducto, FormularioCategoria, RutaProtegida, LayoutAdmin | Átomos, CampoFormulario, Header, Footer, LayoutTienda, Avisos, LimiteDeErrores |
 | Lógica | Estado del carrito en `App.jsx`, carritoService, ordenesService, pagosService | Sesión en `App.jsx`, usuarios, productos, categorías y reportes, validaciones.js | `data/db.js`, seed.js, images.js, useFormulario.js, `tema.css`, `vite.config.js` (pruebas) |
 | Pruebas | 1, 5, 8, 12, 15 | 6, 7, 9, 10, 13 | 2, 3, 4, 11, 14 |
@@ -27,7 +27,7 @@ npm install            # instala las dependencias (una sola vez)
 npm run dev            # servidor de desarrollo -> http://localhost:5173
 npm run build          # genera la versión final en /dist
 npm run preview        # sirve /dist para revisarla
-npm test               # corre las 15 pruebas con Vitest
+npm test               # corre las 19 pruebas con Vitest
 npm run test:watch     # modo interactivo: vuelve a correr las pruebas al guardar
 npm run test:coverage  # pruebas + informe de cobertura (resumen en la terminal y coverage/index.html)
 ```
@@ -90,6 +90,7 @@ src/
 test/
   defensa.test.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
   complementarias.test.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary
+  nuevas.test.jsx          4 pruebas de las reglas nuevas: stock de la tienda, zonas, estrellas y 3 días hábiles
   ayudas.jsx, setup.js     Funciones de apoyo y configuración inicial de Vitest (matchers de jest-dom)
 docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
 ```
@@ -144,6 +145,20 @@ simulada; cuando los microservicios de Spring Boot estén listos, cada servicio 
   se limita es la agenda. Por eso los diseños no tienen stock y el máximo es de 5 por reserva.
 - **Insumos con stock crítico** (`/admin/insumos`, solo administrador): tintas, agujas, guantes, film, etc. Cada
   insumo tiene stock y stock crítico; cuando el stock es igual o menor al crítico aparece la alerta en el panel.
+- **Tienda** (`/tienda`): algunos insumos se venden a los clientes (jabón, crema, film, bálsamo, protector solar,
+  kit de cuidado y gift cards de $20.000, $50.000 y $100.000). En el panel se marcan con «Se vende en la Tienda»,
+  con precio, descripción e imagen. No se puede llevar más de lo que hay en stock y el stock baja solo cuando el pago
+  se aprueba. Si el carrito solo tiene artículos, no se pide cita: se retiran en el estudio.
+- **Diseños como opción:** los diseños se siguen mostrando para el cliente que aún no tiene idea; se agregan a la
+  reserva y al pagar se elige tatuador, fecha y hora.
+- **Mi proyecto** (`/mi-proyecto`): el cliente que ya tiene una idea envía su nombre, correo, zona, la idea y una
+  imagen de referencia opcional desde su dispositivo (JPG, PNG o WEBP de hasta 1 MB). El estudio lo contacta en
+  **3 días hábiles**; el personal lo gestiona en `/admin/proyectos` (atrasado si pasa la fecha y sigue «Nuevo»).
+- **Reseñas** (`/resenas`): estrellas de 1 (la peor) a 5 (la mejor), comentario y foto opcional. Solo los clientes
+  con sesión pueden opinar (una reseña por cliente); el administrador puede eliminarlas. El Home muestra el promedio.
+- **Zonas del cuerpo en lista desplegable:** en la reserva y en Mi proyecto la zona se elige de una lista fija
+  (`ZONAS_CUERPO` en `estudio.js`) más el lado (izquierdo, derecho o centro); ya no se escribe a mano.
+- **Sin menú de Estilos:** era redundante con Diseños; los estilos se filtran dentro de la página Diseños.
 - **Alerta de agenda:** el panel muestra las horas libres de cada tatuador en los próximos 6 días de atención y
   avisa cuando a alguno le quedan 6 horas o menos. En el pago también se avisa al cliente si el tatuador elegido
   tiene pocas horas.

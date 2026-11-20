@@ -36,6 +36,7 @@ export default function LayoutAdmin({ usuario, onCerrarSesion }) {
               {esAdmin && <Nav.Link as={NavLink} to="/admin" end>Dashboard</Nav.Link>}
               <Nav.Link as={NavLink} to="/admin/ordenes">Órdenes</Nav.Link>
               <Nav.Link as={NavLink} to="/admin/productos">Productos</Nav.Link>
+              <Nav.Link as={NavLink} to="/admin/proyectos">Proyectos</Nav.Link>
               {esAdmin && <Nav.Link as={NavLink} to="/admin/categorias">Categorías</Nav.Link>}
               {esAdmin && <Nav.Link as={NavLink} to="/admin/insumos">Insumos</Nav.Link>}
               {esAdmin && <Nav.Link as={NavLink} to="/admin/usuarios">Usuarios</Nav.Link>}

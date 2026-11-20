@@ -2,21 +2,20 @@ import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button, Container, Form, InputGroup, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import Logo from '../atomos/Logo.jsx';
-import { listarCategorias } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 
 /**
  * ORGANISMO · Header (cabecera), con el mismo nombre que en la diapositiva React III.
  * Cabecera de la tienda en dos filas:
  *  1) logo, buscador y botones de sesión;
- *  2) menú de navegación (Home, Categorías, Ofertas, Nosotros, Blog, Contacto) y el carrito.
+ *  2) menú de navegación (Home, Diseños, Mi proyecto, Tienda, Ofertas, Reseñas, Nosotros, Blog,
+ *     Contacto) y el carrito. Los estilos ya no tienen menú propio: se filtran dentro de Diseños.
  * Recibe por props quién está conectado (usuario) y el total del carrito, que viven en App.jsx.
  */
 export default function Header({ usuario, onCerrarSesion, total, cantidad }) {
   const navegar = useNavigate();
   const [busqueda, setBusqueda] = useState('');
   const [menuAbierto, setMenuAbierto] = useState(false);
-  const categorias = listarCategorias();
 
   const buscar = (evento) => {
     evento.preventDefault();
@@ -89,21 +88,15 @@ export default function Header({ usuario, onCerrarSesion, total, cantidad }) {
             <Nav className="me-auto" onClick={cerrarMenu}>
               <Nav.Link as={NavLink} to="/" end>Home</Nav.Link>
               <Nav.Link as={NavLink} to="/productos">Diseños</Nav.Link>
-              <NavDropdown title="Estilos" id="menu-categorias">
-                {categorias.map((c) => (
-                  <NavDropdown.Item as={Link} key={c.id} to={`/categorias/${c.id}`}>
-                    {c.nombre}
-                  </NavDropdown.Item>
-                ))}
-                <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="/categorias">Ver todos los estilos</NavDropdown.Item>
-              </NavDropdown>
+              <Nav.Link as={NavLink} to="/mi-proyecto">Mi proyecto</Nav.Link>
+              <Nav.Link as={NavLink} to="/tienda">Tienda</Nav.Link>
               <Nav.Link as={NavLink} to="/ofertas">Ofertas</Nav.Link>
+              <Nav.Link as={NavLink} to="/resenas">Reseñas</Nav.Link>
               <Nav.Link as={NavLink} to="/nosotros">Nosotros</Nav.Link>
               <Nav.Link as={NavLink} to="/blogs">Blog</Nav.Link>
               <Nav.Link as={NavLink} to="/contacto">Contacto</Nav.Link>
             </Nav>
-            <Link to="/carrito" className="pill-carrito" onClick={cerrarMenu} aria-label={`Carrito: ${cantidad} diseño(s), total ${formatoCLP(total)}`}>
+            <Link to="/carrito" className="pill-carrito" onClick={cerrarMenu} aria-label={`Carrito: ${cantidad} producto(s), total ${formatoCLP(total)}`}>
               <span aria-hidden="true">Mi reserva</span>
               <strong data-testid="total-carrito">{formatoCLP(total)}</strong>
               {cantidad > 0 && <span className="pill-cantidad">{cantidad}</span>}

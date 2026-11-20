@@ -2,9 +2,13 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
 import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioInsumo } from '../../utils/validaciones.js';
-import { TIPOS_INSUMO, siguienteCodigoInsumo } from '../../services/insumosService.js';
+import { IMAGENES_TIENDA, TIPOS_INSUMO, siguienteCodigoInsumo } from '../../services/insumosService.js';
+import images from '../../assets/images.js';
 
-const VACIO = { nombre: '', tipo: '', unidad: '', stock: '', stockCritico: '' };
+const VACIO = {
+  nombre: '', tipo: '', unidad: '', stock: '', stockCritico: '',
+  aLaVenta: false, precio: '', descripcion: '', imagen: '',
+};
 
 /**
  * ORGANISMO: formulario para crear o editar un insumo del estudio.
@@ -12,7 +16,11 @@ const VACIO = { nombre: '', tipo: '', unidad: '', stock: '', stockCritico: '' };
  */
 export default function FormularioInsumo({ inicial = null, onEnviar, onCancelar }) {
   const partida = inicial
-    ? Object.fromEntries(Object.keys(VACIO).map((k) => [k, String(inicial[k] ?? '')]))
+    ? {
+      ...Object.fromEntries(Object.keys(VACIO).map((k) => [k, String(inicial[k] ?? '')])),
+      aLaVenta: Boolean(inicial.aLaVenta),
+      precio: inicial.aLaVenta ? String(inicial.precio) : '',
+    }
     : VACIO;
   const f = useFormulario(partida, validarFormularioInsumo);
   const codigo = inicial ? inicial.codigo : siguienteCodigoInsumo();
@@ -48,6 +56,35 @@ export default function FormularioInsumo({ inicial = null, onEnviar, onCancelar 
             ayuda="Se alerta cuando el stock es igual o menor." {...p('stockCritico')}
           />
         </Col>
+        <Col xs={12}>
+          <Form.Check
+            id="i-venta" type="switch" name="aLaVenta" className="mb-3"
+            label="Se vende en la Tienda (cuidado del tatuaje o gift card)"
+            checked={f.valores.aLaVenta} onChange={f.manejarCambio}
+          />
+        </Col>
+        {/* Renderizado condicional: los datos de venta solo se piden si el insumo se vende */}
+        {f.valores.aLaVenta && (
+          <>
+            <Col xs={6} md={3}>
+              <CampoFormulario id="i-precio" etiqueta="Precio (CLP)" tipo="number" min={1000} step={10} {...p('precio')} />
+            </Col>
+            <Col xs={6} md={3}>
+              <CampoFormulario id="i-imagen" etiqueta="Imagen" tipo="select" {...p('imagen')}>
+                <option value="">Selecciona</option>
+                {IMAGENES_TIENDA.map((k) => <option key={k} value={k}>{k.replace('tienda-', '')}</option>)}
+              </CampoFormulario>
+            </Col>
+            <Col md={6}>
+              <CampoFormulario id="i-descripcion" etiqueta="Descripción para el cliente" maxLength={200} {...p('descripcion')} />
+            </Col>
+            {f.valores.imagen && (
+              <Col xs={12} className="mb-3">
+                <img src={images[f.valores.imagen]} alt="Vista previa" width="80" height="80" className="miniatura" />
+              </Col>
+            )}
+          </>
+        )}
       </Row>
       <div className="d-flex gap-2">
         <Button type="submit" variant="dark">{inicial ? 'Guardar cambios' : 'Agregar insumo'}</Button>

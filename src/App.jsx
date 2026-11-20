@@ -24,15 +24,16 @@ import LimiteDeErrores from './components/utilidades/LimiteDeErrores.jsx';
 import { autenticar } from './services/usuariosService.js';
 import { borrarSesion, guardarSesion, leerSesion } from './services/sesionService.js';
 import {
-  agregarItem, cambiarCantidad as cambiarCantidadItem, cantidadTotal, guardarCarrito, leerCarrito,
+  agregarArticulo, agregarItem, cambiarCantidad as cambiarCantidadItem, cantidadTotal, guardarCarrito, leerCarrito,
   quitarItem, totalCarrito, vaciarCarrito,
 } from './services/carritoService.js';
 
 import Home from './pages/tienda/Home.jsx';
 import Productos from './pages/tienda/Productos.jsx';
 import DetalleProducto from './pages/tienda/DetalleProducto.jsx';
-import Categorias from './pages/tienda/Categorias.jsx';
-import DetalleCategoria from './pages/tienda/DetalleCategoria.jsx';
+import Tienda from './pages/tienda/Tienda.jsx';
+import Resenas from './pages/tienda/Resenas.jsx';
+import MiProyecto from './pages/tienda/MiProyecto.jsx';
 import Ofertas from './pages/tienda/Ofertas.jsx';
 import Carrito from './pages/tienda/Carrito.jsx';
 import Checkout from './pages/tienda/Checkout.jsx';
@@ -60,6 +61,7 @@ const FormularioUsuarioPagina = lazy(() => import('./pages/admin/FormularioUsuar
 const HistorialUsuario = lazy(() => import('./pages/admin/HistorialUsuario.jsx'));
 const Reportes = lazy(() => import('./pages/admin/Reportes.jsx'));
 const Insumos = lazy(() => import('./pages/admin/Insumos.jsx'));
+const Proyectos = lazy(() => import('./pages/admin/Proyectos.jsx'));
 
 const SOLO_ADMIN = ['Administrador'];
 const PERSONAL = ['Administrador', 'Vendedor'];
@@ -121,13 +123,25 @@ export default function App() {
     return true;
   };
 
+  /** Agrega un artículo de la Tienda (cuidado o gift card) respetando su stock. */
+  const agregarArticuloAlCarrito = (articulo, cantidad = 1) => {
+    const resultado = agregarArticulo(items, articulo, cantidad);
+    if (resultado.mensaje) {
+      mostrarAviso(resultado.mensaje, 'danger');
+      return false;
+    }
+    setItems(resultado.items);
+    mostrarAviso(`«${articulo.nombre}» se agregó al carrito.`);
+    return true;
+  };
+
   // Todo lo que las páginas necesitan del carrito, en un solo objeto que se pasa por props.
   const carrito = {
     items,
     total: totalCarrito(items),
     cantidad: cantidadTotal(items),
-    cambiarCantidad: (productoId, cantidad) => setItems((actuales) => cambiarCantidadItem(actuales, productoId, cantidad)),
-    quitar: (productoId) => setItems((actuales) => quitarItem(actuales, productoId)),
+    cambiarCantidad: (clave, cantidad) => setItems((actuales) => cambiarCantidadItem(actuales, clave, cantidad)),
+    quitar: (clave) => setItems((actuales) => quitarItem(actuales, clave)),
     vaciar: () => setItems(vaciarCarrito()),
   };
 
@@ -152,8 +166,9 @@ export default function App() {
           <Route path="/" element={<Home onAgregar={agregarAlCarrito} />} />
           <Route path="/productos" element={<Productos onAgregar={agregarAlCarrito} />} />
           <Route path="/productos/:id" element={<DetalleProducto onAgregar={agregarAlCarrito} />} />
-          <Route path="/categorias" element={<Categorias />} />
-          <Route path="/categorias/:id" element={<DetalleCategoria onAgregar={agregarAlCarrito} />} />
+          <Route path="/mi-proyecto" element={<MiProyecto usuario={usuario} />} />
+          <Route path="/tienda" element={<Tienda onAgregar={agregarArticuloAlCarrito} />} />
+          <Route path="/resenas" element={<Resenas usuario={usuario} mostrarAviso={mostrarAviso} />} />
           <Route path="/ofertas" element={<Ofertas onAgregar={agregarAlCarrito} />} />
           <Route path="/carrito" element={<Carrito carrito={carrito} mostrarAviso={mostrarAviso} />} />
           <Route path="/checkout" element={<Checkout carrito={carrito} usuario={usuario} />} />
@@ -189,6 +204,7 @@ export default function App() {
           <Route path="ordenes/:id" element={<DetalleOrden usuario={usuario} mostrarAviso={mostrarAviso} />} />
           <Route path="productos" element={<ProductosAdmin usuario={usuario} mostrarAviso={mostrarAviso} />} />
           <Route path="productos/:id" element={<DetalleProductoAdmin usuario={usuario} />} />
+          <Route path="proyectos" element={<Proyectos mostrarAviso={mostrarAviso} />} />
           {/* Lo siguiente solo lo puede usar el administrador */}
           <Route path="productos/nuevo" element={soloAdmin(<FormularioProductoPagina mostrarAviso={mostrarAviso} />)} />
           <Route path="productos/:id/editar" element={soloAdmin(<FormularioProductoPagina mostrarAviso={mostrarAviso} />)} />

@@ -4,7 +4,7 @@ import Logo from '../atomos/Logo.jsx';
 import { ESTUDIO } from '../../data/estudio.js';
 import { nombreTatuador } from '../../data/tatuadores.js';
 import { formatoCLP, formatoFecha, formatoFechaLarga } from '../../utils/formato.js';
-import { textoTamano } from '../../services/productosService.js';
+import { claveDe, detalleItem } from '../../services/carritoService.js';
 
 /** Boleta / detalle de una orden. Se usa en la compra exitosa, el pago fallido y el panel admin. */
 export default function Boleta({ orden }) {
@@ -30,25 +30,30 @@ export default function Boleta({ orden }) {
           <p className="mb-0">{cliente.nombre} {cliente.apellidos}<br />{cliente.correo}<br />{cliente.telefono}</p>
         </section>
         <section className="col-md-6">
-          <h3 className="h6 text-uppercase">Cita</h3>
-          <p className="mb-0">
-            {formatoFechaLarga(cita.fecha)}, {cita.hora} hrs<br />
-            Con {nombreTatuador(cita.tatuadorId)}<br />
-            Zona: {cita.zonaCuerpo}
-            {cita.indicaciones && <><br />Indicaciones: {cita.indicaciones}</>}
-          </p>
+          <h3 className="h6 text-uppercase">{cita ? 'Cita' : 'Entrega'}</h3>
+          {/* Una compra solo de artículos no tiene cita: se retira en el estudio */}
+          {cita ? (
+            <p className="mb-0">
+              {formatoFechaLarga(cita.fecha)}, {cita.hora} hrs<br />
+              Con {nombreTatuador(cita.tatuadorId)}<br />
+              Zona: {cita.zonaCuerpo}
+              {cita.indicaciones && <><br />Indicaciones: {cita.indicaciones}</>}
+            </p>
+          ) : (
+            <p className="mb-0">Retiro en el estudio, de martes a sábado, mostrando esta boleta.</p>
+          )}
         </section>
       </div>
 
       <div className="table-responsive">
         <Table size="sm" className="align-middle">
           <thead>
-            <tr><th scope="col">Diseño</th><th scope="col" className="text-end">Precio</th><th scope="col" className="text-center">Cant.</th><th scope="col" className="text-end">Subtotal</th></tr>
+            <tr><th scope="col">Producto</th><th scope="col" className="text-end">Precio</th><th scope="col" className="text-center">Cant.</th><th scope="col" className="text-end">Subtotal</th></tr>
           </thead>
           <tbody>
             {orden.items.map((i) => (
-              <tr key={i.productoId}>
-                <td>{i.nombre} <small className="text-muted">({textoTamano(i)})</small></td>
+              <tr key={claveDe(i)}>
+                <td>{i.nombre} <small className="text-muted">({detalleItem(i)})</small></td>
                 <td className="text-end">{formatoCLP(i.precio)}</td>
                 <td className="text-center">{i.cantidad}</td>
                 <td className="text-end">{formatoCLP(i.precio * i.cantidad)}</td>

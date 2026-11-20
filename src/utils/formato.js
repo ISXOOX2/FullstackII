@@ -60,3 +60,18 @@ export function normalizarTexto(texto) {
     .toLowerCase()
     .trim();
 }
+
+/**
+ * Suma días HÁBILES (lunes a viernes) a una fecha 'aaaa-mm-dd'.
+ * Ej: un viernes + 3 días hábiles = el miércoles siguiente.
+ */
+export function sumarDiasHabiles(iso, dias) {
+  let fecha = iso;
+  let contados = 0;
+  while (contados < dias) {
+    fecha = sumarDias(fecha, 1);
+    const dia = new Date(`${fecha}T00:00:00`).getDay();
+    if (dia !== 0 && dia !== 6) contados += 1;
+  }
+  return fecha;
+}

@@ -22,7 +22,8 @@ import { SEMILLA } from './seed.js';
 // v4: precios según tamaño (máximo 20 cm) y sin tatuador asignado por diseño.
 // v5: el tamaño pasa de texto ('7 x 6 cm') a dos números: anchoCm y altoCm.
 // v6: los diseños ya no tienen stock; se agrega la colección de insumos con su stock crítico.
-export const CLAVE_BD = 'foreverInk_bd_v6';
+// v7: insumos a la venta (cuidado y gift cards), reseñas y proyectos de los clientes.
+export const CLAVE_BD = 'foreverInk_bd_v7';
 
 function clonar(objeto) {
   return JSON.parse(JSON.stringify(objeto));

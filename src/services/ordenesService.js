@@ -53,7 +53,7 @@ export function crearOrden({ usuarioId = null, cliente, cita, items }, ahora = n
     usuarioId,
     fecha,
     cliente,
-    cita: { ...cita, tatuadorId: Number(cita.tatuadorId) },
+    cita: cita ? { ...cita, tatuadorId: Number(cita.tatuadorId) } : null, // null = solo artículos
     items,
     total: totalDeItems(items),
     estado: ESTADOS.PENDIENTE,
@@ -72,7 +72,7 @@ export function crearOrden({ usuarioId = null, cliente, cita, items }, ahora = n
 export function actualizarDatosOrden(id, { cliente, cita, items }) {
   return actualizar(COLECCION, id, {
     cliente,
-    cita: { ...cita, tatuadorId: Number(cita.tatuadorId) },
+    cita: cita ? { ...cita, tatuadorId: Number(cita.tatuadorId) } : null,
     items,
     total: totalDeItems(items),
     estado: ESTADOS.PENDIENTE,
@@ -98,6 +98,7 @@ export function horasOcupadas(fecha, tatuadorId, ignorarOrdenId = null) {
       (o) =>
         o.estado === ESTADOS.PAGADA &&
         o.id !== Number(ignorarOrdenId) &&
+        o.cita &&
         o.cita.fecha === fecha &&
         o.cita.tatuadorId === Number(tatuadorId),
     )
@@ -168,6 +169,7 @@ export function tieneSolicitudPendiente(orden) {
 /** '' si el cliente puede hacer esa solicitud; si no, el motivo por el que no puede. */
 export function puedeSolicitar(orden, tipo, ahora = new Date()) {
   if (!orden) return 'La reserva no existe.';
+  if (!orden.cita) return 'Esta compra no tiene una cita.';
   if (orden.estado !== ESTADOS.PAGADA) return 'Solo se pueden modificar reservas pagadas.';
   if (tieneSolicitudPendiente(orden)) return 'Esta reserva ya tiene una solicitud en revisión.';
   const horas = horasHastaCita(orden, ahora);
@@ -296,7 +298,7 @@ export function cambiarEstadoOrden(ordenId, nuevoEstado, motivo, responsable = '
   if (!estadosPermitidos(orden).includes(nuevoEstado)) {
     return { ok: false, error: `No se puede pasar de "${orden.estado}" a "${nuevoEstado}".` };
   }
-  if (nuevoEstado === ESTADOS.PAGADA &&
+  if (nuevoEstado === ESTADOS.PAGADA && orden.cita &&
       !horasDisponibles(orden.cita.fecha, orden.cita.tatuadorId, orden.id).includes(orden.cita.hora)) {
     return { ok: false, error: 'La hora de esta cita ya está ocupada por otra reserva pagada.' };
   }

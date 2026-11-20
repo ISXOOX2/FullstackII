@@ -57,7 +57,7 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
                   {historial.map((o) => (
                     <tr key={o.id}>
                       <td>{o.numero}</td>
-                      <td>{formatoFecha(o.cita.fecha)} {o.cita.hora}</td>
+                      <td>{o.cita ? `${formatoFecha(o.cita.fecha)} ${o.cita.hora}` : 'Solo tienda'}</td>
                       <td className="text-end">{formatoCLP(o.total)}</td>
                       <td>
                         <InsigniaEstado estado={o.estado} />

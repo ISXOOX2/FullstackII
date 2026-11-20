@@ -401,25 +401,82 @@ const ORDENES = [
 ];
 
 // ----------------------------------------------------------------------------
-// INSUMOS: materiales que usan los tatuadores. ESTOS sí se acaban, por eso tienen stock.
+// INSUMOS: todo lo que el estudio tiene en bodega. ESTOS sí se acaban, por eso tienen stock.
 //  - stock        = cantidad que queda en bodega
 //  - stockCritico = si el stock baja a este número (o menos), el panel muestra una alerta
+//  - aLaVenta     = true si el cliente lo puede comprar en la Tienda (cuidado del tatuaje y gift cards);
+//                   en ese caso también tiene precio, descripción e imagen. Las tintas y agujas no se venden.
 // ----------------------------------------------------------------------------
+const interno = (id, nombre, tipo, unidad, stock, stockCritico) => ({
+  id, codigo: `IN-${String(id).padStart(3, '0')}`, nombre, tipo, unidad, stock, stockCritico,
+  aLaVenta: false, precio: 0, descripcion: '', imagen: '',
+});
+const venta = (id, nombre, tipo, unidad, stock, stockCritico, precio, imagen, descripcion) => ({
+  ...interno(id, nombre, tipo, unidad, stock, stockCritico), aLaVenta: true, precio, imagen, descripcion,
+});
+
 const INSUMOS = [
-  { id: 1, codigo: 'IN-001', nombre: 'Tinta negra (30 ml)', tipo: 'Tinta', unidad: 'frascos', stock: 8, stockCritico: 3 },
-  { id: 2, codigo: 'IN-002', nombre: 'Tinta gris (30 ml)', tipo: 'Tinta', unidad: 'frascos', stock: 2, stockCritico: 2 },
-  { id: 3, codigo: 'IN-003', nombre: 'Tinta roja (30 ml)', tipo: 'Tinta', unidad: 'frascos', stock: 4, stockCritico: 2 },
-  { id: 4, codigo: 'IN-004', nombre: 'Agujas de línea 3RL', tipo: 'Agujas', unidad: 'cajas', stock: 1, stockCritico: 2 },
-  { id: 5, codigo: 'IN-005', nombre: 'Agujas de relleno 7M1', tipo: 'Agujas', unidad: 'cajas', stock: 5, stockCritico: 2 },
-  { id: 6, codigo: 'IN-006', nombre: 'Guantes de nitrilo', tipo: 'Higiene', unidad: 'cajas', stock: 6, stockCritico: 3 },
-  { id: 7, codigo: 'IN-007', nombre: 'Film protector', tipo: 'Cuidado posterior', unidad: 'rollos', stock: 3, stockCritico: 2 },
-  { id: 8, codigo: 'IN-008', nombre: 'Crema cicatrizante', tipo: 'Cuidado posterior', unidad: 'unidades', stock: 12, stockCritico: 5 },
+  interno(1, 'Tinta negra (30 ml)', 'Tinta', 'frascos', 8, 3),
+  interno(2, 'Tinta gris (30 ml)', 'Tinta', 'frascos', 2, 2),
+  interno(3, 'Tinta roja (30 ml)', 'Tinta', 'frascos', 4, 2),
+  interno(4, 'Agujas de línea 3RL', 'Agujas', 'cajas', 1, 2),
+  interno(5, 'Agujas de relleno 7M1', 'Agujas', 'cajas', 5, 2),
+  interno(6, 'Guantes de nitrilo', 'Higiene', 'cajas', 6, 3),
+  interno(7, 'Film protector (uso del estudio)', 'Higiene', 'rollos', 3, 2),
+  venta(8, 'Crema cicatrizante 50 ml', 'Cuidado posterior', 'unidades', 12, 5, 8990, 'tienda-crema',
+    'Hidrata y ayuda a cicatrizar. Aplica una capa delgada 2 a 3 veces al día durante dos semanas.'),
+  venta(9, 'Jabón neutro para tatuajes', 'Cuidado posterior', 'unidades', 10, 4, 5990, 'tienda-jabon',
+    'Sin perfume ni alcohol. Lava el tatuaje con agua tibia y sécalo con toques suaves.'),
+  venta(10, 'Film de segunda piel (5 parches)', 'Cuidado posterior', 'cajas', 3, 3, 6990, 'tienda-film',
+    'Parches transparentes y respirables para proteger el tatuaje los primeros días.'),
+  venta(11, 'Bálsamo humectante 30 g', 'Cuidado posterior', 'unidades', 7, 3, 7490, 'tienda-balsamo',
+    'Mantiene la piel suave una vez que el tatuaje terminó de cicatrizar.'),
+  venta(12, 'Protector solar para tatuajes SPF 50', 'Cuidado posterior', 'unidades', 6, 2, 12990, 'tienda-protector',
+    'El sol es lo que más destiñe un tatuaje. Úsalo cuando ya esté cicatrizado.'),
+  venta(13, 'Kit de cuidado completo', 'Cuidado posterior', 'kits', 4, 2, 24990, 'tienda-kit',
+    'Jabón, crema cicatrizante, bálsamo y film: todo lo necesario para el primer mes.'),
+  venta(14, 'Gift card $20.000', 'Gift card', 'tarjetas', 30, 5, 20000, 'tienda-giftcard',
+    'Regala un tatuaje o productos de cuidado. Vale para cualquier reserva o compra en el estudio.'),
+  venta(15, 'Gift card $50.000', 'Gift card', 'tarjetas', 20, 5, 50000, 'tienda-giftcard',
+    'Regala un tatuaje o productos de cuidado. Vale para cualquier reserva o compra en el estudio.'),
+  venta(16, 'Gift card $100.000', 'Gift card', 'tarjetas', 10, 3, 100000, 'tienda-giftcard',
+    'Ideal para una pieza grande. Vale para cualquier reserva o compra en el estudio.'),
+];
+
+// ----------------------------------------------------------------------------
+// RESEÑAS de clientes: estrellas de 1 (la peor) a 5 (la mejor), comentario y foto opcional.
+// La foto puede ser una key de images.js (datos de ejemplo) o una imagen subida por el cliente.
+// ----------------------------------------------------------------------------
+const RESENAS = [
+  { id: 1, usuarioId: 4, nombre: 'Camila F.', estrellas: 5, fecha: '2026-08-23',
+    comentario: 'Me tatué la neko chibi y quedó idéntica al diseño. El estudio es súper limpio y me explicaron todos los cuidados.',
+    imagen: 'neko-chibi-cuerpo', disenoId: 1 },
+  { id: 2, usuarioId: 5, nombre: 'Joaquín A.', estrellas: 4, fecha: '2026-09-06',
+    comentario: 'Era mi primer tatuaje y estaba nervioso, pero me trataron muy bien. Solo tuve que esperar unos 15 minutos.',
+    imagen: '', disenoId: null },
+  { id: 3, usuarioId: 6, nombre: 'Antonia M.', estrellas: 5, fecha: '2026-09-20',
+    comentario: 'Las fases lunares en la espalda quedaron preciosas. Volvería sin pensarlo.',
+    imagen: 'fases-lunares-cuerpo', disenoId: null },
+  { id: 4, usuarioId: 7, nombre: 'Tomás R.', estrellas: 3, fecha: '2026-10-04',
+    comentario: 'El tatuaje quedó bien, pero me hubiera gustado que me avisaran antes de un cambio de horario.',
+    imagen: '', disenoId: null },
+];
+
+// ----------------------------------------------------------------------------
+// MI PROYECTO: ideas propias que envían los clientes. El estudio responde en 3 días hábiles.
+// ----------------------------------------------------------------------------
+const PROYECTOS = [
+  { id: 1, nombre: 'Fernanda Rojas', correo: 'fernanda.rojas@gmail.com', zonaCuerpo: 'Muñeca', lado: 'Izquierdo',
+    idea: 'Quiero el nombre de mi perrita con una huellita al lado, en letra fina.', imagen: '',
+    fecha: '2026-11-16', contactarAntesDe: '2026-11-19', estado: 'Contactado', usuarioId: null },
 ];
 
 export const SEMILLA = {
   categorias: CATEGORIAS,
   productos: PRODUCTOS,
   insumos: INSUMOS,
+  resenas: RESENAS,
+  proyectos: PROYECTOS,
   usuarios: USUARIOS,
   ordenes: ORDENES,
   mensajes: [],
