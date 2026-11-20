@@ -5,6 +5,7 @@ import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioProducto } from '../../utils/validaciones.js';
 import { IMAGENES_DISENO } from '../../data/imagenes.js';
 import { TAMANO_MAX_CM, TAMANO_MIN_CM } from '../../data/estudio.js';
+import { siguienteCodigoProducto } from '../../services/productosService.js';
 
 const VACIO = {
   codigo: '', nombre: '', descripcion: '', categoriaId: '', precio: '', precioOferta: '', stock: '', stockCritico: '',
@@ -17,8 +18,10 @@ export default function FormularioProducto({ inicial = null, categorias, onEnvia
   const partida = inicial
     ? Object.fromEntries(Object.keys(VACIO).map((k) => [k, inicial[k] ?? VACIO[k]]))
     : VACIO;
+  // El código lo asigna el sistema: al crear se muestra el siguiente; al editar, el que ya tiene.
+  const codigo = inicial ? inicial.codigo : siguienteCodigoProducto();
   const f = useFormulario(
-    { ...partida, categoriaId: String(partida.categoriaId ?? '') },
+    { ...partida, codigo, categoriaId: String(partida.categoriaId ?? '') },
     validarFormularioProducto,
   );
   const [errorGeneral, setErrorGeneral] = useState('');
@@ -37,7 +40,12 @@ export default function FormularioProducto({ inicial = null, categorias, onEnvia
     <Form onSubmit={enviar} noValidate aria-label="Formulario de diseño">
       {errorGeneral && <Alert variant="danger" role="alert">{errorGeneral}</Alert>}
       <Row>
-        <Col md={4}><CampoFormulario id="p-codigo" etiqueta="Código" maxLength={10} {...p('codigo')} /></Col>
+        <Col md={4}>
+          <CampoFormulario
+            id="p-codigo" etiqueta="Código" readOnly {...p('codigo')}
+            ayuda={inicial ? 'El código no se puede cambiar.' : 'Se asigna automáticamente.'}
+          />
+        </Col>
         <Col md={8}><CampoFormulario id="p-nombre" etiqueta="Nombre" maxLength={100} {...p('nombre')} /></Col>
         <Col xs={12}><CampoFormulario id="p-descripcion" etiqueta="Descripción" tipo="textarea" rows={3} maxLength={500} opcional {...p('descripcion')} /></Col>
         <Col md={4}>

@@ -67,25 +67,32 @@ export function obtenerProducto(id) {
   return obtenerPorId(COLECCION, id);
 }
 
-function codigoRepetido(codigo, idActual = null) {
-  return listarProductos().some(
-    (p) => p.codigo.toUpperCase() === String(codigo).trim().toUpperCase() && p.id !== Number(idActual),
-  );
+// Código de producto: lo asigna el sistema, no el administrador.
+// Formato FI-001, FI-002… Cada diseño nuevo toma el número siguiente al más alto que exista,
+// así nunca hay códigos repetidos ni escritos de distintas formas (fi-26, FI-0026…).
+export const PREFIJO_CODIGO = 'FI-';
+
+/** Código que recibirá el próximo diseño (por ejemplo FI-026 si el último es FI-025). */
+export function siguienteCodigoProducto() {
+  const mayor = listarProductos().reduce((max, p) => {
+    const numero = Number(String(p.codigo).replace(PREFIJO_CODIGO, ''));
+    return Number.isInteger(numero) ? Math.max(max, numero) : max;
+  }, 0);
+  return PREFIJO_CODIGO + String(mayor + 1).padStart(3, '0');
 }
 
-/** Crea un producto. Devuelve { ok, producto } o { ok:false, error }. */
+/** Crea un producto con el código siguiente. Devuelve { ok, producto } o { ok:false, error }. */
 export function crearProducto(datos) {
-  const producto = normalizarProducto(datos);
-  if (codigoRepetido(producto.codigo)) return { ok: false, error: 'Ya existe un producto con ese código.' };
+  const producto = { ...normalizarProducto(datos), codigo: siguienteCodigoProducto() };
   const imagenes = [producto.imagen];
   return { ok: true, producto: crear(COLECCION, { ...producto, imagenes }) };
 }
 
+/** Actualiza un producto. El código NO cambia: identifica al diseño para siempre. */
 export function actualizarProducto(id, datos) {
-  const producto = normalizarProducto(datos);
-  if (codigoRepetido(producto.codigo, id)) return { ok: false, error: 'Ya existe otro producto con ese código.' };
   const existente = obtenerProducto(id);
   if (!existente) return { ok: false, error: 'El producto no existe.' };
+  const producto = { ...normalizarProducto(datos), codigo: existente.codigo };
   const imagenes = existente.imagenes && existente.imagen === producto.imagen
     ? existente.imagenes
     : [producto.imagen];
