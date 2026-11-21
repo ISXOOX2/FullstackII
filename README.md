@@ -166,6 +166,8 @@ simulada; cuando los microservicios de Spring Boot estén listos, cada servicio 
   tiene pocas horas.
 - **Usuarios mayores de 18:** la fecha de nacimiento y el teléfono son obligatorios (registro y panel). No se
   aceptan menores de edad.
+- **Mapa en Nosotros:** un mapa interactivo de Google Maps (iframe, sin clave de API) con la dirección del
+  estudio, más los botones «Cómo llegar» y «Abrir en Google Maps». Componente `moleculas/MapaUbicacion.jsx`.
 - **Pruébalo en 3D:** el detalle de cada diseño enlaza a TryTattoo3D, un simulador gratuito para ver el tatuaje
   sobre un cuerpo en 3D.
 

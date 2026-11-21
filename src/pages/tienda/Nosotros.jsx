@@ -1,5 +1,6 @@
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import Migas from '../../components/moleculas/Migas.jsx';
+import MapaUbicacion from '../../components/moleculas/MapaUbicacion.jsx';
 import { ESTUDIO } from '../../data/estudio.js';
 import { TATUADORES } from '../../data/tatuadores.js';
 import { inicial } from '../../utils/formato.js';
@@ -33,6 +34,15 @@ export default function Nosotros() {
           </Card>
         </Col>
       </Row>
+
+      {/* Mapa interactivo con la dirección del estudio */}
+      <section className="mb-5" aria-labelledby="titulo-ubicacion">
+        <h2 id="titulo-ubicacion" className="titulo-seccion">Dónde estamos</h2>
+        <p className="text-muted">
+          {ESTUDIO.direccion}. Mueve el mapa o haz zoom para ubicarnos, o pide la ruta con «Cómo llegar».
+        </p>
+        <MapaUbicacion direccion={ESTUDIO.direccion} />
+      </section>
 
       <section aria-labelledby="titulo-equipo">
         <h2 id="titulo-equipo" className="titulo-seccion">Nuestro equipo</h2>

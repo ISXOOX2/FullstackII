@@ -28,8 +28,8 @@
    14. Avisos y boleta                                    606
    15. Panel de administración                            623
    16. Reseñas, tienda y Mi proyecto                      687
-   17. Puntos de interrupción · mobile first              763
-   18. Impresión                                          797
+   17. Puntos de interrupción · mobile first              769
+   18. Impresión                                          803
    ========================================================================== */
 
 
@@ -752,6 +752,12 @@ img {
 .nav-pills .nav-link {
   color: var(--tf-tinta);
   border: 2px solid var(--tf-tinta);
+}
+
+/* Mapa de Nosotros: borde de viñeta, como las tarjetas */
+.mapa-ubicacion .ratio {
+  border: 2px solid var(--tf-tinta);
+  box-shadow: var(--tf-sombra);
 }
 
 .nav-pills .nav-link.active {
