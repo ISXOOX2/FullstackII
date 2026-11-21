@@ -3,14 +3,15 @@
 // • Recibe por props la orden y la función onEnviar; el componente padre (Perfil) decide qué hacer.
 // • Usa el hook useFormulario para validar en tiempo real (motivo, justificativo, fecha y hora).
 // • Renderizado condicional: los campos de fecha y hora solo aparecen si elige "cambio".
-// • Las reglas de plazo (48 h / 24 h) vienen de ordenesService.puedeSolicitar.
+// • Las reglas de plazo (48 h / 24 h; 10 días para compras de la tienda) vienen de
+//   ordenesService.puedeSolicitar. Una compra sin cita solo puede pedir reembolso.
 // ───────────────────────────────────────────────────────────────────────────
 import { useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
 import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioSolicitud } from '../../utils/validaciones.js';
-import { MOTIVOS_SOLICITUD } from '../../data/estudio.js';
+import { DIAS_RETRACTO_TIENDA, MOTIVOS_SOLICITUD } from '../../data/estudio.js';
 import { NOMBRE_SOLICITUD, TIPOS_SOLICITUD, horasDisponibles, puedeSolicitar } from '../../services/ordenesService.js';
 import { formatoFecha } from '../../utils/formato.js';
 
@@ -34,7 +35,7 @@ export default function FormularioSolicitud({ orden, onEnviar, onCancelar }) {
 
   const esCambio = f.valores.tipo === TIPOS_SOLICITUD.CAMBIO;
   // Horas libres del mismo tatuador en la fecha elegida (sin contar la propia reserva).
-  const horas = f.valores.fecha && !f.errores.fecha
+  const horas = orden.cita && f.valores.fecha && !f.errores.fecha
     ? horasDisponibles(f.valores.fecha, orden.cita.tatuadorId, orden.id)
     : [];
 
@@ -65,7 +66,9 @@ export default function FormularioSolicitud({ orden, onEnviar, onCancelar }) {
   return (
     <Form onSubmit={enviar} noValidate aria-label="Solicitud sobre la reserva">
       <p className="text-muted small">
-        Reserva <strong>{orden.numero}</strong> · cita actual: {formatoFecha(orden.cita.fecha)} a las {orden.cita.hora}
+        {orden.cita
+          ? <>Reserva <strong>{orden.numero}</strong> · cita actual: {formatoFecha(orden.cita.fecha)} a las {orden.cita.hora}</>
+          : <>Compra <strong>{orden.numero}</strong> de la tienda · tienes {DIAS_RETRACTO_TIENDA} días desde la compra para arrepentirte (producto sin abrir).</>}
       </p>
       {errorGeneral && <Alert variant="danger" role="alert">{errorGeneral}</Alert>}
 

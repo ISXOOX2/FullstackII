@@ -39,11 +39,16 @@ export const TAMANO_MAX_CM = 20;
 // • Cambio de fecha y hora: hasta 24 horas antes de la cita, con un justificativo.
 export const HORAS_ANTICIPACION_REEMBOLSO = 48;
 export const HORAS_ANTICIPACION_CAMBIO = 24;
+// Compras de la tienda (sin cita): el cliente puede arrepentirse y pedir reembolso hasta 10 días
+// después de la compra (derecho a retracto de las compras a distancia), con el producto sin abrir.
+export const DIAS_RETRACTO_TIENDA = 10;
 export const MOTIVOS_SOLICITUD = [
   'Problema de salud',
   'Tuve un imprevisto (trabajo, estudios o viaje)',
   'Me equivoqué al hacer la reserva',
   'Quiero cambiar de diseño o de tatuador',
+  'Me arrepentí de la compra',
+  'El producto llegó dañado o no es lo que pedí',
   'Otro motivo',
 ];
 

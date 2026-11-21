@@ -100,6 +100,14 @@ export function revisarStockArticulos(items) {
   return '';
 }
 
+/** Devuelve al stock lo que se reembolsó (el cliente devolvió el producto sin abrir). */
+export function reponerStockArticulos(items) {
+  items.filter((i) => i.tipo === 'articulo').forEach((item) => {
+    const insumo = obtenerInsumo(item.articuloId);
+    if (insumo) actualizar(COLECCION, insumo.id, { stock: insumo.stock + item.cantidad });
+  });
+}
+
 /** Descuenta del stock lo que se vendió (se llama cuando el pago fue aprobado). */
 export function descontarStockArticulos(items) {
   items.filter((i) => i.tipo === 'articulo').forEach((item) => {

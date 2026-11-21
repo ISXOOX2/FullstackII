@@ -71,7 +71,7 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
                         <Button variant="link" size="sm" className="p-0" onClick={() => setOrdenVista(o)}>Ver boleta</Button>
                         {puedeGestionar(o) && (
                           <Button variant="link" size="sm" className="p-0 ms-2" onClick={() => setOrdenGestion(o)}>
-                            Cambiar o reembolsar
+                            {o.cita ? 'Cambiar o reembolsar' : 'Pedir reembolso'}
                           </Button>
                         )}
                       </td>
@@ -90,7 +90,7 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
       </Modal>
 
       <Modal show={Boolean(ordenGestion)} onHide={() => setOrdenGestion(null)} centered>
-        <Modal.Header closeButton><Modal.Title as="h2" className="h5">Cambiar fecha o pedir reembolso</Modal.Title></Modal.Header>
+        <Modal.Header closeButton><Modal.Title as="h2" className="h5">{ordenGestion?.cita ? 'Cambiar fecha o pedir reembolso' : 'Pedir reembolso'}</Modal.Title></Modal.Header>
         <Modal.Body>
           {ordenGestion && (
             <FormularioSolicitud orden={ordenGestion} onEnviar={enviarSolicitud} onCancelar={() => setOrdenGestion(null)} />

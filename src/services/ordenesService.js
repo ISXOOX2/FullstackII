@@ -6,8 +6,10 @@ import { listar, obtenerPorId, crear, actualizar } from '../data/db.js';
 import {
   DIAS_ALERTA_AGENDA, DIAS_ATENCION, HORAS_ANTICIPACION_CAMBIO, HORAS_ANTICIPACION_REEMBOLSO, HORAS_CITA,
   HORAS_LIBRES_CRITICAS,
+  DIAS_RETRACTO_TIENDA,
 } from '../data/estudio.js';
 import { TATUADORES } from '../data/tatuadores.js';
+import { reponerStockArticulos } from './insumosService.js';
 import { fechaISO, sumarDias } from '../utils/formato.js';
 import { validarCambioEstado, validarFormularioSolicitud } from '../utils/validaciones.js';
 
@@ -169,7 +171,7 @@ export function tieneSolicitudPendiente(orden) {
 /** '' si el cliente puede hacer esa solicitud; si no, el motivo por el que no puede. */
 export function puedeSolicitar(orden, tipo, ahora = new Date()) {
   if (!orden) return 'La reserva no existe.';
-  if (!orden.cita) return 'Esta compra no tiene una cita.';
+  if (!orden.cita) return puedeReembolsarCompraTienda(orden, tipo, ahora);
   if (orden.estado !== ESTADOS.PAGADA) return 'Solo se pueden modificar reservas pagadas.';
   if (tieneSolicitudPendiente(orden)) return 'Esta reserva ya tiene una solicitud en revisión.';
   const horas = horasHastaCita(orden, ahora);
@@ -179,6 +181,25 @@ export function puedeSolicitar(orden, tipo, ahora = new Date()) {
     return tipo === TIPOS_SOLICITUD.REEMBOLSO
       ? `El reembolso se puede pedir hasta ${minimo} horas antes de la cita.`
       : `El cambio de fecha se puede pedir hasta ${minimo} horas antes de la cita.`;
+  }
+  return '';
+}
+
+/** Días que pasaron desde que se hizo la orden. */
+export function diasDesdeCompra(orden, ahora = new Date()) {
+  return (ahora.getTime() - new Date(orden.fecha).getTime()) / 86400000;
+}
+
+/**
+ * Compra solo de la tienda (sin cita): no hay hora que cambiar, pero el cliente se puede
+ * arrepentir y pedir el reembolso hasta DIAS_RETRACTO_TIENDA días después de comprar.
+ */
+function puedeReembolsarCompraTienda(orden, tipo, ahora) {
+  if (tipo === TIPOS_SOLICITUD.CAMBIO) return 'Una compra de la tienda no tiene cita que cambiar.';
+  if (orden.estado !== ESTADOS.PAGADA) return 'Solo se pueden reembolsar compras pagadas.';
+  if (tieneSolicitudPendiente(orden)) return 'Esta compra ya tiene una solicitud en revisión.';
+  if (diasDesdeCompra(orden, ahora) > DIAS_RETRACTO_TIENDA) {
+    return `El reembolso de productos se puede pedir hasta ${DIAS_RETRACTO_TIENDA} días después de la compra.`;
   }
   return '';
 }
@@ -241,6 +262,7 @@ export function responderSolicitud(ordenId, aprobar, respuesta = '', ahora = new
   if (!aprobar) return { ok: true, error: '', orden: actualizar(COLECCION, orden.id, { solicitud: respondida }) };
 
   if (solicitud.tipo === TIPOS_SOLICITUD.REEMBOLSO) {
+    reponerStockArticulos(orden.items); // los productos de la tienda vuelven a bodega
     return {
       ok: true, error: '',
       orden: actualizar(COLECCION, orden.id, { estado: ESTADOS.REEMBOLSADA, solicitud: respondida }),
@@ -302,6 +324,8 @@ export function cambiarEstadoOrden(ordenId, nuevoEstado, motivo, responsable = '
       !horasDisponibles(orden.cita.fecha, orden.cita.tatuadorId, orden.id).includes(orden.cita.hora)) {
     return { ok: false, error: 'La hora de esta cita ya está ocupada por otra reserva pagada.' };
   }
+
+  if (nuevoEstado === ESTADOS.REEMBOLSADA) reponerStockArticulos(orden.items);
 
   const registro = {
     de: orden.estado,

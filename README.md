@@ -27,7 +27,7 @@ npm install            # instala las dependencias (una sola vez)
 npm run dev            # servidor de desarrollo -> http://localhost:5173
 npm run build          # genera la versión final en /dist
 npm run preview        # sirve /dist para revisarla
-npm test               # corre las 19 pruebas con Vitest
+npm test               # corre las 20 pruebas con Vitest
 npm run test:watch     # modo interactivo: vuelve a correr las pruebas al guardar
 npm run test:coverage  # pruebas + informe de cobertura (resumen en la terminal y coverage/index.html)
 ```
@@ -90,7 +90,7 @@ src/
 test/
   defensa.test.jsx         Las 10 pruebas de la defensa (propuesta de pruebas del Anexo 1)
   complementarias.test.jsx 5 pruebas más: CRUD, compra aprobada, todas las vistas, XSS y Error Boundary
-  nuevas.test.jsx          4 pruebas de las reglas nuevas: stock de la tienda, zonas, estrellas y 3 días hábiles
+  nuevas.test.jsx          5 pruebas de las reglas nuevas: stock, zonas, estrellas, 3 días hábiles y reembolso de productos
   ayudas.jsx, setup.js     Funciones de apoyo y configuración inicial de Vitest (matchers de jest-dom)
 docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
 ```
@@ -134,6 +134,8 @@ simulada; cuando los microservicios de Spring Boot estén listos, cada servicio 
   La nueva hora tiene que estar libre para el mismo tatuador.
 - **Reembolso:** hasta 48 horas antes de la cita, con motivo y justificativo. Si se aprueba, la orden queda
   *Reembolsada* y la hora se libera.
+- **Reembolso de productos de la tienda:** si el cliente se arrepiente, lo pide desde *Mi perfil* hasta 10 días
+  después de la compra (producto sin abrir). Al aprobarlo, la orden queda *Reembolsada* y el stock vuelve a bodega.
 - El **administrador** aprueba o rechaza las solicitudes desde el detalle de la orden (el vendedor solo las ve).
   Los plazos están en `src/data/estudio.js`.
 - **Código de producto automático:** al crear un diseño se asigna el siguiente (`FI-026`, `FI-027`…) y no se
