@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "nombre": "Isabel Cántaro",
+    "especialidad": "Todos los estilos",
+    "descripcion": "Te ayuda a elegir el diseño, el tamaño y la zona ideal para tu tatuaje."
+  },
+  {
+    "id": 2,
+    "nombre": "Eduardo Caro",
+    "especialidad": "Todos los estilos",
+    "descripcion": "Cuida que cada línea quede limpia y que tu tatuaje se vea bien por muchos años."
+  },
+  {
+    "id": 3,
+    "nombre": "Yeremi Vásquez",
+    "especialidad": "Todos los estilos",
+    "descripcion": "Adapta los diseños del catálogo a tu cuerpo y a tu estilo personal."
+  }
+]

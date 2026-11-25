@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "nombre": "Kawaii",
+    "descripcion": "Personajes tiernos y adorables: animalitos, comida con carita y mucha ternura.",
+    "imagen": "neko-chibi"
+  },
+  {
+    "id": 2,
+    "nombre": "Anime",
+    "descripcion": "Escenas y estética de series japonesas: miradas expresivas, katanas, máscaras y paisajes.",
+    "imagen": "katana-sakura"
+  },
+  {
+    "id": 3,
+    "nombre": "Tribal Y2K",
+    "descripcion": "Corazones, flores y diseños tribales gruesos, con el look de los 2000.",
+    "imagen": "corazon-tribal"
+  },
+  {
+    "id": 4,
+    "nombre": "Celestial",
+    "descripcion": "Estrellas, lunas, soles y destellos.",
+    "imagen": "fases-lunares"
+  },
+  {
+    "id": 5,
+    "nombre": "Cybersigilism",
+    "descripcion": "Líneas finas, afiladas y simétricas, con un aire más oscuro y futurista.",
+    "imagen": "sigilo-espina"
+  }
+]
