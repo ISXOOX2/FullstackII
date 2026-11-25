@@ -5,7 +5,7 @@ Sitio web de un estudio de tatuajes con estética manga: el cliente elige diseñ
 (tatuador, fecha y hora) y paga en línea (pago simulado). El personal del estudio administra el catálogo,
 las órdenes y los usuarios desde un panel.
 
-**Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 ·
+**Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 · GSAP ·
 Vitest + Testing Library + jsdom (pruebas unitarias y cobertura, clase React IV).
 
 ## Equipo y reparto de responsabilidades
@@ -108,6 +108,10 @@ docs/                      ERS, documento de cobertura de testing, guía de defe
 - **react-bootstrap** con solo el CSS de Bootstrap importado (guía 2.1.2): el JS de Bootstrap no es necesario.
 - **Hoja de estilos** (1.2.4 y 1.2.6): una sola hoja propia, formato estándar, tabla de contenido, mobile first
   (`min-width`), imágenes con `max-width: 100%` y sin estilos en línea ni `!important`.
+- **Animación del index con GSAP** (clase GSAP + React): `useRef` + `useGSAP` con `scope` en `Home.jsx`. Una
+  *timeline* hace entrar el texto de la portada, las estrellas flotan con `repeat: -1` y `yoyo`, y cada sección
+  aparece al hacer scroll con `ScrollTrigger` y `stagger`. Con `gsap.matchMedia` se respeta la preferencia de
+  "reducir movimiento" del sistema.
 - **Error Boundary** (2.3.5) y **carga diferida** del panel con `React.lazy` + `Suspense` (2.3.3).
 - **Pruebas con Vitest** (clase React IV, por indicación del docente en lugar de Jasmine y Karma): se configura en
   `vite.config.js` con `environment: 'jsdom'`, archivos `*.test.jsx`, `describe` / `it` / `expect`, mocks con `vi.fn()`,

@@ -473,6 +473,32 @@ img {
   box-shadow: var(--tf-sombra);
 }
 
+.forma {
+  position: absolute;
+  color: var(--tf-acento);
+  font-size: 1.75rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.forma-1 {
+  top: -0.5rem;
+  right: 8%;
+}
+
+.forma-2 {
+  top: 1.5rem;
+  right: 3%;
+  font-size: 1.25rem;
+  color: var(--tf-tinta);
+}
+
+.forma-3 {
+  top: 2.5rem;
+  right: 14%;
+  font-size: 1rem;
+}
+
 .paso-numero {
   font-family: 'Dela Gothic One', 'Arial Black', sans-serif;
   font-size: 2.6rem;
