@@ -5,7 +5,7 @@ name: Backend (compilar microservicios)
 on:
   push:
     branches: [main]
-    paths: ['backend/**', 'src/**', 'e2e/**', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'src/**', 'e2e/**', 'despliegue/**', 'docker-compose.yml', 'Dockerfile', '.github/workflows/backend.yml']
   pull_request:
     paths: ['backend/**']
   workflow_dispatch:
@@ -112,3 +112,29 @@ jobs:
         with:
           name: captura-error
           path: e2e-error.png
+
+  despliegue-docker:
+    # Lo mismo que se hará en AWS: docker compose levanta MySQL + 4 microservicios + Nginx con el front
+    needs: compilar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: docker compose up
+        run: docker compose up -d --build
+      - name: Revisar el sitio por el único link (http://localhost)
+        run: |
+          revisar() { if eval "$2"; then echo "✔ $1"; else echo "✘ $1"; exit 1; fi; }
+          for i in $(seq 1 60); do curl -sf http://localhost/api/v1/catalogo/disenos >/dev/null && break; sleep 5; done
+          revisar "frontend servido por Nginx" "curl -sf http://localhost/ | grep -q 'id=\"root\"'"
+          revisar "rutas de React (BrowserRouter) funcionan al recargar" "curl -sf http://localhost/blogs | grep -q 'id=\"root\"'"
+          revisar "ms-catalogo con MySQL" "test \"\$(curl -sf http://localhost/api/v1/catalogo/disenos | jq length)\" = 25"
+          revisar "ms-blog con MySQL" "test \"\$(curl -sf http://localhost/api/v1/blog | jq length)\" = 2"
+          TOKEN=$(curl -sf -H 'Content-Type: application/json' -d '{"correo":"admin.foreverink@gmail.com","password":"Admin#123"}' http://localhost/api/v1/usuarios/auth/login | jq -r .token)
+          revisar "login JWT y ms-reservas consulta a ms-catalogo dentro de Docker" "test \"\$(curl -sf -H 'Authorization: Bearer $TOKEN' http://localhost/api/v1/reservas/agenda | jq length)\" = 3"
+          for ms in usuarios catalogo reservas blog; do
+            revisar "Swagger de ms-$ms en /docs/$ms/swagger-ui.html" "curl -sfL http://localhost/docs/$ms/swagger-ui.html | grep -qi swagger"
+            revisar "OpenAPI de ms-$ms apunta a /docs/$ms" "curl -sf http://localhost/docs/$ms/v3/api-docs | jq -r '.servers[0].url' | grep -q '/docs/$ms'"
+          done
+      - name: Registros si algo falla
+        if: failure()
+        run: docker compose logs --tail=80

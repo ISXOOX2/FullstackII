@@ -1,0 +1,78 @@
+# Forever Ink completo: MySQL + 4 microservicios Spring Boot + frontend con Nginx.
+# Uso (en tu PC o en la instancia EC2):
+#   cp despliegue/.env.example .env   (y cambia las claves)
+#   docker compose up -d --build
+# Luego abre http://localhost (o http://IP-PUBLICA-DE-EC2).
+
+x-microservicio: &microservicio
+  restart: unless-stopped
+  depends_on:
+    mysql:
+      condition: service_healthy
+  environment: &entorno
+    DB_USUARIO: root
+    DB_PASSWORD: ${DB_PASSWORD:-foreverink}
+    JWT_SECRETO: ${JWT_SECRETO:-forever-ink-clave-de-desarrollo-cambiala-en-aws-minimo-32-caracteres}
+    CORS_ORIGENES: ${CORS_ORIGENES:-http://localhost}
+    TZ: America/Santiago
+    # Poca memoria por servicio para que todo quepa en una instancia pequeña de EC2
+    JAVA_TOOL_OPTIONS: -Xms64m -Xmx192m -XX:+UseSerialGC -XX:MaxMetaspaceSize=128m -Duser.timezone=America/Santiago
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-foreverink}
+      TZ: America/Santiago
+    command: --performance-schema=OFF --innodb-buffer-pool-size=64M
+    volumes:
+      - datos-mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+
+  ms-usuarios:
+    <<: *microservicio
+    build: ./backend/ms-usuarios
+    environment:
+      <<: *entorno
+      DB_URL: jdbc:mysql://mysql:3306/foreverink_usuarios?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+
+  ms-catalogo:
+    <<: *microservicio
+    build: ./backend/ms-catalogo
+    environment:
+      <<: *entorno
+      DB_URL: jdbc:mysql://mysql:3306/foreverink_catalogo?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+
+  ms-reservas:
+    <<: *microservicio
+    build: ./backend/ms-reservas
+    environment:
+      <<: *entorno
+      DB_URL: jdbc:mysql://mysql:3306/foreverink_reservas?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+      CATALOGO_URL: http://ms-catalogo:8082/api/v1/catalogo
+
+  ms-blog:
+    <<: *microservicio
+    build: ./backend/ms-blog
+    environment:
+      <<: *entorno
+      DB_URL: jdbc:mysql://mysql:3306/foreverink_blog?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+
+  frontend:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - ms-usuarios
+      - ms-catalogo
+      - ms-reservas
+      - ms-blog
+
+volumes:
+  datos-mysql:
