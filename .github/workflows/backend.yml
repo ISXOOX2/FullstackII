@@ -40,3 +40,22 @@ jobs:
           java -jar target/${{ matrix.servicio }}-1.0.0.jar --spring.profiles.active=h2 --server.port=9000 > app.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:9000/v3/api-docs > /dev/null && break; sleep 2; done
           curl -sf http://localhost:9000/v3/api-docs | head -c 400 || (cat app.log; exit 1)
+
+  integracion:
+    # Levanta los 4 microservicios juntos y prueba el flujo completo (login, compra, pago, stock, reembolso y blog)
+    needs: compilar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: backend/*/pom.xml
+      - name: Compilar los 4 microservicios
+        run: for ms in usuarios catalogo reservas blog; do (cd backend/ms-$ms && mvn -B -q package -DskipTests); done
+      - name: Prueba de integración
+        env:
+          TZ: America/Santiago
+        run: bash backend/pruebas/integracion.sh
