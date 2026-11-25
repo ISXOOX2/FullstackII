@@ -5,7 +5,7 @@ name: Backend (compilar microservicios)
 on:
   push:
     branches: [main]
-    paths: ['backend/**', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'src/**', 'e2e/**', '.github/workflows/backend.yml']
   pull_request:
     paths: ['backend/**']
   workflow_dispatch:
@@ -59,3 +59,56 @@ jobs:
         env:
           TZ: America/Santiago
         run: bash backend/pruebas/integracion.sh
+
+  frontend-con-backend:
+    # El frontend real (VITE_USAR_API=true) contra los 4 microservicios: compra, reembolso y aprobación en un navegador
+    needs: compilar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: backend/*/pom.xml
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Compilar y levantar los 4 microservicios (H2)
+        env:
+          TZ: America/Santiago
+          CATALOGO_URL: http://localhost:8082/api/v1/catalogo
+        run: |
+          for par in usuarios:8081 catalogo:8082 reservas:8083 blog:8084; do
+            ms=${par%%:*}; puerto=${par##*:}
+            (cd backend/ms-$ms && mvn -B -q package -DskipTests)
+            nohup java -jar backend/ms-$ms/target/ms-$ms-1.0.0.jar --spring.profiles.active=h2 --server.port=$puerto > /tmp/ms-$ms.log 2>&1 &
+          done
+          for p in 8081 8082 8083 8084; do for i in $(seq 1 90); do curl -sf http://localhost:$p/v3/api-docs >/dev/null && break; sleep 2; done; done
+      - name: Compilar el frontend apuntando a la API
+        env:
+          VITE_USAR_API: 'true'
+          VITE_API_USUARIOS: http://localhost:8081/api/v1/usuarios
+          VITE_API_CATALOGO: http://localhost:8082/api/v1/catalogo
+          VITE_API_RESERVAS: http://localhost:8083/api/v1/reservas
+          VITE_API_BLOG: http://localhost:8084/api/v1/blog
+        run: npm ci && npm run build
+      - name: Prueba de punta a punta (Playwright)
+        env:
+          TZ: America/Santiago
+        run: |
+          nohup npx vite preview --port 4173 --strictPort > /tmp/front.log 2>&1 &
+          npm i --no-save playwright@1.49.1
+          npx playwright install --with-deps chromium
+          for i in $(seq 1 30); do curl -sf http://localhost:4173 >/dev/null && break; sleep 1; done
+          node e2e/integracion-front.mjs
+      - name: Registros si algo falla
+        if: failure()
+        run: for f in /tmp/ms-*.log /tmp/front.log; do echo "== $f"; tail -60 $f; done
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: captura-error
+          path: e2e-error.png
