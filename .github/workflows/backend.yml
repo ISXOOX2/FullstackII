@@ -1,0 +1,42 @@
+# Compila cada microservicio de Spring Boot cuando cambia algo en backend/.
+# Así se detecta un error de compilación antes de desplegar en AWS.
+name: Backend (compilar microservicios)
+
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**', '.github/workflows/backend.yml']
+  pull_request:
+    paths: ['backend/**']
+  workflow_dispatch:
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        servicio: [ms-usuarios, ms-catalogo, ms-reservas, ms-blog]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Revisar si el microservicio existe
+        id: existe
+        run: test -f backend/${{ matrix.servicio }}/pom.xml && echo "si=true" >> "$GITHUB_OUTPUT" || echo "si=false" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-java@v4
+        if: steps.existe.outputs.si == 'true'
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: backend/${{ matrix.servicio }}/pom.xml
+      - name: Compilar y empaquetar
+        if: steps.existe.outputs.si == 'true'
+        working-directory: backend/${{ matrix.servicio }}
+        run: mvn -B -q package -DskipTests
+      - name: Arrancar con H2 y revisar Swagger
+        if: steps.existe.outputs.si == 'true'
+        working-directory: backend/${{ matrix.servicio }}
+        run: |
+          java -jar target/${{ matrix.servicio }}-1.0.0.jar --spring.profiles.active=h2 --server.port=9000 > app.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:9000/v3/api-docs > /dev/null && break; sleep 2; done
+          curl -sf http://localhost:9000/v3/api-docs | head -c 400 || (cat app.log; exit 1)
