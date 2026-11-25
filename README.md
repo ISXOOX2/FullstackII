@@ -1,9 +1,15 @@
 # Forever Ink · Estudio de tatuajes (tienda + agendamiento de citas)
 
-Proyecto de la asignatura **Desarrollo Fullstack II (DSY1104)** · DuocUC · Evaluación Parcial 2.
+Proyecto de la asignatura **Desarrollo Fullstack II (DSY1104)** · DuocUC · Evaluación Final Transversal.
+
+![Backend](https://github.com/ISXOOX2/FullstackII/actions/workflows/backend.yml/badge.svg)
 Sitio web de un estudio de tatuajes con estética manga: el cliente elige diseños del catálogo, agenda su cita
 (tatuador, fecha y hora) y paga en línea (pago simulado). El personal del estudio administra el catálogo,
 las órdenes y los usuarios desde un panel.
+
+**Arquitectura:** frontend React + **4 microservicios Spring Boot** (usuarios, catálogo, reservas y blog) con
+MySQL, seguridad con **Spring Security + JWT**, documentación **Swagger** y despliegue en **AWS EC2** con un solo
+link (Nginx + Docker Compose).
 
 **Tecnologías:** React 19 · Vite · react-router-dom (BrowserRouter) · react-bootstrap / Bootstrap 5 · GSAP ·
 Vitest + Testing Library + jsdom (pruebas unitarias y cobertura, clase React IV).
@@ -93,6 +99,12 @@ test/
   nuevas.test.jsx          5 pruebas de las reglas nuevas: stock, zonas, estrellas, 3 días hábiles y reembolso de productos
   ayudas.jsx, setup.js     Funciones de apoyo y configuración inicial de Vitest (matchers de jest-dom)
 docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
+e2e/                       Prueba de punta a punta del frontend con el backend (Playwright, la corre el CI)
+backend/                   Los 4 microservicios Spring Boot (ms-usuarios, ms-catalogo, ms-reservas, ms-blog)
+  pruebas/integracion.sh   Prueba de integración de la API completa
+despliegue/                nginx.conf, .env.example y GUIA_AWS.md (EC2 paso a paso)
+Dockerfile                 Imagen del frontend (Vite -> Nginx)
+docker-compose.yml         MySQL + 4 microservicios + frontend: todo el sistema con un comando
 ```
 
 ## Decisiones técnicas (según el material de la asignatura)
@@ -117,18 +129,75 @@ docs/                      ERS, documento de cobertura de testing, guía de defe
   `vite.config.js` con `environment: 'jsdom'`, archivos `*.test.jsx`, `describe` / `it` / `expect`, mocks con `vi.fn()`,
   `renderHook`, `MemoryRouter` y comprobaciones `toBe` / `toBeTruthy` / `toContain`. Cobertura con `@vitest/coverage-v8`.
 
-## Persistencia simulada
+## Backend: microservicios Spring Boot (`backend/`)
 
-No hay backend. `src/data/db.js` ofrece un CRUD genérico (`crear`, `listar`, `obtenerPorId`, `actualizar`,
-`eliminar`) sobre `localStorage`, sembrado desde `seed.js`. Para volver a los datos originales basta con borrar
-el almacenamiento del sitio en el navegador (o llamar a `reiniciarBD()`).
+| Microservicio | Puerto | Ruta base | Qué hace | Swagger local |
+|---|---|---|---|---|
+| `ms-usuarios` | 8081 | `/api/v1/usuarios` | Registro (solo mayores de 18), login con **JWT**, mantenedor de usuarios por rol | http://localhost:8081/swagger-ui.html |
+| `ms-catalogo` | 8082 | `/api/v1/catalogo` | Diseños (sin stock, código FI-###), estilos, tatuadores, insumos con stock crítico y Tienda | http://localhost:8082/swagger-ui.html |
+| `ms-reservas` | 8083 | `/api/v1/reservas` | Agenda, órdenes, pago simulado, reembolsos, cambios de hora, cambio de estado e historial | http://localhost:8083/swagger-ui.html |
+| `ms-blog` | 8084 | `/api/v1/blog` | Artículos del blog (el front los vuelve a pedir cada 30 s) | http://localhost:8084/swagger-ui.html |
 
-### Preparado para el backend (axios)
+Cada microservicio sigue la estructura de la guía 3.1.2: `modelo` (entidades JPA), `repositorio`, `servicio`
+(reglas de negocio), `controlador` (REST con rutas versionadas `/api/v1`), `dto` (validaciones), `seguridad`
+(JWT) y `config` (Swagger, CORS, datos iniciales). Swagger usa **springdoc-openapi**, porque springfox (el de la
+guía) no funciona con Spring Boot 3.
 
-`src/services/api.js` tiene **una instancia de axios por microservicio** (usuarios, catálogo, reservas y blog),
-cada una con su dirección base y un interceptor que agrega el token JWT de la sesión. Las direcciones se
-configuran en un archivo `.env` (ver `.env.example`). Mientras `VITE_USAR_API=false`, la app sigue usando la base
-simulada; cuando los microservicios de Spring Boot estén listos, cada servicio del front pasa a usar su instancia.
+- **Seguridad:** `ms-usuarios` firma el token JWT (id, correo y rol) y los cuatro lo verifican con la misma clave.
+  Los permisos se revisan con `@PreAuthorize("hasRole('ADMINISTRADOR')")`. Las contraseñas se guardan con BCrypt.
+- **Comunicación entre microservicios:** `ms-reservas` consulta a `ms-catalogo` (RestClient) los precios reales
+  (el navegador no puede cambiarlos) y le pide descontar o reponer el stock de la Tienda.
+- **Base de datos:** MySQL, una base por microservicio (`foreverink_usuarios`, `_catalogo`, `_reservas`, `_blog`).
+  Se crean solas y se llenan con los mismos datos de ejemplo del frontend.
+
+### Levantar el backend en tu PC
+
+Requisitos: Java 17, Maven (o IntelliJ) y MySQL de XAMPP o Laragon encendido (usuario `root` sin contraseña).
+
+```bash
+cd backend/ms-catalogo && mvn spring-boot:run     # repetir en otra terminal para cada microservicio
+```
+
+Sin MySQL, con base en memoria: `mvn spring-boot:run -Dspring-boot.run.profiles=h2`.
+`ms-reservas` necesita a `ms-catalogo` encendido.
+
+Para usar el frontend con el backend, crea un `.env` (ver `.env.example`) con `VITE_USAR_API=true` y las
+direcciones `http://localhost:808X/api/v1/...`, y ejecuta `npm run dev`.
+
+### Todo junto con Docker (igual que en AWS)
+
+```bash
+cp despliegue/.env.example .env
+docker compose up -d --build      # luego abre http://localhost
+```
+
+El paso a paso para **AWS EC2** está en [`despliegue/GUIA_AWS.md`](despliegue/GUIA_AWS.md).
+
+### Pruebas automáticas en GitHub Actions
+
+Cada cambio se prueba solo (`.github/workflows/backend.yml`):
+
+1. Compila los 4 microservicios y revisa que Swagger responda.
+2. `backend/pruebas/integracion.sh` recorre la API completa: roles, compra, stock entre microservicios,
+   reembolso y blog.
+3. `e2e/integracion-front.mjs` (Playwright) usa el frontend real conectado al backend.
+4. `despliegue-docker` levanta el `docker-compose.yml` y revisa el link único y los 4 Swagger.
+
+## Persistencia y modo sin backend
+
+Con `VITE_USAR_API=true`, la API es la fuente de verdad. `src/services/sincronizacion.js` trae los datos de
+los microservicios y guarda una copia en `src/data/db.js`, que es lo que leen las páginas. Así funcionan sin
+cambios.
+
+Con `VITE_USAR_API=false` (el valor por defecto), el sitio funciona sin backend. `src/data/db.js` ofrece un CRUD
+genérico (`crear`, `listar`, `obtenerPorId`, `actualizar`, `eliminar`) sobre `localStorage`, sembrado desde
+`seed.js`. Las 20 pruebas de Vitest usan este modo.
+
+### Qué pasa por la API (con `VITE_USAR_API=true`)
+
+| Ya va por la API | Sigue local (pendiente de conectar) |
+|---|---|
+| Login y registro (JWT), catálogo, Tienda, insumos (lectura), usuarios (lectura, admin), checkout y pago, horas libres, órdenes del cliente y del panel, reembolsos y cambios de hora, respuesta del admin, cambio de estado, blog | Crear, editar y eliminar diseños, insumos y usuarios desde el panel; editar el perfil; reseñas; Mi proyecto; contacto |
 
 ## Reglas de negocio agregadas por la retroalimentación
 
@@ -178,6 +247,6 @@ simulada; cuando los microservicios de Spring Boot estén listos, cada servicio 
 
 ## Limitaciones conocidas (proyecto académico)
 
-- Sin backend: las contraseñas de los usuarios de ejemplo se guardan en texto plano en `localStorage`.
-  En un sistema real se almacenarían cifradas en un servidor.
+- En el modo sin backend, las contraseñas de los usuarios de ejemplo están en texto plano en `localStorage`.
+  Con el backend se guardan cifradas con BCrypt en MySQL.
 - El pago es una **simulación** (`pagosService`): no se cobra dinero real ni se envían correos reales.
