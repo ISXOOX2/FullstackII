@@ -82,7 +82,7 @@ try {
   await pagina.getByText('La solicitud fue aprobada.').waitFor();
   comprobar(await stockCrema() === stockAntes, 'reembolso aprobado: el stock volvió a bodega');
   await pagina.goto(`${BASE}/admin/ordenes`);
-  await pagina.getByText('Reembolsada').first().waitFor();
+  await pagina.locator('table').getByText('Reembolsada').first().waitFor(); // en la tabla (el filtro también tiene esa opción)
   ok('la orden aparece Reembolsada en el panel');
 
   comprobar(errores.length === 0, `sin errores de JavaScript ${errores.join(' | ')}`);
