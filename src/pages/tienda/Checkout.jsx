@@ -9,6 +9,9 @@ import { obtenerProducto } from '../../services/productosService.js';
 import { descontarStockArticulos, revisarStockArticulos } from '../../services/insumosService.js';
 import { esDiseno, tieneReservas } from '../../services/carritoService.js';
 import { pagosService } from '../../services/pagosService.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { crearOrdenApi, pagarOrdenApi } from '../../services/reservasApi.js';
+import { sincronizarTodo } from '../../services/sincronizacion.js';
 
 /** Valores con los que se pre-llena el formulario: orden anterior (reintento) o datos del usuario. */
 function valoresDePartida(usuario, ordenAnterior) {
@@ -83,6 +86,32 @@ export default function Checkout({ carrito, usuario }) {
         }
         : { clave: i.clave, tipo: 'articulo', articuloId: i.articuloId, nombre: i.nombre, imagen: i.imagen, precio: i.precio, cantidad: i.cantidad })),
     };
+    if (USAR_API) {
+      // Con backend: ms-reservas crea la orden (precios reales de ms-catalogo), valida la hora y,
+      // si el pago se aprueba, ocupa la hora y descuenta el stock de la Tienda.
+      if (!usuario) {
+        setError('Inicia sesión para confirmar tu reserva.');
+        setProcesando(false);
+        return;
+      }
+      try {
+        const ordenApi = ordenId ? { id: ordenId, total } : await crearOrdenApi(datos);
+        const respuesta = await pagosService.procesar({ total: ordenApi.total, resultado: v.resultadoPago });
+        const resultado = await pagarOrdenApi(ordenApi.id, respuesta.aprobado);
+        await sincronizarTodo(usuario); // trae la orden nueva y el stock actualizado
+        if (resultado.estado === 'Pagada') {
+          vaciar();
+          navegar(`/compra-exitosa/${resultado.id}`, { replace: true });
+        } else {
+          navegar(`/pago-fallido/${resultado.id}`, { replace: true });
+        }
+      } catch (e) {
+        setError(mensajeDeError(e));
+        setProcesando(false);
+      }
+      return;
+    }
+
     // Si es un reintento se reutiliza la misma orden; si no, se crea una nueva en estado Pendiente.
     const orden = ordenId ? actualizarDatosOrden(ordenId, datos) : crearOrden({ usuarioId: usuario?.id ?? null, ...datos });
 

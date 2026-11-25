@@ -2,7 +2,10 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import CampoFormulario from '../moleculas/CampoFormulario.jsx';
 import useFormulario from '../../utils/useFormulario.js';
 import { validarFormularioCheckout, validarFechaCita } from '../../utils/validaciones.js';
+import { useEffect, useState } from 'react';
 import { horasDisponibles, horasLibresProximas } from '../../services/ordenesService.js';
+import { USAR_API } from '../../services/api.js';
+import { horasDisponiblesApi } from '../../services/reservasApi.js';
 import { TATUADORES } from '../../data/tatuadores.js';
 import {
   DIAS_ALERTA_AGENDA, DIAS_MAXIMOS_AGENDA, HORAS_CITA, HORAS_LIBRES_CRITICAS, LADOS_CUERPO, ZONAS_CUERPO,
@@ -27,7 +30,8 @@ export default function FormularioCheckout({
     const errores = validarFormularioCheckout(datos, new Date(), { conCita });
     if (!conCita) return errores;
     // Si la hora elegida ya no está disponible (otro cliente la tomó) se avisa.
-    if (!errores.hora && !errores.fecha && datos.tatuadorId &&
+    // (con backend, esta revisión la hace ms-reservas al crear la orden)
+    if (!USAR_API && !errores.hora && !errores.fecha && datos.tatuadorId &&
         !horasDisponibles(datos.fecha, datos.tatuadorId, ordenId).includes(datos.hora)) {
       errores.hora = 'Ese horario ya fue reservado. Elige otro.';
     }
@@ -36,8 +40,20 @@ export default function FormularioCheckout({
 
   const { fecha, tatuadorId } = f.valores;
   const fechaValida = !validarFechaCita(fecha);
-  // Horarios libres para la fecha y el tatuador elegidos (se recalculan en cada render).
-  const horas = fechaValida && tatuadorId ? horasDisponibles(fecha, tatuadorId, ordenId) : [];
+  // Con backend, las horas libres se piden a ms-reservas cada vez que cambia la fecha o el tatuador.
+  const [horasApi, setHorasApi] = useState(null);
+  useEffect(() => {
+    if (!USAR_API || !fechaValida || !tatuadorId) return undefined;
+    let activo = true;
+    horasDisponiblesApi(fecha, tatuadorId)
+      .then((libres) => activo && setHorasApi(libres))
+      .catch(() => activo && setHorasApi([]));
+    return () => { activo = false; };
+  }, [fecha, tatuadorId, fechaValida]);
+
+  // Horarios libres para la fecha y el tatuador elegidos (sin backend se recalculan en cada render).
+  const horasLocales = fechaValida && tatuadorId ? horasDisponibles(fecha, tatuadorId, ordenId) : [];
+  const horas = USAR_API ? (fechaValida && tatuadorId ? horasApi ?? [] : []) : horasLocales;
 
   const enviar = (evento) => {
     evento.preventDefault();

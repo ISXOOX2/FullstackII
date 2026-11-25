@@ -24,10 +24,10 @@ export default function FormularioCambioEstado({ orden, puedeCambiar = false, on
   const [error, setError] = useState('');
   const historial = orden.historialEstados || [];
 
-  const enviar = (evento) => {
+  const enviar = async (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    const mensaje = onCambiar(f.valores.estado, f.valores.motivo);
+    const mensaje = await onCambiar(f.valores.estado, f.valores.motivo); // puede ir a la API
     setError(mensaje || '');
     if (!mensaje) f.reiniciar({ estado: '', motivo: '' });
   };

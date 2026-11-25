@@ -141,7 +141,7 @@ describe('Las 10 pruebas de la defensa', () => {
   });
 
   // ─── 7 · MOCK de un servicio con vi.fn() ──────────────────
-  it('7. FormularioLogin envía los datos al servicio (mock) y muestra el error que este responde', () => {
+  it('7. FormularioLogin envía los datos al servicio (mock) y muestra el error que este responde', async () => {
     // Arrange: un servicio "de mentira" que responde que la contraseña es incorrecta
     const servicioSesion = { iniciar: vi.fn() };
     servicioSesion.iniciar.mockReturnValue('Correo o contraseña incorrectos.');
@@ -152,9 +152,10 @@ describe('Las 10 pruebas de la defensa', () => {
     // Act
     fireEvent.click(screen.getByRole('button', { name: 'Iniciar sesión' }));
 
-    // Assert: se llamó al servicio con lo que escribió el usuario y se muestra su respuesta
+    // Assert: se llamó al servicio con lo que escribió el usuario y se muestra su respuesta.
+    // findByRole ESPERA a que aparezca el mensaje (el formulario espera la respuesta, que puede venir de la API).
     expect(servicioSesion.iniciar).toHaveBeenCalledWith({ correo: 'ana@gmail.com', password: 'Clave#12' });
-    expect(screen.getByRole('alert').textContent).toContain('Correo o contraseña incorrectos.');
+    expect((await screen.findByRole('alert')).textContent).toContain('Correo o contraseña incorrectos.');
   });
 
   // ─── 8 · MOCK de la pasarela de pago (vi.fn) ────────

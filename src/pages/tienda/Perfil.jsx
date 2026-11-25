@@ -8,6 +8,9 @@ import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { actualizarUsuario, historialDeCompras, obtenerUsuario, usuarioPublico } from '../../services/usuariosService.js';
 import { NOMBRE_SOLICITUD, TIPOS_SOLICITUD, crearSolicitud, puedeSolicitar } from '../../services/ordenesService.js';
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { solicitarApi } from '../../services/reservasApi.js';
+import { sincronizarOrdenes } from '../../services/sincronizacion.js';
 
 /** El cliente puede gestionar una reserva si al menos uno de los dos tipos de solicitud está permitido. */
 const puedeGestionar = (orden) =>
@@ -29,9 +32,19 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
   };
 
   /** Envía la solicitud; si alguna regla lo impide, el formulario muestra el error. */
-  const enviarSolicitud = (datos) => {
-    const resultado = crearSolicitud(ordenGestion.id, datos);
-    if (!resultado.ok) return resultado.error;
+  const enviarSolicitud = async (datos) => {
+    if (USAR_API) {
+      // Con backend: ms-reservas revisa los plazos (48 h, 24 h o 10 días) y guarda la solicitud
+      try {
+        await solicitarApi(ordenGestion.id, datos);
+        await sincronizarOrdenes(usuario);
+      } catch (error) {
+        return mensajeDeError(error);
+      }
+    } else {
+      const resultado = crearSolicitud(ordenGestion.id, datos);
+      if (!resultado.ok) return resultado.error;
+    }
     setOrdenGestion(null);
     mostrarAviso('Tu solicitud se envió. El estudio la revisará y verás la respuesta aquí.');
     return '';

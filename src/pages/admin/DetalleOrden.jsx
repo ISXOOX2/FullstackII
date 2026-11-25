@@ -6,6 +6,9 @@ import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import TarjetaSolicitud from '../../components/moleculas/TarjetaSolicitud.jsx';
 import FormularioCambioEstado from '../../components/organismos/FormularioCambioEstado.jsx';
 import { cambiarEstadoOrden, obtenerOrden, responderSolicitud } from '../../services/ordenesService.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { cambiarEstadoApi, responderSolicitudApi } from '../../services/reservasApi.js';
+import { sincronizarOrdenes } from '../../services/sincronizacion.js';
 
 /** Detalle de una orden. Si el cliente pidió un reembolso o un cambio de fecha, el administrador lo responde aquí. */
 export default function DetalleOrden({ usuario, mostrarAviso }) {
@@ -22,11 +25,22 @@ export default function DetalleOrden({ usuario, mostrarAviso }) {
       </MensajeVacio>
     );
   }
-  const responder = (aprobar, respuesta) => {
-    const resultado = responderSolicitud(orden.id, aprobar, respuesta);
-    if (!resultado.ok) {
-      setError(resultado.error);
-      return;
+  const responder = async (aprobar, respuesta) => {
+    if (USAR_API) {
+      // Con backend: ms-reservas aprueba o rechaza (y si es reembolso, pide a ms-catalogo reponer el stock)
+      try {
+        await responderSolicitudApi(orden.id, orden.solicitud.id, aprobar, respuesta);
+        await sincronizarOrdenes(usuario);
+      } catch (e) {
+        setError(mensajeDeError(e));
+        return;
+      }
+    } else {
+      const resultado = responderSolicitud(orden.id, aprobar, respuesta);
+      if (!resultado.ok) {
+        setError(resultado.error);
+        return;
+      }
     }
     setError('');
     setVersion(version + 1);
@@ -34,10 +48,19 @@ export default function DetalleOrden({ usuario, mostrarAviso }) {
   };
 
   /** Cambio manual de estado: devuelve '' si salió bien o el mensaje de error para el formulario. */
-  const cambiarEstado = (estado, motivo) => {
-    const responsable = `${usuario?.nombre ?? ''} ${usuario?.apellidos ?? ''}`.trim();
-    const resultado = cambiarEstadoOrden(orden.id, estado, motivo, responsable);
-    if (!resultado.ok) return resultado.error;
+  const cambiarEstado = async (estado, motivo) => {
+    if (USAR_API) {
+      try {
+        await cambiarEstadoApi(orden.id, estado, motivo);
+        await sincronizarOrdenes(usuario);
+      } catch (e) {
+        return mensajeDeError(e);
+      }
+    } else {
+      const responsable = `${usuario?.nombre ?? ''} ${usuario?.apellidos ?? ''}`.trim();
+      const resultado = cambiarEstadoOrden(orden.id, estado, motivo, responsable);
+      if (!resultado.ok) return resultado.error;
+    }
     setVersion(version + 1);
     mostrarAviso?.(`La orden pasó a «${estado}».`);
     return '';

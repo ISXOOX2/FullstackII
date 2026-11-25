@@ -20,10 +20,11 @@ export default function FormularioLogin({ onEnviar }) {
   const f = useFormulario({ correo: '', password: '' }, validarFormularioLogin);
   const [errorGeneral, setErrorGeneral] = useState('');
 
-  const enviar = (evento) => {
+  const enviar = async (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    setErrorGeneral(onEnviar(f.valores) || '');
+    // await: si onEnviar llama a la API, se espera su respuesta antes de mostrar el error
+    setErrorGeneral((await onEnviar(f.valores)) || '');
   };
 
   return (

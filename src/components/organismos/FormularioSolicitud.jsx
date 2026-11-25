@@ -39,10 +39,11 @@ export default function FormularioSolicitud({ orden, onEnviar, onCancelar }) {
     ? horasDisponibles(f.valores.fecha, orden.cita.tatuadorId, orden.id)
     : [];
 
-  const enviar = (evento) => {
+  const enviar = async (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    setErrorGeneral(onEnviar(f.valores) || '');
+    // await: si onEnviar llama a la API, se espera su respuesta antes de mostrar el error
+    setErrorGeneral((await onEnviar(f.valores)) || '');
   };
 
   const p = (campo) => ({

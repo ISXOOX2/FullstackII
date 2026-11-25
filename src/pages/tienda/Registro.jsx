@@ -2,14 +2,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
 import { registrarCliente } from '../../services/usuariosService.js';
+import { apiUsuarios, mensajeDeError, USAR_API } from '../../services/api.js';
 
 export default function Registro({ iniciarSesion, mostrarAviso }) {
   const navegar = useNavigate();
 
-  const registrar = (datos) => {
-    const resultado = registrarCliente(datos);
-    if (!resultado.ok) return resultado.error;
-    iniciarSesion(datos.correo, datos.password); // el cliente queda conectado de inmediato
+  const registrar = async (datos) => {
+    if (USAR_API) {
+      // Con backend: ms-usuarios valida (mayor de 18, RUN, correo único...) y crea la cuenta
+      try {
+        const { confirmarPassword, confirmarCorreo, ...cuenta } = datos;
+        await apiUsuarios.post('/auth/registro', cuenta);
+      } catch (error) {
+        return mensajeDeError(error);
+      }
+    } else {
+      const resultado = registrarCliente(datos);
+      if (!resultado.ok) return resultado.error;
+    }
+    await iniciarSesion(datos.correo, datos.password); // el cliente queda conectado de inmediato
     mostrarAviso('¡Cuenta creada! Ya puedes reservar tu hora.');
     navegar('/', { replace: true });
     return '';

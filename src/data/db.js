@@ -104,6 +104,16 @@ export function eliminar(coleccion, id) {
   return true;
 }
 
+/**
+ * Reemplaza una colección completa. Se usa cuando el backend está activo: los datos que llegan
+ * de la API se guardan aquí como copia, y el resto del frontend los lee igual que siempre.
+ */
+export function reemplazarColeccion(coleccion, registros) {
+  const bd = leerBD();
+  bd[coleccion] = clonar(registros);
+  escribirAlmacenamiento(bd);
+}
+
 /** Vuelve a dejar la base tal como viene en seed.js (útil para demostraciones y pruebas). */
 export function reiniciarBD() {
   escribirAlmacenamiento(clonar(SEMILLA));

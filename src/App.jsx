@@ -23,6 +23,8 @@ import ScrollArriba from './components/utilidades/ScrollArriba.jsx';
 import LimiteDeErrores from './components/utilidades/LimiteDeErrores.jsx';
 import { autenticar } from './services/usuariosService.js';
 import { borrarSesion, guardarSesion, leerSesion } from './services/sesionService.js';
+import { apiUsuarios, mensajeDeError, USAR_API } from './services/api.js';
+import { sincronizarTodo } from './services/sincronizacion.js';
 import {
   agregarArticulo, agregarItem, cambiarCantidad as cambiarCantidadItem, cantidadTotal, guardarCarrito, leerCarrito,
   quitarItem, totalCarrito, vaciarCarrito,
@@ -71,8 +73,23 @@ export default function App() {
   // Se recupera de sessionStorage para no perder la sesión al recargar la página.
   const [usuario, setUsuario] = useState(() => leerSesion());
 
-  /** Devuelve { ok, usuario } o { ok: false, error } para que el formulario muestre el mensaje. */
-  const iniciarSesion = (correo, password) => {
+  /**
+   * Devuelve { ok, usuario } o { ok: false, error } para que el formulario muestre el mensaje.
+   * Con el backend activo es async: pide el token JWT a ms-usuarios y lo guarda en la sesión
+   * (el interceptor de api.js lo agrega a todas las peticiones siguientes).
+   */
+  const iniciarSesion = async (correo, password) => {
+    if (USAR_API) {
+      try {
+        const respuesta = await apiUsuarios.post('/auth/login', { correo, password });
+        const sesion = { ...respuesta.data.usuario, token: respuesta.data.token };
+        guardarSesion(sesion);
+        setUsuario(sesion);
+        return { ok: true, usuario: sesion };
+      } catch (error) {
+        return { ok: false, error: mensajeDeError(error) };
+      }
+    }
     const encontrado = autenticar(correo, password);
     if (!encontrado) return { ok: false, error: 'Correo o contraseña incorrectos.' };
     guardarSesion(encontrado);
@@ -106,6 +123,18 @@ export default function App() {
     const id = Date.now() + Math.random();
     setAvisos((actuales) => [...actuales, { id, mensaje, variante }]);
   };
+
+  // ─── Backend: al abrir la app y al cambiar la sesión, se traen los datos de los microservicios ───
+  const [, setVersionDatos] = useState(0); // al cambiar, las páginas vuelven a leer la copia local
+  useEffect(() => {
+    if (!USAR_API) return undefined;
+    let activo = true;
+    sincronizarTodo(usuario)
+      .then(() => activo && setVersionDatos((v) => v + 1))
+      .catch((error) => activo && mostrarAviso(`No pudimos conectar con el servidor: ${mensajeDeError(error)}`, 'danger'));
+    return () => { activo = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [usuario?.token]);
 
   const cerrarAviso = (id) => {
     setAvisos((actuales) => actuales.filter((a) => a.id !== id));
