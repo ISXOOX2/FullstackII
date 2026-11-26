@@ -224,7 +224,7 @@ genérico (`crear`, `listar`, `obtenerPorId`, `actualizar`, `eliminar`) sobre `l
   después de la compra (producto sin abrir). Al aprobarlo, la orden queda *Reembolsada* y el stock vuelve a bodega.
 - El **administrador** aprueba o rechaza las solicitudes desde el detalle de la orden (el vendedor solo las ve).
   Los plazos están en `src/data/estudio.js`.
-- **Código de producto automático:** al crear un diseño se asigna el siguiente (`FI-030`, `FI-031`…) y no se
+- **Código de producto automático:** al crear un diseño se asigna el siguiente (`FI-031`, `FI-032`…) y no se
   puede editar.
 - **Cambio manual de estado de una orden** (solo administrador, con motivo e historial). Cambios permitidos:
   Pendiente → Pagada o Pago rechazado · Pagada → Pago rechazado o Reembolsada · Pago rechazado → Pagada o

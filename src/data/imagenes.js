@@ -21,6 +21,7 @@ export const IMAGENES_DISENO = [
   ['luna-chorreante', 'Luna chorreante'],
   ['mano-hannya', 'Mano hannya'],
   ['manos-fluidas', 'Manos fluidas'],
+  ['muerte-con-gatito', 'Muerte con gatito'],
   ['murcielagos-espinosos', 'Murciélagos espinosos'],
   ['ojos-espinosos', 'Ojos espinosos'],
   ['panda-globo-corazon', 'Panda con globo'],

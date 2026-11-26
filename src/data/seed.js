@@ -305,6 +305,14 @@ const PRODUCTOS = [
     colorTinta: 'Negro', destacado: true,
     imagen: 'corazon-espinas',
     imagenes: ['corazon-espinas'],
+  },  {
+    id: 30, codigo: 'FI-030', nombre: 'Muerte con gatito', categoriaId: 1,
+    descripcion: 'Pequeña Parca con guadaña que abraza a un gatito blanco, con un corazón al lado. Tierno y un poco oscuro.',
+    precio: 16000, precioOferta: null,
+    anchoCm: 8, altoCm: 10, duracionHoras: 2, zonas: 'Antebrazo, pantorrilla, muslo', nivelDolor: 2,
+    colorTinta: 'Negro', destacado: false,
+    imagen: 'muerte-con-gatito',
+    imagenes: ['muerte-con-gatito'],
   },
 ];
 
