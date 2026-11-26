@@ -89,7 +89,8 @@ function crearCliente(baseURL) {
     (respuesta) => respuesta,
     (error) => {
       const enviabaToken = Boolean(error.config?.headers?.Authorization);
-      if (error.response?.status === 401 && enviabaToken && !error.config.url?.startsWith('/auth/')) {
+      // leerSesion(): si varias peticiones fallan juntas, solo la primera cierra la sesión y avisa
+      if (error.response?.status === 401 && enviabaToken && !error.config.url?.startsWith('/auth/') && leerSesion()) {
         borrarSesion();
         window.dispatchEvent(new Event('sesion-expirada'));
       }
