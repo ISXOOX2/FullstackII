@@ -48,6 +48,8 @@
 | ¿Por qué microservicios? | Cada parte del negocio (usuarios, catálogo, reservas, blog) se despliega y escala por separado y tiene su propia base de datos. |
 | ¿Cómo se comunican? | El front llama a cada uno con axios (una instancia por microservicio). ms-reservas le pide a ms-catalogo los precios reales y que descuente o reponga stock (RestClient). |
 | ¿Cómo funciona la seguridad? | ms-usuarios entrega un token JWT al iniciar sesión. El interceptor de axios lo envía en cada petición y cada microservicio lo verifica y revisa el rol con `@PreAuthorize`. Las contraseñas se guardan con BCrypt. |
+| ¿Cómo se renueva el token? | Al iniciar sesión, ms-usuarios entrega un JWT de 8 horas. Antes de cada petición, el interceptor de axios revisa el vencimiento (`exp`): si quedan menos de 15 minutos, llama a `POST /auth/renovar` y guarda el token nuevo. Si el backend responde 401, se cierra la sesión. Para mostrarlo en vivo: `JWT_EXPIRACION_MS=840000` (14 min) hace que se renueve en la primera petición. |
+| ¿Dónde está el CRUD? | En el panel: diseños, estilos e insumos van a ms-catalogo, y usuarios a ms-usuarios, con POST, GET, PUT y DELETE (`src/services/adminApi.js`). Se puede probar también en Swagger. |
 | ¿Por qué el precio no lo manda el front? | Porque se podría modificar desde el navegador: el backend lo toma siempre del catálogo. |
 | ¿Cómo se despliega? | Docker Compose en EC2: MySQL, los 4 microservicios y Nginx, que sirve el front y redirige `/api/v1/...` a cada servicio. Ver `despliegue/GUIA_AWS.md`. |
 | ¿Por qué springdoc y no springfox? | springfox (el de la guía 3.1.2) no es compatible con Spring Boot 3; springdoc es su reemplazo y genera el mismo Swagger UI. |

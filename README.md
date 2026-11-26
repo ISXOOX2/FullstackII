@@ -144,6 +144,8 @@ Cada microservicio sigue la estructura de la guía 3.1.2: `modelo` (entidades JP
 guía) no funciona con Spring Boot 3.
 
 - **Seguridad:** `ms-usuarios` firma el token JWT (id, correo y rol) y los cuatro lo verifican con la misma clave.
+  El token dura 8 horas. Si le quedan menos de 15 minutos, el front lo renueva solo (`POST /auth/renovar`). Si el
+  backend responde 401 (token vencido o alterado), se cierra la sesión. La sesión sobrevive a la recarga.
   Los permisos se revisan con `@PreAuthorize("hasRole('ADMINISTRADOR')")`. Las contraseñas se guardan con BCrypt.
 - **Comunicación entre microservicios:** `ms-reservas` consulta a `ms-catalogo` (RestClient) los precios reales
   (el navegador no puede cambiarlos) y le pide descontar o reponer el stock de la Tienda.
@@ -197,7 +199,7 @@ genérico (`crear`, `listar`, `obtenerPorId`, `actualizar`, `eliminar`) sobre `l
 
 | Ya va por la API | Sigue local (pendiente de conectar) |
 |---|---|
-| Login y registro (JWT), catálogo, Tienda, insumos (lectura), usuarios (lectura, admin), checkout y pago, horas libres, órdenes del cliente y del panel, reembolsos y cambios de hora, respuesta del admin, cambio de estado, blog | Crear, editar y eliminar diseños, insumos y usuarios desde el panel; editar el perfil; reseñas; Mi proyecto; contacto |
+| Login, registro y **renovación del token** (JWT), catálogo, Tienda, checkout y pago, horas libres, órdenes, reembolsos y cambios de hora, respuesta del admin, cambio de estado, blog, **CRUD del panel** (crear, editar y eliminar diseños, estilos, insumos y usuarios) y **Mi perfil** | Reseñas, Mi proyecto y contacto |
 
 ## Reglas de negocio agregadas por la retroalimentación
 
