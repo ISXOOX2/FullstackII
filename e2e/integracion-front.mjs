@@ -54,9 +54,27 @@ try {
   comprobar(await pagina.locator('.tarjeta-blog').count() === 2, 'el blog muestra los artículos de ms-blog');
 
   console.log('▶ Login con JWT (ms-usuarios)');
+  await pagina.goto(`${BASE}/login`);
+  comprobar(await pagina.locator('.cuentas-demo').count() === 0, 'la página de login NO muestra contraseñas de demostración');
   await login('cliente.demo@gmail.com', 'Cliente#1');
   const sesion = await pagina.evaluate(() => JSON.parse(sessionStorage.getItem('foreverInk_sesion')));
   comprobar(sesion?.token?.startsWith('ey'), 'la sesión guarda el token JWT');
+
+  console.log('▶ Ataques desde las herramientas de desarrollador (F12)');
+  const copiaLocal = await pagina.evaluate(() => localStorage.getItem('foreverInk_bd_v8') || '');
+  comprobar(!/Admin#123|Venta#123|Cliente#1/.test(copiaLocal), 'Local Storage no tiene contraseñas ni usuarios de ejemplo');
+  await pagina.evaluate(() => {
+    const s = JSON.parse(sessionStorage.getItem('foreverInk_sesion'));
+    s.tipo = 'Administrador'; // el "atacante" se cambia el rol en Session Storage
+    sessionStorage.setItem('foreverInk_sesion', JSON.stringify(s));
+  });
+  await pagina.goto(`${BASE}/admin`);
+  await pagina.waitForURL((url) => !url.pathname.startsWith('/admin'));
+  const rolReal = await pagina.evaluate(() => JSON.parse(sessionStorage.getItem('foreverInk_sesion')).tipo);
+  comprobar(rolReal === 'Cliente', 'editar el rol en Session Storage NO abre el panel: el servidor confirma que es Cliente');
+  const token = await pagina.evaluate(() => JSON.parse(sessionStorage.getItem('foreverInk_sesion')).token);
+  const borrar = await fetch(`${CATALOGO}/disenos/1`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+  comprobar(borrar.status === 403, 'un cliente que llama a la API para borrar un diseño recibe 403');
 
   console.log('▶ Compra: diseño con cita + producto de la tienda (ms-reservas + ms-catalogo)');
   const stockAntes = await stockCrema();
