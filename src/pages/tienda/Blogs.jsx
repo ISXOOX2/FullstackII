@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Alert, Badge, Card, Col, Container, Row } from 'react-bootstrap';
 import Migas from '../../components/moleculas/Migas.jsx';
 import Cargando from '../../components/atomos/Cargando.jsx';
+import VideoYoutube from '../../components/moleculas/VideoYoutube.jsx';
 import useArticulos from '../../utils/useArticulos.js';
 import { USAR_API } from '../../services/api.js';
 import { REFRESCO_BLOG_MS } from '../../services/blogService.js';
@@ -26,6 +27,10 @@ export default function Blogs() {
       {error && (
         <Alert variant="warning">No pudimos conectar con el blog ({error}). Te mostramos los últimos artículos que tenemos.</Alert>
       )}
+      <section className="mb-5" aria-labelledby="titulo-video">
+        <h2 id="titulo-video" className="h4 mb-3">Video del estudio</h2>
+        <Row><Col lg={8}><VideoYoutube idVideo="gX7tSE8b2Bk" titulo="Video de Forever Ink en YouTube" pie="Mira el video" /></Col></Row>
+      </section>
       {cargando ? <Cargando texto="Cargando artículos…" /> : (
         <Row xs={1} md={2} className="g-4">
           {articulos.map((b) => (

@@ -73,13 +73,13 @@ export default function FormularioUsuario({ modo = 'registro', inicial = null, o
           />
         </Col>
         <Col md={6}>
-          <CampoFormulario id="u-fecha" etiqueta="Fecha de nacimiento" tipo="date" ayuda="Debes ser mayor de 18 años." {...comunPropiedades('fechaNacimiento')} />
+          <CampoFormulario id="u-fecha" etiqueta="Fecha de nacimiento" autoComplete="bday" tipo="date" ayuda="Debes ser mayor de 18 años." {...comunPropiedades('fechaNacimiento')} />
         </Col>
         <Col md={6}>
-          <CampoFormulario id="u-nombre" etiqueta="Nombre" maxLength={50} {...comunPropiedades('nombre')} />
+          <CampoFormulario id="u-nombre" etiqueta="Nombre" autoComplete="given-name" maxLength={50} {...comunPropiedades('nombre')} />
         </Col>
         <Col md={6}>
-          <CampoFormulario id="u-apellidos" etiqueta="Apellidos" maxLength={100} {...comunPropiedades('apellidos')} />
+          <CampoFormulario id="u-apellidos" etiqueta="Apellidos" autoComplete="family-name" maxLength={100} {...comunPropiedades('apellidos')} />
         </Col>
         <Col md={esRegistro ? 6 : 12}>
           <CampoFormulario
@@ -105,7 +105,7 @@ export default function FormularioUsuario({ modo = 'registro', inicial = null, o
           </Col>
         )}
         <Col md={6}>
-          <CampoFormulario id="u-telefono" etiqueta="Teléfono" tipo="tel" placeholder="+56912345678" {...comunPropiedades('telefono')} />
+          <CampoFormulario id="u-telefono" etiqueta="Teléfono" autoComplete="tel" tipo="tel" placeholder="+56912345678" {...comunPropiedades('telefono')} />
         </Col>
         {pedirTipo && (
           <Col md={6}>
@@ -130,7 +130,7 @@ export default function FormularioUsuario({ modo = 'registro', inicial = null, o
           </CampoFormulario>
         </Col>
         <Col xs={12}>
-          <CampoFormulario id="u-direccion" etiqueta="Dirección" maxLength={300} {...comunPropiedades('direccion')} />
+          <CampoFormulario id="u-direccion" etiqueta="Dirección" autoComplete="street-address" maxLength={300} {...comunPropiedades('direccion')} />
         </Col>
       </Row>
       <Button type="submit" variant="dark">

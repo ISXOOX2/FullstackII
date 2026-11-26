@@ -37,8 +37,8 @@ export default function FormularioProyecto({ valoresIniciales, onEnviar }) {
   return (
     <Form onSubmit={enviar} noValidate aria-label="Enviar mi proyecto">
       <Row>
-        <Col md={6}><CampoFormulario id="p-nombre" etiqueta="Nombre" maxLength={80} {...p('nombre')} /></Col>
-        <Col md={6}><CampoFormulario id="p-correo" etiqueta="Correo electrónico" tipo="email" {...p('correo')} /></Col>
+        <Col md={6}><CampoFormulario id="p-nombre" etiqueta="Nombre" autoComplete="name" maxLength={80} {...p('nombre')} /></Col>
+        <Col md={6}><CampoFormulario id="p-correo" etiqueta="Correo electrónico" autoComplete="email" tipo="email" {...p('correo')} /></Col>
         <Col md={6}>
           <CampoFormulario id="p-zona" etiqueta="Zona del cuerpo" tipo="select" {...p('zonaCuerpo')}>
             <option value="">Elige la zona</option>

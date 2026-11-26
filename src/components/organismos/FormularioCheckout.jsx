@@ -73,10 +73,10 @@ export default function FormularioCheckout({
     <Form onSubmit={enviar} noValidate aria-label="Datos de la reserva">
       <h2 className="h5 mb-3">Tus datos</h2>
       <Row>
-        <Col md={6}><CampoFormulario id="c-nombre" etiqueta="Nombre" maxLength={50} {...propsCampo('nombre')} /></Col>
-        <Col md={6}><CampoFormulario id="c-apellidos" etiqueta="Apellidos" maxLength={100} {...propsCampo('apellidos')} /></Col>
-        <Col md={6}><CampoFormulario id="c-correo" etiqueta="Correo electrónico" tipo="email" {...propsCampo('correo')} /></Col>
-        <Col md={6}><CampoFormulario id="c-telefono" etiqueta="Teléfono" tipo="tel" placeholder="+56912345678" {...propsCampo('telefono')} /></Col>
+        <Col md={6}><CampoFormulario id="c-nombre" etiqueta="Nombre" autoComplete="given-name" maxLength={50} {...propsCampo('nombre')} /></Col>
+        <Col md={6}><CampoFormulario id="c-apellidos" etiqueta="Apellidos" autoComplete="family-name" maxLength={100} {...propsCampo('apellidos')} /></Col>
+        <Col md={6}><CampoFormulario id="c-correo" etiqueta="Correo electrónico" autoComplete="email" tipo="email" {...propsCampo('correo')} /></Col>
+        <Col md={6}><CampoFormulario id="c-telefono" etiqueta="Teléfono" autoComplete="tel" tipo="tel" placeholder="+56912345678" {...propsCampo('telefono')} /></Col>
       </Row>
 
       {!conCita && (

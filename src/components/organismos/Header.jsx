@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button, Container, Form, InputGroup, Nav, NavDropdown, Navbar } from 'react-bootstrap';
 import Logo from '../atomos/Logo.jsx';
 import { formatoCLP } from '../../utils/formato.js';
+import { listarProductos } from '../../services/productosService.js';
 
 /**
  * ORGANISMO · Header (cabecera), con el mismo nombre que en la diapositiva React III.
@@ -46,9 +47,14 @@ export default function Header({ usuario, onCerrarSesion, total, cantidad }) {
               type="search"
               placeholder="Buscar diseños (ej. panda, tribal, luna)"
               aria-label="Buscar diseños"
+              list="sugerencias-diseños"
+              autoComplete="off"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
             />
+            <datalist id="sugerencias-diseños">
+              {listarProductos().map((p) => <option key={p.id} value={p.nombre} />)}
+            </datalist>
             <Button type="submit" variant="dark">Buscar</Button>
           </InputGroup>
         </Form>
