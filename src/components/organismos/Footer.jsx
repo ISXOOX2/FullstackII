@@ -44,10 +44,6 @@ export default function Footer({ mostrarAviso }) {
             <FormularioNewsletter mostrarAviso={mostrarAviso} />
           </Col>
         </Row>
-        <hr />
-        <p className="small text-muted text-center mb-0">
-          © {new Date().getFullYear()} {ESTUDIO.nombre}. Proyecto académico DSY1104 · Desarrollo Fullstack II · DuocUC.
-        </p>
       </Container>
     </footer>
   );

@@ -46,7 +46,7 @@ export default function DetalleBlog() {
       <article>
         <h1 className="titulo-seccion">{blog.titulo}</h1>
         <p className="text-muted">{formatoFechaLarga(blog.fecha)} · {blog.autor}</p>
-        <img src={images[blog.imagen] || images.logo} alt="" className="img-fluid mb-4 imagen-blog" />
+        <img src={images[blog.imagen] || images.logo} alt={`Infografía: ${blog.titulo}`} className="img-fluid mb-4 imagen-blog" />
         {blog.contenido.map((bloque, i) =>
           bloque.tipo === 'h' ? <h2 key={i} className="h4 mt-4">{bloque.texto}</h2> : <p key={i}>{bloque.texto}</p>,
         )}

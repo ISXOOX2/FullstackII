@@ -423,8 +423,9 @@ img {
   color: var(--tf-tinta);
 }
 
+/* Las imágenes del blog son infografías 4:3: se muestran completas, sin recortar */
 .tarjeta-blog .marco-imagen {
-  aspect-ratio: 16 / 7;
+  aspect-ratio: 4 / 3;
 }
 
 /* Nombres largos de estilo (ej. "Cybersigilism") caben en una línea con 5 columnas */
