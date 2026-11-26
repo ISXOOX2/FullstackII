@@ -15,21 +15,21 @@
     1. Variables                                          36
     2. Base                                               68
     3. Botones y formularios                              114
-    4. Títulos, textos y contenedores                     168
-    5. Cabecera de la tienda                              205
-    6. Pie de página                                      280
-    7. Carrusel de portada                                317
-    8. Tarjetas e imágenes                                361
-    9. Home                                               466
-   10. Detalle de producto                                484
-   11. Migas de pan y mensajes                            527
-   12. Carrito y checkout                                 546
-   13. Páginas informativas y blog                        580
-   14. Avisos y boleta                                    606
-   15. Panel de administración                            623
-   16. Reseñas, tienda y Mi proyecto                      687
-   17. Puntos de interrupción · mobile first              769
-   18. Impresión                                          803
+    4. Títulos, textos y contenedores                     174
+    5. Cabecera de la tienda                              211
+    6. Pie de página                                      286
+    7. Carrusel de portada                                323
+    8. Tarjetas e imágenes                                367
+    9. Home                                               473
+   10. Detalle de producto                                517
+   11. Migas de pan y mensajes                            560
+   12. Carrito y checkout                                 579
+   13. Páginas informativas y blog                        613
+   14. Avisos y boleta                                    639
+   15. Panel de administración                            656
+   16. Reseñas, tienda y Mi proyecto                      720
+   17. Puntos de interrupción · mobile first              802
+   18. Impresión                                          836
    ========================================================================== */
 
 
@@ -125,8 +125,14 @@ img {
   box-shadow: 3px 3px 0 var(--tf-acento);
 }
 
+/* Hover: la sombra se achica (el botón no se mueve, así no "tiembla" si el mouse queda en el borde).
+   Al presionarlo (:active) se hunde 2 px, como un botón real. */
 .btn-dark:hover {
   box-shadow: 1px 1px 0 var(--tf-acento);
+}
+
+.btn-dark:active {
+  box-shadow: 0 0 0 var(--tf-acento);
   transform: translate(2px, 2px);
 }
 
