@@ -1,14 +1,17 @@
 package cl.foreverink.catalogo.controlador;
 
 import cl.foreverink.catalogo.dto.DisenoRequest;
-import cl.foreverink.catalogo.modelo.Diseno;
+import cl.foreverink.catalogo.dto.DisenoRespuesta;
 import cl.foreverink.catalogo.servicio.CatalogoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Disenos", description = "Catalogo de disenos para reservar (sin stock).")
 public class DisenoController {
 
+    private static final Logger log = LoggerFactory.getLogger(DisenoController.class);
+
     private final CatalogoService servicio;
 
     public DisenoController(CatalogoService servicio) {
@@ -26,40 +31,44 @@ public class DisenoController {
 
     @GetMapping
     @Operation(summary = "Listar disenos", description = "Filtros opcionales: categoriaId (estilo) y q (texto).")
-    public List<Diseno> listar(@RequestParam(required = false) Long categoriaId,
+    public ResponseEntity<List<DisenoRespuesta>> listar(@RequestParam(required = false) Long categoriaId,
                                @RequestParam(required = false) String q) {
-        return servicio.listarDisenos(categoriaId, q);
+        log.info("Listar disenos");
+        return ResponseEntity.ok(servicio.listarDisenos(categoriaId, q).stream().map(DisenoRespuesta::de).toList());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener un diseno")
-    public Diseno obtener(@PathVariable Long id) {
-        return servicio.obtenerDiseno(id);
+    public ResponseEntity<DisenoRespuesta> obtener(@PathVariable Long id) {
+        log.info("Obtener un diseno (id={})", id);
+        return ResponseEntity.ok(DisenoRespuesta.de(servicio.obtenerDiseno(id)));
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Crear diseno (Administrador)", description = "El codigo FI-### se asigna automaticamente.")
-    public Diseno crear(@Valid @RequestBody DisenoRequest datos) {
-        return servicio.crearDiseno(datos);
+    public ResponseEntity<DisenoRespuesta> crear(@Valid @RequestBody DisenoRequest datos) {
+        log.info("Crear diseno (Administrador)");
+        return ResponseEntity.status(HttpStatus.CREATED).body(DisenoRespuesta.de(servicio.crearDiseno(datos)));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Editar diseno (Administrador)")
-    public Diseno actualizar(@PathVariable Long id, @Valid @RequestBody DisenoRequest datos) {
-        return servicio.actualizarDiseno(id, datos);
+    public ResponseEntity<DisenoRespuesta> actualizar(@PathVariable Long id, @Valid @RequestBody DisenoRequest datos) {
+        log.info("Editar diseno (Administrador) (id={})", id);
+        return ResponseEntity.ok(DisenoRespuesta.de(servicio.actualizarDiseno(id, datos)));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMINISTRADOR')")
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Eliminar diseno (Administrador)")
-    public void eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        log.info("Eliminar diseno (Administrador) (id={})", id);
         servicio.eliminarDiseno(id);
+        return ResponseEntity.noContent().build();
     }
 }

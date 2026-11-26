@@ -1,5 +1,7 @@
 package cl.foreverink.catalogo.servicio;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import cl.foreverink.catalogo.dto.InsumoRequest;
 import cl.foreverink.catalogo.dto.MovimientoStock;
 import cl.foreverink.catalogo.excepcion.ReglaNegocioException;
@@ -15,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class InsumoService {
+
+    private static final Logger log = LoggerFactory.getLogger(InsumoService.class);
 
     private final InsumoRepository repositorio;
 
@@ -92,8 +96,13 @@ public class InsumoService {
             Insumo insumo = obtener(m.insumoId());
             insumo.setStock(insumo.getStock() - m.cantidad());
             repositorio.save(insumo);
+            log.info("Stock descontado: {} -{} (quedan {})", insumo.getCodigo(), m.cantidad(), insumo.getStock());
         }
-        return criticos();
+        List<Insumo> criticos = criticos();
+        if (!criticos.isEmpty()) {
+            log.warn("{} insumo(s) en stock critico", criticos.size());
+        }
+        return criticos;
     }
 
     /** Reembolso aprobado: los productos vuelven a bodega. */
@@ -103,6 +112,7 @@ public class InsumoService {
             Insumo insumo = obtener(m.insumoId());
             insumo.setStock(insumo.getStock() + m.cantidad());
             repositorio.save(insumo);
+            log.info("Stock repuesto por reembolso: {} +{}", insumo.getCodigo(), m.cantidad());
         }
     }
 }

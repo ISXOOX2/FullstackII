@@ -1,5 +1,7 @@
 package cl.foreverink.reservas.servicio;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import cl.foreverink.reservas.cliente.CatalogoCliente;
 import cl.foreverink.reservas.dto.EstadoRequest;
 import cl.foreverink.reservas.dto.ItemRequest;
@@ -37,6 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class OrdenService {
+
+    private static final Logger log = LoggerFactory.getLogger(OrdenService.class);
 
     public static final int HORAS_ANTICIPACION_REEMBOLSO = 48;
     public static final int HORAS_ANTICIPACION_CAMBIO = 24;
@@ -127,6 +131,7 @@ public class OrdenService {
         orden.setTotal(items.stream().mapToInt(i -> i.getPrecio() * i.getCantidad()).sum());
         Orden guardada = ordenes.save(orden);
         registrar(guardada, null, EstadosOrden.PENDIENTE, "Orden creada", yo);
+        log.info("Orden {} creada por usuario id={} (total ${})", guardada.getNumero(), yo.id(), guardada.getTotal());
         return guardada;
     }
 
@@ -150,6 +155,7 @@ public class OrdenService {
         }
         Orden guardada = ordenes.save(orden);
         registrar(guardada, anterior, guardada.getEstado(), aprobado ? "Pago aprobado" : "Pago rechazado por el banco", yo);
+        log.info("Orden {}: {} -> {}", guardada.getNumero(), anterior, guardada.getEstado());
         return guardada;
     }
 
@@ -168,7 +174,7 @@ public class OrdenService {
     public OrdenDetalle detalle(Long id, UsuarioAutenticado yo) {
         Orden orden = buscar(id);
         soloDuenoOPersonal(orden, yo);
-        return new OrdenDetalle(orden, solicitudes.findByOrdenIdOrderByFechaDesc(id), historial.findByOrdenIdOrderByFechaAsc(id));
+        return OrdenDetalle.de(orden, solicitudes.findByOrdenIdOrderByFechaDesc(id), historial.findByOrdenIdOrderByFechaAsc(id));
     }
 
     public List<Solicitud> solicitudesPendientes() {
