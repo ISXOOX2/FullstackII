@@ -3,10 +3,12 @@ package cl.foreverink.catalogo.config;
 import cl.foreverink.catalogo.modelo.Categoria;
 import cl.foreverink.catalogo.modelo.Diseno;
 import cl.foreverink.catalogo.modelo.Insumo;
+import cl.foreverink.catalogo.modelo.Resena;
 import cl.foreverink.catalogo.modelo.Tatuador;
 import cl.foreverink.catalogo.repositorio.CategoriaRepository;
 import cl.foreverink.catalogo.repositorio.DisenoRepository;
 import cl.foreverink.catalogo.repositorio.InsumoRepository;
+import cl.foreverink.catalogo.repositorio.ResenaRepository;
 import cl.foreverink.catalogo.repositorio.TatuadorRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +19,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-/** Si las tablas estan vacias, carga el catalogo del frontend desde src/main/resources/datos/*.json. */
+/** Si las tablas estan vacias, carga el catalogo y las resenas de ejemplo del frontend desde src/main/resources/datos/*.json. */
 @Component
 public class DatosIniciales implements CommandLineRunner {
 
@@ -25,14 +27,16 @@ public class DatosIniciales implements CommandLineRunner {
     private final DisenoRepository disenos;
     private final InsumoRepository insumos;
     private final TatuadorRepository tatuadores;
+    private final ResenaRepository resenas;
     private final ObjectMapper mapper;
 
     public DatosIniciales(CategoriaRepository categorias, DisenoRepository disenos, InsumoRepository insumos,
-                          TatuadorRepository tatuadores, ObjectMapper mapper) {
+                          TatuadorRepository tatuadores, ResenaRepository resenas, ObjectMapper mapper) {
         this.categorias = categorias;
         this.disenos = disenos;
         this.insumos = insumos;
         this.tatuadores = tatuadores;
+        this.resenas = resenas;
         this.mapper = mapper;
     }
 
@@ -60,6 +64,12 @@ public class DatosIniciales implements CommandLineRunner {
             for (Tatuador t : leer("datos/tatuadores.json", new TypeReference<List<Tatuador>>() { })) {
                 t.setId(null);
                 tatuadores.save(t);
+            }
+        }
+        if (resenas.count() == 0) {
+            for (Resena r : leer("datos/resenas.json", new TypeReference<List<Resena>>() { })) {
+                r.setId(null);
+                resenas.save(r);
             }
         }
     }
