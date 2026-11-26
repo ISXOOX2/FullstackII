@@ -39,6 +39,10 @@ services:
     build: ./backend/ms-usuarios
     environment:
       <<: *entorno
+      # Obligatorias: sin ellas no arranca (así nunca quedan las contraseñas públicas del repositorio)
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Define ADMIN_PASSWORD en el archivo .env}
+      VENDEDOR_PASSWORD: ${VENDEDOR_PASSWORD:?Define VENDEDOR_PASSWORD en el archivo .env}
+      CLIENTE_PASSWORD: ${CLIENTE_PASSWORD:-}
       DB_URL: jdbc:mysql://mysql:3306/foreverink_usuarios?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
 
   ms-catalogo:

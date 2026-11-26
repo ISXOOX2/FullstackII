@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, Col, Container, Row, Table } from 'react-bootstrap';
 import FormularioLogin from '../../components/organismos/FormularioLogin.jsx';
 import { CUENTAS_DEMO } from '../../data/estudio.js';
+import { USAR_API } from '../../services/api.js';
 
 export default function Login({ iniciarSesion, mostrarAviso }) {
   const navegar = useNavigate();
@@ -26,6 +27,9 @@ export default function Login({ iniciarSesion, mostrarAviso }) {
           <FormularioLogin onEnviar={ingresar} />
           <p className="mt-3 small">¿Aún no tienes cuenta? <Link to="/registro">Regístrate aquí</Link></p>
         </Col>
+        {/* SEGURIDAD: las cuentas de demostración solo se muestran sin backend (modo local).
+            En el servidor las contraseñas son otras (.env) y no se publican en la página. */}
+        {!USAR_API && (
         <Col md={6} lg={5}>
           <Card className="cuentas-demo">
             <Card.Body>
@@ -42,6 +46,7 @@ export default function Login({ iniciarSesion, mostrarAviso }) {
             </Card.Body>
           </Card>
         </Col>
+        )}
       </Row>
     </Container>
   );

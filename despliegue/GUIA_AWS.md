@@ -94,6 +94,8 @@ En `.env` cambia:
 
 - `DB_PASSWORD`: una clave para MySQL.
 - `JWT_SECRETO`: una frase larga (32 caracteres o más).
+- `ADMIN_PASSWORD` y `VENDEDOR_PASSWORD`: las contraseñas del administrador y del vendedor (de 4 a 10
+  caracteres, con letras y números). Son obligatorias: las de ejemplo del repositorio son públicas.
 - `CORS_ORIGENES`: `http://TU-IP-PUBLICA`.
 
 Guarda con `Ctrl + O`, `Enter` y sal con `Ctrl + X`.
@@ -123,7 +125,7 @@ docker compose logs -f ms-reservas   # Ctrl + C para salir
 | Swagger blog | `http://TU-IP-PUBLICA/docs/blog/swagger-ui.html` |
 
 Para probar en Swagger una ruta protegida: ejecuta `POST /api/v1/usuarios/auth/login` con
-`{"correo": "admin.foreverink@gmail.com", "password": "Admin#123"}`, copia el `token`, presiona
+`{"correo": "admin.foreverink@gmail.com", "password": "<tu ADMIN_PASSWORD>"}`, copia el `token`, presiona
 **Authorize** y pégalo.
 
 ## 7. Actualizar después de un cambio
