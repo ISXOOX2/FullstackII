@@ -80,6 +80,8 @@ jobs:
         env:
           TZ: America/Santiago
           CATALOGO_URL: http://localhost:8082/api/v1/catalogo
+          # Token de 14 minutos: como quedan menos de 15, el front lo renueva en la primera petición
+          JWT_EXPIRACION_MS: '840000'
         run: |
           for par in usuarios:8081 catalogo:8082 reservas:8083 blog:8084; do
             ms=${par%%:*}; puerto=${par##*:}

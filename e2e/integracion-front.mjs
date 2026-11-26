@@ -15,11 +15,25 @@ function fechaCita() {
   while (d.getDay() === 0 || d.getDay() === 1) d.setDate(d.getDate() + 1);
   return d.toISOString().slice(0, 10);
 }
+/** RUN válido (dígito verificador módulo 11) a partir de un cuerpo numérico. */
+function runConDv(cuerpo) {
+  let suma = 0; let m = 2;
+  for (const d of String(cuerpo).split('').reverse()) { suma += Number(d) * m; m = m === 7 ? 2 : m + 1; }
+  const r = 11 - (suma % 11);
+  return `${cuerpo}${r === 11 ? '0' : r === 10 ? 'K' : r}`;
+}
+const disenosApi = async () => (await fetch(`${CATALOGO}/disenos`)).json();
+const conToken = async (url) => {
+  const token = await pagina.evaluate(() => JSON.parse(sessionStorage.getItem('foreverInk_sesion')).token);
+  return (await fetch(url, { headers: { Authorization: `Bearer ${token}` } })).json();
+};
 const stockCrema = async () => (await (await fetch(`${CATALOGO}/tienda`)).json()).find((a) => a.id === 8).stock;
 
 const navegador = await chromium.launch();
 const pagina = await navegador.newPage();
 const errores = [];
+let renovaciones = 0;
+pagina.on('request', (r) => { if (r.url().includes('/auth/renovar')) renovaciones += 1; });
 pagina.on('pageerror', (e) => errores.push(e.message));
 
 async function login(correo, clave) {
@@ -84,6 +98,75 @@ try {
   await pagina.goto(`${BASE}/admin/ordenes`);
   await pagina.locator('table').getByText('Reembolsada').first().waitFor(); // en la tabla (el filtro también tiene esa opción)
   ok('la orden aparece Reembolsada en el panel');
+
+  console.log('▶ CRUD del panel: diseños (ms-catalogo)');
+  await pagina.goto(`${BASE}/admin/productos/nuevo`);
+  await pagina.getByLabel('Nombre', { exact: true }).fill('Diseño de prueba E2E');
+  await pagina.getByLabel('Estilo (categoría)').selectOption({ index: 1 });
+  await pagina.getByLabel('Precio (CLP)').fill('15000');
+  await pagina.getByLabel('Ancho (cm)').fill('6');
+  await pagina.getByLabel('Alto (cm)').fill('5');
+  await pagina.getByLabel('Duración (horas)').fill('1');
+  await pagina.getByRole('button', { name: 'Guardar diseño' }).click();
+  await pagina.waitForURL(/\/admin\/productos$/);
+  const creado = (await disenosApi()).find((d) => d.nombre === 'Diseño de prueba E2E');
+  comprobar(creado?.codigo?.startsWith('FI-'), `CREAR (POST): el diseño quedó en la API con código ${creado?.codigo}`);
+  await pagina.goto(`${BASE}/admin/productos/${creado.id}/editar`);
+  await pagina.getByLabel('Nombre', { exact: true }).fill('Diseño editado E2E');
+  await pagina.getByRole('button', { name: 'Guardar diseño' }).click();
+  await pagina.waitForURL(/\/admin\/productos$/);
+  comprobar((await disenosApi()).some((d) => d.id === creado.id && d.nombre === 'Diseño editado E2E'), 'EDITAR (PUT): el cambio quedó en la API');
+  await pagina.locator('tr', { hasText: 'Diseño editado E2E' }).getByRole('button', { name: 'Eliminar' }).click();
+  await pagina.getByRole('dialog').getByRole('button', { name: 'Eliminar' }).click();
+  await pagina.locator('tr', { hasText: 'Diseño editado E2E' }).waitFor({ state: 'detached' });
+  comprobar(!(await disenosApi()).some((d) => d.id === creado.id), 'ELIMINAR (DELETE): el diseño ya no está en la API');
+
+  console.log('▶ CRUD del panel: insumos (ms-catalogo) y usuarios (ms-usuarios)');
+  await pagina.goto(`${BASE}/admin/insumos`);
+  await pagina.locator('#i-nombre').fill('Agujas 5RL E2E');
+  await pagina.locator('#i-tipo').selectOption('Agujas');
+  await pagina.locator('#i-unidad').fill('cajas');
+  await pagina.locator('#i-stock').fill('1');
+  await pagina.locator('#i-critico').fill('2');
+  await pagina.getByRole('button', { name: 'Agregar insumo' }).click();
+  await pagina.getByText('«Agujas 5RL E2E» se agregó al inventario.').waitFor();
+  const criticos = await conToken(`${CATALOGO}/insumos/criticos`);
+  comprobar(criticos.some((i) => i.nombre === 'Agujas 5RL E2E'), 'insumo creado en la API y en stock crítico');
+
+  const run = runConDv(20111222);
+  await pagina.goto(`${BASE}/admin/usuarios/nuevo`);
+  await pagina.getByLabel('RUN').fill(run);
+  await pagina.getByLabel('Nombre', { exact: true }).fill('Vale');
+  await pagina.getByLabel('Apellidos').fill('Prueba E2E');
+  await pagina.getByLabel('Correo electrónico').fill('vale.e2e@gmail.com');
+  await pagina.getByLabel('Confirmar correo').fill('vale.e2e@gmail.com');
+  await pagina.getByLabel('Contraseña', { exact: true }).fill('Clave12');
+  await pagina.getByLabel('Confirmar contraseña').fill('Clave12');
+  await pagina.getByLabel('Fecha de nacimiento').fill('1999-04-10');
+  await pagina.getByLabel('Teléfono').fill('+56987654321');
+  await pagina.getByLabel('Tipo de usuario').selectOption('Vendedor');
+  await pagina.getByLabel('Región').selectOption({ index: 1 });
+  await pagina.getByLabel('Comuna').selectOption({ index: 1 });
+  await pagina.getByLabel('Dirección').fill('Calle Falsa 123');
+  await pagina.getByRole('button', { name: 'Guardar cambios' }).click();
+  await pagina.waitForURL(/\/admin\/usuarios$/);
+  const usuariosApi = await conToken('http://localhost:8081/api/v1/usuarios');
+  comprobar(usuariosApi.some((u) => u.correo === 'vale.e2e@gmail.com' && u.tipo === 'Vendedor'), 'usuario Vendedor creado en ms-usuarios');
+  await pagina.locator('tr', { hasText: 'vale.e2e@gmail.com' }).getByRole('button', { name: 'Eliminar' }).click();
+  await pagina.getByRole('dialog').getByRole('button', { name: 'Eliminar' }).click();
+  await pagina.locator('tr', { hasText: 'vale.e2e@gmail.com' }).waitFor({ state: 'detached' });
+  comprobar(!(await conToken('http://localhost:8081/api/v1/usuarios')).some((u) => u.correo === 'vale.e2e@gmail.com'), 'usuario eliminado de ms-usuarios');
+
+  console.log('▶ Renovación del token JWT');
+  comprobar(renovaciones > 0, `el front pidió ${renovaciones} renovación(es) del token antes de que venciera`);
+  await pagina.evaluate(() => {
+    const s = JSON.parse(sessionStorage.getItem('foreverInk_sesion'));
+    s.token = `${s.token}x`; // token alterado: la firma ya no calza
+    sessionStorage.setItem('foreverInk_sesion', JSON.stringify(s));
+  });
+  await pagina.goto(`${BASE}/admin`);
+  await pagina.getByText('Tu sesión expiró. Vuelve a iniciar sesión.').waitFor();
+  ok('con un token alterado el backend responde 401 y el front cierra la sesión');
 
   comprobar(errores.length === 0, `sin errores de JavaScript ${errores.join(' | ')}`);
   console.log('✅ Frontend + backend OK');
