@@ -104,7 +104,7 @@ try {
   await pagina.getByRole('button', { name: 'Enviar solicitud' }).click();
   await pagina.getByText('Reembolso: Pendiente').waitFor();
   ok('la solicitud quedó en ms-reservas como Pendiente');
-  const ordenId = await pagina.evaluate(() => JSON.parse(localStorage.getItem('foreverInk_bd_v7')).ordenes[0].id);
+  const ordenId = await pagina.evaluate(() => JSON.parse(localStorage.getItem('foreverInk_bd_v8')).ordenes[0].id);
 
   await pagina.getByTestId('saludo').click();
   await pagina.getByText('Cerrar sesión').click();
