@@ -10,7 +10,7 @@ export default function Registro({ iniciarSesion, mostrarAviso }) {
 
   const registrar = async (datos) => {
     if (USAR_API) {
-      // Con backend: ms-usuarios valida (mayor de 18, RUN, correo único...) y crea la cuenta
+      // Con backend: ms-auth valida (mayor de 18, RUN, correo único...) y crea la cuenta
       try {
         await apiUsuarios.post('/auth/registro', usuarioParaApi(datos));
       } catch (error) {

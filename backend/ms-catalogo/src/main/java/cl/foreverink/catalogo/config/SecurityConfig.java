@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/v1/catalogo/categorias/**", "/api/v1/catalogo/categorias", "/api/v1/catalogo/disenos", "/api/v1/catalogo/disenos/**", "/api/v1/catalogo/tatuadores", "/api/v1/catalogo/tienda", "/api/v1/catalogo/resenas").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/catalogo/categorias/**", "/api/v1/catalogo/categorias", "/api/v1/catalogo/disenos", "/api/v1/catalogo/disenos/**", "/api/v1/catalogo/tatuadores", "/api/v1/catalogo/tienda", "/api/v1/catalogo/resenas", "/api/v1/blog", "/api/v1/blog/**").permitAll()
                         .anyRequest().authenticated())
                 .headers(h -> h.frameOptions(f -> f.sameOrigin()))
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))

@@ -8,7 +8,7 @@ import { REFRESCO_BLOG_MS } from '../../services/blogService.js';
 import { formatoFechaLarga } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
-/** Blog: los artículos vienen de ms-blog y la lista se actualiza sola cada 30 segundos. */
+/** Blog: los artículos vienen de ms-catalogo (/api/v1/blog) y la lista se actualiza sola cada 30 segundos. */
 export default function Blogs() {
   const { articulos, cargando, error, actualizado } = useArticulos();
 

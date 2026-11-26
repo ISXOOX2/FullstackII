@@ -1,5 +1,5 @@
 // ── PARA EXPLICAR (defensa) ───────────────────────────────────────────────
-// • El blog se lee desde el microservicio ms-blog con axios (instancia apiBlog de api.js).
+// • El blog se lee desde el microservicio ms-catalogo (ruta /api/v1/blog) con axios (instancia apiBlog de api.js).
 // • Con VITE_USAR_API=false (sin backend) se usan los artículos guardados en data/blogs.js.
 // • Los artículos los publica el administrador en la API (Swagger) y el front los toma solo:
 //   ver el hook useArticulos, que vuelve a pedir la lista cada 30 segundos.

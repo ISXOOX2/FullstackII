@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        servicio: [ms-usuarios, ms-catalogo, ms-reservas, ms-blog]
+        servicio: [ms-auth, ms-catalogo, ms-reservas]
     steps:
       - uses: actions/checkout@v4
       - name: Revisar si el microservicio existe
@@ -42,7 +42,7 @@ jobs:
           curl -sf http://localhost:9000/v3/api-docs | head -c 400 || (cat app.log; exit 1)
 
   integracion:
-    # Levanta los 4 microservicios juntos y prueba el flujo completo (login, compra, pago, stock, reembolso y blog)
+    # Levanta los 3 microservicios juntos y prueba el flujo completo (login, compra, pago, stock, reembolso y blog)
     needs: compilar
     runs-on: ubuntu-latest
     steps:
@@ -53,15 +53,15 @@ jobs:
           java-version: '17'
           cache: maven
           cache-dependency-path: backend/*/pom.xml
-      - name: Compilar los 4 microservicios
-        run: for ms in usuarios catalogo reservas blog; do (cd backend/ms-$ms && mvn -B -q package -DskipTests); done
+      - name: Compilar los 3 microservicios
+        run: for ms in auth catalogo reservas; do (cd backend/ms-$ms && mvn -B -q package -DskipTests); done
       - name: Prueba de integración
         env:
           TZ: America/Santiago
         run: bash backend/pruebas/integracion.sh
 
   frontend-con-backend:
-    # El frontend real (VITE_USAR_API=true) contra los 4 microservicios: compra, reembolso y aprobación en un navegador
+    # El frontend real (VITE_USAR_API=true) contra los 3 microservicios: compra, reembolso y aprobación en un navegador
     needs: compilar
     runs-on: ubuntu-latest
     steps:
@@ -76,26 +76,26 @@ jobs:
         with:
           node-version: '22'
           cache: npm
-      - name: Compilar y levantar los 4 microservicios (H2)
+      - name: Compilar y levantar los 3 microservicios (H2)
         env:
           TZ: America/Santiago
           CATALOGO_URL: http://localhost:8082/api/v1/catalogo
           # Token de 14 minutos: como quedan menos de 15, el front lo renueva en la primera petición
           JWT_EXPIRACION_MS: '840000'
         run: |
-          for par in usuarios:8081 catalogo:8082 reservas:8083 blog:8084; do
+          for par in auth:8081 catalogo:8082 reservas:8083; do
             ms=${par%%:*}; puerto=${par##*:}
             (cd backend/ms-$ms && mvn -B -q package -DskipTests)
             nohup java -jar backend/ms-$ms/target/ms-$ms-1.0.0.jar --spring.profiles.active=h2 --server.port=$puerto > /tmp/ms-$ms.log 2>&1 &
           done
-          for p in 8081 8082 8083 8084; do for i in $(seq 1 90); do curl -sf http://localhost:$p/v3/api-docs >/dev/null && break; sleep 2; done; done
+          for p in 8081 8082 8083; do for i in $(seq 1 90); do curl -sf http://localhost:$p/v3/api-docs >/dev/null && break; sleep 2; done; done
       - name: Compilar el frontend apuntando a la API
         env:
           VITE_USAR_API: 'true'
           VITE_API_USUARIOS: http://localhost:8081/api/v1/usuarios
           VITE_API_CATALOGO: http://localhost:8082/api/v1/catalogo
           VITE_API_RESERVAS: http://localhost:8083/api/v1/reservas
-          VITE_API_BLOG: http://localhost:8084/api/v1/blog
+          VITE_API_BLOG: http://localhost:8082/api/v1/blog
         run: npm ci && npm run build
       - name: Prueba de punta a punta (Playwright)
         env:
@@ -116,7 +116,7 @@ jobs:
           path: e2e-error.png
 
   despliegue-docker:
-    # Lo mismo que se hará en AWS: docker compose levanta MySQL + 4 microservicios + Nginx con el front
+    # Lo mismo que se hará en AWS: docker compose levanta MySQL + 3 microservicios + Nginx con el front
     needs: compilar
     runs-on: ubuntu-latest
     steps:
@@ -133,12 +133,13 @@ jobs:
           revisar "frontend servido por Nginx" "curl -sf http://localhost/ | grep -q 'id=\"root\"'"
           revisar "rutas de React (BrowserRouter) funcionan al recargar" "curl -sf http://localhost/blogs | grep -q 'id=\"root\"'"
           revisar "ms-catalogo con MySQL" "test \"\$(curl -sf http://localhost/api/v1/catalogo/disenos | jq length)\" = 25"
-          revisar "ms-blog con MySQL" "test \"\$(curl -sf http://localhost/api/v1/blog | jq length)\" = 2"
+          revisar "blog (en ms-catalogo) con MySQL" "test \"\$(curl -sf http://localhost/api/v1/blog | jq length)\" = 2"
           CODIGO=$(curl -s -o /dev/null -w '%{http_code}' -H 'Content-Type: application/json' -d '{"correo":"admin.foreverink@gmail.com","password":"Admin#123"}' http://localhost/api/v1/usuarios/auth/login)
           revisar "la contraseña de ejemplo del repositorio NO sirve en el servidor (401)" "test $CODIGO = 401"
           TOKEN=$(curl -sf -H 'Content-Type: application/json' -d '{"correo":"admin.foreverink@gmail.com","password":"Tinta#2026"}' http://localhost/api/v1/usuarios/auth/login | jq -r .token)
+          revisar "Flyway creó las tablas e insertó los 3 tatuadores (V2) en MySQL" "test \"\$(curl -sf http://localhost/api/v1/catalogo/tatuadores | jq length)\" = 3"
           revisar "login JWT y ms-reservas consulta a ms-catalogo dentro de Docker" "test \"\$(curl -sf -H 'Authorization: Bearer $TOKEN' http://localhost/api/v1/reservas/agenda | jq length)\" = 3"
-          for ms in usuarios catalogo reservas blog; do
+          for ms in auth catalogo reservas; do
             revisar "Swagger de ms-$ms en /docs/$ms/swagger-ui.html" "curl -sfL http://localhost/docs/$ms/swagger-ui.html | grep -qi swagger"
             revisar "OpenAPI de ms-$ms apunta a /docs/$ms" "curl -sf http://localhost/docs/$ms/v3/api-docs | jq -r '.servers[0].url' | grep -q '/docs/$ms'"
           done

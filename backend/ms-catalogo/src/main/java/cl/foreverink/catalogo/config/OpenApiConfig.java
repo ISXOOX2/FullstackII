@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(info = @Info(
         title = "Forever Ink · ms-catalogo",
         version = "v1",
-        description = "Microservicio de catalogo: disenos para reservar, estilos, tatuadores, insumos con stock critico y tienda. Forever Ink, DSY1104 Desarrollo Fullstack II."))
+        description = "Microservicio de catalogo: disenos para reservar, estilos, tatuadores, insumos con stock critico, tienda, resenas y blog. Forever Ink, DSY1104 Desarrollo Fullstack II."))
 @SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 public class OpenApiConfig {
 }

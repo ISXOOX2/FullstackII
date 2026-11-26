@@ -14,7 +14,7 @@ export default function Usuarios({ usuario: actual, mostrarAviso }) {
   const confirmar = async () => {
     if (USAR_API) {
       try {
-        await eliminarUsuarioApi(aEliminar.id); // DELETE en ms-usuarios (no deja borrarse a sí mismo)
+        await eliminarUsuarioApi(aEliminar.id); // DELETE en ms-auth (no deja borrarse a sí mismo)
       } catch (e) {
         setErrorEliminar(mensajeDeError(e));
         return;

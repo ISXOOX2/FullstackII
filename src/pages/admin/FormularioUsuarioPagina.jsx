@@ -22,7 +22,7 @@ export default function FormularioUsuarioPagina({ usuario: sesion, actualizarSes
   const guardar = async (datos) => {
     let guardado;
     if (USAR_API) {
-      // Con backend: POST o PUT en ms-usuarios (valida RUN, edad, correo único...)
+      // Con backend: POST o PUT en ms-auth (valida RUN, edad, correo único...)
       try {
         guardado = await guardarUsuarioApi(existente, datos);
       } catch (e) {

@@ -2,7 +2,7 @@
 // • CRUD del panel contra el backend (con VITE_USAR_API=true):
 //     Crear  -> POST     Leer -> GET (ver sincronizacion.js)
 //     Editar -> PUT      Eliminar -> DELETE
-// • Diseños, estilos e insumos van a ms-catalogo; usuarios a ms-usuarios.
+// • Diseños, estilos e insumos van a ms-catalogo; usuarios a ms-auth.
 // • Después de cada cambio se vuelve a sincronizar para que el panel muestre lo que guardó la API.
 // • Los errores (validaciones, permisos, duplicados) los devuelve el backend en { mensaje } y se
 //   muestran en el formulario con mensajeDeError.
@@ -80,7 +80,7 @@ export async function eliminarInsumoApi(id) {
   await sincronizarCatalogo();
 }
 
-// ── Usuarios (ms-usuarios) ──────────────────────────────────────────────────
+// ── Usuarios (ms-auth) ──────────────────────────────────────────────────
 
 /** Datos del formulario en el formato de UsuarioRequest (sin campos de confirmación). */
 export function usuarioParaApi(datos) {

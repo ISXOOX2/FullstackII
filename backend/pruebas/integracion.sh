@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Prueba de integración de los 4 microservicios (la corre GitHub Actions, y también sirve en tu PC con Git Bash).
-# Requisitos: los 4 .jar compilados (mvn package en cada carpeta), curl y jq.
+# Prueba de integración de los 3 microservicios (la corre GitHub Actions, y también sirve en tu PC con Git Bash).
+# Requisitos: los 3 .jar compilados (mvn package en cada carpeta), curl y jq.
 # Levanta todo con H2 en memoria y recorre el flujo principal llamando a la API como lo haría el frontend.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -13,17 +13,17 @@ codigo() { curl -s -o /dev/null -w '%{http_code}' -H 'Content-Type: application/
 
 echo "▶ Levantando microservicios (perfil h2)"
 export CATALOGO_URL=http://localhost:8082/api/v1/catalogo
-for par in usuarios:8081 catalogo:8082 reservas:8083 blog:8084; do
+for par in auth:8081 catalogo:8082 reservas:8083; do
   ms=${par%%:*}; puerto=${par##*:}
   java -jar "ms-$ms/target/ms-$ms-1.0.0.jar" --spring.profiles.active=h2 --server.port="$puerto" > "/tmp/ms-$ms.log" 2>&1 &
 done
-for p in 8081 8082 8083 8084; do esperar $p; done
-ok "los 4 microservicios responden y publican Swagger"
+for p in 8081 8082 8083; do esperar $p; done
+ok "los 3 microservicios responden y publican Swagger (Flyway creó las tablas)"
 
 U=http://localhost:8081/api/v1/usuarios; C=http://localhost:8082/api/v1/catalogo
-R=http://localhost:8083/api/v1/reservas; BL=http://localhost:8084/api/v1/blog
+R=http://localhost:8083/api/v1/reservas; BL=http://localhost:8082/api/v1/blog
 
-echo "▶ ms-usuarios: JWT y roles"
+echo "▶ ms-auth: JWT y roles"
 ADMIN=$(json -X POST $U/auth/login -d '{"correo":"admin.foreverink@gmail.com","password":"Admin#123"}' | jq -r .token)
 CLIENTE=$(json -X POST $U/auth/login -d '{"correo":"cliente.demo@gmail.com","password":"Cliente#1"}' | jq -r .token)
 [[ $ADMIN == ey* && $CLIENTE == ey* ]] && ok "login de administrador y cliente devuelve token" || falla "login"
@@ -93,9 +93,17 @@ PID=$(echo "$PROY" | jq -r .id)
 [[ $(codigo -X POST $R/mensajes -d '{"nombre":"Visita","correo":"visita@gmail.com","comentario":"¿Atienden los domingos?"}') == 201 ]] && ok "mensaje de contacto sin cuenta" || falla "enviar mensaje"
 [[ $(codigo $R/mensajes) == 401 && $(json -H "Authorization: Bearer $ADMIN" $R/mensajes | jq length) == 1 ]] && ok "los mensajes solo los lee el personal" || falla "listar mensajes"
 
-echo "▶ ms-blog: el front lee la lista y ve los artículos nuevos"
+echo "▶ Blog (en ms-catalogo): el front lee la lista y ve los artículos nuevos"
 [[ $(json $BL | jq length) == 2 ]] && ok "2 artículos iniciales" || falla "blog"
 json -X POST -H "Authorization: Bearer $ADMIN" $BL -d '{"titulo":"Nuevo artículo","resumen":"Publicado desde la API","imagen":"cuidados","contenido":[{"tipo":"p","texto":"Hola"}]}' >/dev/null
 [[ $(json $BL | jq -r '.[0].titulo') == "Nuevo artículo" ]] && ok "un artículo publicado aparece primero" || falla "publicar artículo"
+
+echo "▶ Buenas prácticas: ResponseEntity, Flyway y manejo global de errores"
+[[ $(json $C/tatuadores | jq length) == 3 ]] && ok "Flyway V2 insertó los 3 tatuadores" || falla "seed de tatuadores"
+[[ $(codigo -X POST -H "Authorization: Bearer $ADMIN" $C/categorias -d '{"nombre":"Prueba 201"}') == 201 ]] && ok "crear devuelve 201 Created" || falla "201"
+[[ $(codigo $C/disenos/99999) == 404 && $(json $C/disenos/99999 | jq -r .mensaje) != null ]] && ok "recurso inexistente: 404 con { mensaje }" || falla "404"
+[[ $(codigo $C/disenos/abc) == 400 ]] && ok "parámetro inválido: 400" || falla "parámetro inválido"
+[[ $(json $C/disenos/1 | jq 'has("imagenes") and has("codigo")') == true ]] && ok "las respuestas son DTOs con los mismos campos que usa el front" || falla "DTO"
+[[ $(json -H "Authorization: Bearer $ADMIN" $C/insumos | jq '.[0] | has("aLaVenta")') == true ]] && ok "InsumoRespuesta mantiene el campo aLaVenta" || falla "aLaVenta"
 
 echo "✅ Integración OK"

@@ -10,7 +10,7 @@ export default function Login({ iniciarSesion, mostrarAviso }) {
 
   /** Devuelve '' si el ingreso fue correcto, o el mensaje de error para el formulario. */
   const ingresar = async ({ correo, password }) => {
-    const resultado = await iniciarSesion(correo, password); // con backend, espera a ms-usuarios
+    const resultado = await iniciarSesion(correo, password); // con backend, espera a ms-auth
     if (!resultado.ok) return resultado.error;
     mostrarAviso(`¡Bienvenido/a, ${resultado.usuario.nombre}!`);
     // Admin y vendedor van al panel; el cliente vuelve a donde estaba (o al inicio).

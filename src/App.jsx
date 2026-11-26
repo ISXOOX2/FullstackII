@@ -105,7 +105,7 @@ export default function App() {
 
   /**
    * Devuelve { ok, usuario } o { ok: false, error } para que el formulario muestre el mensaje.
-   * Con el backend activo es async: pide el token JWT a ms-usuarios y lo guarda en la sesión
+   * Con el backend activo es async: pide el token JWT a ms-auth y lo guarda en la sesión
    * (el interceptor de api.js lo agrega a todas las peticiones siguientes).
    */
   const iniciarSesion = async (correo, password) => {

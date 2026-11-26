@@ -26,7 +26,7 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
 
   const guardar = async (datos) => {
     if (USAR_API) {
-      // Con backend: PUT /usuarios/{id} en ms-usuarios (cada usuario solo puede editar su propia cuenta)
+      // Con backend: PUT /usuarios/{id} en ms-auth (cada usuario solo puede editar su propia cuenta)
       try {
         actualizarSesion(await guardarUsuarioApi(usuario, { ...datos, tipo: null }));
       } catch (e) {

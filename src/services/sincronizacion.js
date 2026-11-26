@@ -45,7 +45,7 @@ export async function sincronizarSolicitudesClientes(usuario = leerSesion()) {
   reemplazarColeccion('mensajes', mensajes.data);
 }
 
-/** Usuarios (ms-usuarios): el administrador ve la lista real; los demás solo su propia cuenta. */
+/** Usuarios (ms-auth): el administrador ve la lista real; los demás solo su propia cuenta. */
 export async function sincronizarUsuarios(usuario = leerSesion()) {
   if (!usuario?.token) return;
   if (usuario.tipo === 'Administrador') {

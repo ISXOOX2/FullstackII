@@ -1,4 +1,4 @@
-# Forever Ink completo: MySQL + 4 microservicios Spring Boot + frontend con Nginx.
+# Forever Ink completo: MySQL + 3 microservicios Spring Boot (ms-auth, ms-catalogo, ms-reservas) + frontend con Nginx.
 # Uso (en tu PC o en la instancia EC2):
 #   cp despliegue/.env.example .env   (y cambia las claves)
 #   docker compose up -d --build
@@ -34,16 +34,16 @@ services:
       timeout: 5s
       retries: 40
 
-  ms-usuarios:
+  ms-auth:
     <<: *microservicio
-    build: ./backend/ms-usuarios
+    build: ./backend/ms-auth
     environment:
       <<: *entorno
       # Obligatorias: sin ellas no arranca (así nunca quedan las contraseñas públicas del repositorio)
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Define ADMIN_PASSWORD en el archivo .env}
       VENDEDOR_PASSWORD: ${VENDEDOR_PASSWORD:?Define VENDEDOR_PASSWORD en el archivo .env}
       CLIENTE_PASSWORD: ${CLIENTE_PASSWORD:-}
-      DB_URL: jdbc:mysql://mysql:3306/foreverink_usuarios?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
+      DB_URL: jdbc:mysql://mysql:3306/foreverink_auth?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
 
   ms-catalogo:
     <<: *microservicio
@@ -60,23 +60,15 @@ services:
       DB_URL: jdbc:mysql://mysql:3306/foreverink_reservas?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
       CATALOGO_URL: http://ms-catalogo:8082/api/v1/catalogo
 
-  ms-blog:
-    <<: *microservicio
-    build: ./backend/ms-blog
-    environment:
-      <<: *entorno
-      DB_URL: jdbc:mysql://mysql:3306/foreverink_blog?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago
-
   frontend:
     build: .
     restart: unless-stopped
     ports:
       - "80:80"
     depends_on:
-      - ms-usuarios
+      - ms-auth
       - ms-catalogo
       - ms-reservas
-      - ms-blog
 
 volumes:
   datos-mysql:

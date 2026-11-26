@@ -1,4 +1,4 @@
-// Prueba de punta a punta: el FRONTEND (React) conectado a los 4 microservicios reales.
+// Prueba de punta a punta: el FRONTEND (React) conectado a los 3 microservicios reales.
 // La corre GitHub Actions (ver .github/workflows/backend.yml). Usa Playwright como si fuera una persona.
 import { chromium } from 'playwright';
 
@@ -54,9 +54,9 @@ try {
   comprobar(await pagina.locator('.tarjeta-producto').count() === 9, 'la Tienda muestra los 9 artículos de ms-catalogo');
   await pagina.goto(`${BASE}/blogs`);
   await pagina.getByText('Se actualiza solo cada 30 segundos').waitFor();
-  comprobar(await pagina.locator('.tarjeta-blog').count() === 2, 'el blog muestra los artículos de ms-blog');
+  comprobar(await pagina.locator('.tarjeta-blog').count() === 2, 'el blog muestra los artículos de la API (ms-catalogo)');
 
-  console.log('▶ Login con JWT (ms-usuarios)');
+  console.log('▶ Login con JWT (ms-auth)');
   await pagina.goto(`${BASE}/login`);
   comprobar(await pagina.locator('.cuentas-demo').count() === 0, 'la página de login NO muestra contraseñas de demostración');
   await login('cliente.demo@gmail.com', 'Cliente#1');
@@ -184,7 +184,7 @@ try {
   await pagina.locator('tr', { hasText: 'Diseño editado E2E' }).waitFor({ state: 'detached' });
   comprobar(!(await disenosApi()).some((d) => d.id === creado.id), 'ELIMINAR (DELETE): el diseño ya no está en la API');
 
-  console.log('▶ CRUD del panel: insumos (ms-catalogo) y usuarios (ms-usuarios)');
+  console.log('▶ CRUD del panel: insumos (ms-catalogo) y usuarios (ms-auth)');
   await pagina.goto(`${BASE}/admin/insumos`);
   await pagina.locator('#i-nombre').fill('Agujas 5RL E2E');
   await pagina.locator('#i-tipo').selectOption('Agujas');
@@ -212,11 +212,11 @@ try {
   await pagina.getByRole('button', { name: 'Guardar cambios' }).click();
   await pagina.waitForURL(/\/admin\/usuarios$/);
   const usuariosApi = await conToken('http://localhost:8081/api/v1/usuarios');
-  comprobar(usuariosApi.some((u) => u.correo === 'vale.e2e@gmail.com' && u.tipo === 'Vendedor'), 'usuario Vendedor creado en ms-usuarios');
+  comprobar(usuariosApi.some((u) => u.correo === 'vale.e2e@gmail.com' && u.tipo === 'Vendedor'), 'usuario Vendedor creado en ms-auth');
   await pagina.locator('tr', { hasText: 'vale.e2e@gmail.com' }).getByRole('button', { name: 'Eliminar' }).click();
   await pagina.getByRole('dialog').getByRole('button', { name: 'Eliminar' }).click();
   await pagina.locator('tr', { hasText: 'vale.e2e@gmail.com' }).waitFor({ state: 'detached' });
-  comprobar(!(await conToken('http://localhost:8081/api/v1/usuarios')).some((u) => u.correo === 'vale.e2e@gmail.com'), 'usuario eliminado de ms-usuarios');
+  comprobar(!(await conToken('http://localhost:8081/api/v1/usuarios')).some((u) => u.correo === 'vale.e2e@gmail.com'), 'usuario eliminado de ms-auth');
 
   console.log('▶ Renovación del token JWT');
   comprobar(renovaciones > 0, `el front pidió ${renovaciones} renovación(es) del token antes de que venciera`);

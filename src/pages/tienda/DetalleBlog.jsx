@@ -10,7 +10,7 @@ import { obtenerArticulo } from '../../services/blogService.js';
 import { formatoFechaLarga } from '../../utils/formato.js';
 import images from '../../assets/images.js';
 
-/** Detalle de un artículo: lo pide a ms-blog por su id (o lo toma de los datos locales sin backend). */
+/** Detalle de un artículo: lo pide a ms-catalogo (/api/v1/blog) por su id (o lo toma de los datos locales sin backend). */
 export default function DetalleBlog() {
   const { id } = useParams();
   const [blog, setBlog] = useState(() => (USAR_API ? undefined : obtenerBlog(id)));
