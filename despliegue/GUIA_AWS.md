@@ -7,10 +7,10 @@ Navegador ──► http://IP-PUBLICA (puerto 80)
                  │
               Nginx (contenedor "frontend")
                  ├── /                 → React compilado (dist)
-                 ├── /api/v1/usuarios  → ms-usuarios :8081 ─┐
-                 ├── /api/v1/catalogo  → ms-catalogo :8082 ─┤
-                 ├── /api/v1/reservas  → ms-reservas :8083 ─┼──► MySQL 8 (una base por microservicio)
-                 ├── /api/v1/blog      → ms-blog     :8084 ─┘
+                 ├── /api/v1/usuarios  → ms-auth     :8081 ─┐
+                 ├── /api/v1/catalogo  → ms-catalogo :8082 ─┼──► MySQL 8 (una base por microservicio,
+                 ├── /api/v1/blog      → ms-catalogo :8082  │      tablas creadas por Flyway)
+                 ├── /api/v1/reservas  → ms-reservas :8083 ─┘
                  └── /docs/<ms>/swagger-ui.html → Swagger de cada microservicio
 ```
 
@@ -119,10 +119,9 @@ docker compose logs -f ms-reservas   # Ctrl + C para salir
 | Qué | Link |
 |---|---|
 | **Sitio (el link único)** | `http://TU-IP-PUBLICA` |
-| Swagger usuarios | `http://TU-IP-PUBLICA/docs/usuarios/swagger-ui.html` |
+| Swagger auth | `http://TU-IP-PUBLICA/docs/auth/swagger-ui.html` |
 | Swagger catálogo | `http://TU-IP-PUBLICA/docs/catalogo/swagger-ui.html` |
 | Swagger reservas | `http://TU-IP-PUBLICA/docs/reservas/swagger-ui.html` |
-| Swagger blog | `http://TU-IP-PUBLICA/docs/blog/swagger-ui.html` |
 
 Para probar en Swagger una ruta protegida: ejecuta `POST /api/v1/usuarios/auth/login` con
 `{"correo": "admin.foreverink@gmail.com", "password": "<tu ADMIN_PASSWORD>"}`, copia el `token`, presiona

@@ -7,7 +7,7 @@ Sitio web de un estudio de tatuajes con estética manga: el cliente elige diseñ
 (tatuador, fecha y hora) y paga en línea (pago simulado). El personal del estudio administra el catálogo,
 las órdenes y los usuarios desde un panel.
 
-**Arquitectura:** frontend React + **4 microservicios Spring Boot** (usuarios, catálogo, reservas y blog) con
+**Arquitectura:** frontend React + **3 microservicios Spring Boot** (auth, catálogo y reservas) con
 MySQL, seguridad con **Spring Security + JWT**, documentación **Swagger** y despliegue en **AWS EC2** con un solo
 link (Nginx + Docker Compose).
 
@@ -100,11 +100,11 @@ test/
   ayudas.jsx, setup.js     Funciones de apoyo y configuración inicial de Vitest (matchers de jest-dom)
 docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
 e2e/                       Prueba de punta a punta del frontend con el backend (Playwright, la corre el CI)
-backend/                   Los 4 microservicios Spring Boot (ms-usuarios, ms-catalogo, ms-reservas, ms-blog)
+backend/                   Los 3 microservicios Spring Boot (ms-auth, ms-catalogo, ms-reservas)
   pruebas/integracion.sh   Prueba de integración de la API completa
 despliegue/                nginx.conf, .env.example y GUIA_AWS.md (EC2 paso a paso)
 Dockerfile                 Imagen del frontend (Vite -> Nginx)
-docker-compose.yml         MySQL + 4 microservicios + frontend: todo el sistema con un comando
+docker-compose.yml         MySQL + 3 microservicios + frontend: todo el sistema con un comando
 ```
 
 ## Decisiones técnicas (según el material de la asignatura)
@@ -133,24 +133,35 @@ docker-compose.yml         MySQL + 4 microservicios + frontend: todo el sistema 
 
 | Microservicio | Puerto | Ruta base | Qué hace | Swagger local |
 |---|---|---|---|---|
-| `ms-usuarios` | 8081 | `/api/v1/usuarios` | Registro (solo mayores de 18), login con **JWT**, mantenedor de usuarios por rol | http://localhost:8081/swagger-ui.html |
-| `ms-catalogo` | 8082 | `/api/v1/catalogo` | Diseños (sin stock, código FI-###), estilos, tatuadores, insumos con stock crítico y Tienda | http://localhost:8082/swagger-ui.html |
-| `ms-reservas` | 8083 | `/api/v1/reservas` | Agenda, órdenes, pago simulado, reembolsos, cambios de hora, cambio de estado e historial | http://localhost:8083/swagger-ui.html |
-| `ms-blog` | 8084 | `/api/v1/blog` | Artículos del blog (el front los vuelve a pedir cada 30 s) | http://localhost:8084/swagger-ui.html |
+| `ms-auth` | 8081 | `/api/v1/usuarios` | Registro (solo mayores de 18), login y renovación con **JWT**, mantenedor de usuarios por rol | http://localhost:8081/swagger-ui.html |
+| `ms-catalogo` | 8082 | `/api/v1/catalogo` y `/api/v1/blog` | Diseños (código FI-###), estilos, tatuadores, insumos con stock crítico, Tienda, reseñas y blog (el front lo vuelve a pedir cada 30 s) | http://localhost:8082/swagger-ui.html |
+| `ms-reservas` | 8083 | `/api/v1/reservas` | Agenda, órdenes, pago simulado, reembolsos, cambios de hora, historial, Mi proyecto y contacto | http://localhost:8083/swagger-ui.html |
 
 Cada microservicio sigue la estructura de la guía 3.1.2: `modelo` (entidades JPA), `repositorio`, `servicio`
 (reglas de negocio), `controlador` (REST con rutas versionadas `/api/v1`), `dto` (validaciones), `seguridad`
 (JWT) y `config` (Swagger, CORS, datos iniciales). Swagger usa **springdoc-openapi**, porque springfox (el de la
 guía) no funciona con Spring Boot 3.
 
-- **Seguridad:** `ms-usuarios` firma el token JWT (id, correo y rol) y los cuatro lo verifican con la misma clave.
+Buenas prácticas de las clases de Spring Boot (2.2.1, 2.3.1 y 2.3.2):
+
+- **Migraciones con Flyway:** las tablas las crean los scripts `src/main/resources/db/migration/V1__....sql` de cada
+  microservicio (y `V2__datos_iniciales_tatuadores.sql` carga datos). Hibernate solo valida (`ddl-auto=validate`).
+- **ResponseEntity + DTOs:** los controladores responden `ResponseEntity` con el código correcto (200, 201 Created,
+  204 No Content) y devuelven DTOs (`...Respuesta`), nunca la entidad JPA. Las entradas se validan con Bean Validation.
+- **Manejo global de errores** con `@RestControllerAdvice` (`ManejadorErrores`): 400 con el detalle por campo,
+  403, 404, 409 y 500 sin mostrar el stack trace.
+- **Logs con SLF4J + Logback** en controladores y servicios (login, órdenes, pagos, stock y errores de comunicación).
+- **Comunicación entre microservicios por API** (nunca a la base de otro): `ms-reservas` llama a `ms-catalogo`
+  con RestClient, con timeouts y manejo de errores.
+
+- **Seguridad:** `ms-auth` firma el token JWT (id, correo y rol) y los tres lo verifican con la misma clave.
   El token dura 8 horas. Si le quedan menos de 15 minutos, el front lo renueva solo (`POST /auth/renovar`). Si el
   backend responde 401 (token vencido o alterado), se cierra la sesión. La sesión sobrevive a la recarga.
   Los permisos se revisan con `@PreAuthorize("hasRole('ADMINISTRADOR')")`. Las contraseñas se guardan con BCrypt.
 - **Comunicación entre microservicios:** `ms-reservas` consulta a `ms-catalogo` (RestClient) los precios reales
   (el navegador no puede cambiarlos) y le pide descontar o reponer el stock de la Tienda.
-- **Base de datos:** MySQL, una base por microservicio (`foreverink_usuarios`, `_catalogo`, `_reservas`, `_blog`).
-  Se crean solas y se llenan con los mismos datos de ejemplo del frontend.
+- **Base de datos:** MySQL, una base por microservicio (`foreverink_auth`, `_catalogo`, `_reservas`).
+  Se crean solas, Flyway crea las tablas y se llenan con los mismos datos de ejemplo del frontend.
 
 ### Levantar el backend en tu PC
 
@@ -179,11 +190,11 @@ El paso a paso para **AWS EC2** está en [`despliegue/GUIA_AWS.md`](despliegue/G
 
 Cada cambio se prueba solo (`.github/workflows/backend.yml`):
 
-1. Compila los 4 microservicios y revisa que Swagger responda.
+1. Compila los 3 microservicios y revisa que Swagger responda.
 2. `backend/pruebas/integracion.sh` recorre la API completa: roles, compra, stock entre microservicios,
    reembolso y blog.
 3. `e2e/integracion-front.mjs` (Playwright) usa el frontend real conectado al backend.
-4. `despliegue-docker` levanta el `docker-compose.yml` y revisa el link único y los 4 Swagger.
+4. `despliegue-docker` levanta el `docker-compose.yml` y revisa el link único y los 3 Swagger.
 
 ## Persistencia y modo sin backend
 
