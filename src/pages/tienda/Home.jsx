@@ -77,7 +77,7 @@ export default function Home({ onAgregar }) {
             <Col md={6} className="revelar">
               <div className="paso h-100">
                 <h3 className="h5">Aún no sé qué tatuarme</h3>
-                <p className="text-muted">Elige uno de nuestros 25 diseños originales y agenda tu hora en minutos.</p>
+                <p className="text-muted">Elige uno de nuestros diseños y agenda tu hora en minutos.</p>
                 <Link to="/productos" className="btn btn-dark">Ver diseños</Link>
               </div>
             </Col>

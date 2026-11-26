@@ -40,12 +40,12 @@ RESP=$(json -X POST $U/auth/registro -d "{\"run\":\"111111111\",\"nombre\":\"Ana
 [[ $(echo "$RESP" | jq -r .mensaje) == *"18"* ]] && ok "registro de menor de 18 rechazado" || falla "menor de edad: $RESP"
 
 echo "▶ ms-catalogo: diseños, tienda e insumos"
-[[ $(json $C/disenos | jq length) == 25 ]] && ok "25 diseños" || falla "diseños"
+[[ $(json $C/disenos | jq length) == 29 ]] && ok "29 diseños" || falla "diseños"
 [[ $(json $C/tienda | jq length) == 9 ]] && ok "9 artículos en la Tienda" || falla "tienda"
 STOCK0=$(json $C/tienda | jq '.[] | select(.id==8) | .stock')
 [[ $(codigo -H "Authorization: Bearer $CLIENTE" $C/insumos) == 403 ]] && ok "insumos solo para el administrador" || falla "insumos rol"
 NUEVO=$(json -X POST -H "Authorization: Bearer $ADMIN" $C/disenos -d '{"nombre":"Prueba","categoriaId":1,"precio":15000,"anchoCm":5,"altoCm":5}')
-[[ $(echo "$NUEVO" | jq -r .codigo) == FI-026 ]] && ok "código automático FI-026" || falla "código automático: $NUEVO"
+[[ $(echo "$NUEVO" | jq -r .codigo) == FI-030 ]] && ok "código automático FI-030" || falla "código automático: $NUEVO"
 
 echo "▶ ms-reservas: compra con cita + producto, pago, stock y reembolso"
 FECHA=$(for d in $(seq 4 12); do f=$(date -d "+$d days" +%F); [[ $(date -d "$f" +%u) -ge 2 && $(date -d "$f" +%u) -le 6 ]] && echo $f && break; done)

@@ -39,6 +39,10 @@ import murcielagosEspinosos from './images/disenos/murcielagos-espinosos.jpg';
 import alasOjo from './images/disenos/alas-ojo.jpg';
 import guerreraLanza from './images/disenos/guerrera-lanza.jpg';
 import ojosEspinosos from './images/disenos/ojos-espinosos.jpg';
+import gatoEsqueleto from './images/disenos/gato-esqueleto.jpg';
+import lunaChorreante from './images/disenos/luna-chorreante.jpg';
+import espadaAlasAfiladas from './images/disenos/espada-alas-afiladas.jpg';
+import corazonEspinas from './images/disenos/corazon-espinas.jpg';
 // Artículos de la tienda (cuidado del tatuaje y gift cards)
 import tiendaBalsamo from './images/tienda/balsamo.svg';
 import tiendaCrema from './images/tienda/crema.svg';
@@ -75,6 +79,10 @@ const images = {
   'alas-ojo': alasOjo,
   'guerrera-lanza': guerreraLanza,
   'ojos-espinosos': ojosEspinosos,
+  'gato-esqueleto': gatoEsqueleto,
+  'luna-chorreante': lunaChorreante,
+  'espada-alas-afiladas': espadaAlasAfiladas,
+  'corazon-espinas': corazonEspinas,
   'cuidados': cuidados,
   'logo': logo,
   'portada-1': portada1,
