@@ -172,9 +172,9 @@ try {
   console.log('✅ Frontend + backend OK');
 } catch (e) {
   await pagina.screenshot({ path: 'e2e-error.png', fullPage: true });
-  console.log(`  ✘ ${e.message.split('\n')[0]}`);
+  console.log(`  ✘ ${e.message.split('\n').slice(0, 8).join('\n    ')}`);
   console.log(`    URL: ${pagina.url()}`);
-  console.log(`    Pantalla: ${(await pagina.locator('main').innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 400)}`);
+  console.log(`    Pantalla: ${(await pagina.locator('body').innerText().catch(() => '')).replace(/\s+/g, ' ').slice(0, 400)}`);
   console.log(`    Errores JS: ${errores.join(' | ') || 'ninguno'}`);
   process.exitCode = 1;
 } finally {
