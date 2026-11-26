@@ -144,8 +144,10 @@ export default function App() {
       .then(() => activo && setVersionDatos((v) => v + 1))
       .catch((error) => activo && mostrarAviso(`No pudimos conectar con el servidor: ${mensajeDeError(error)}`, 'danger'));
     return () => { activo = false; };
+    // Solo al iniciar o cerrar sesión (o si cambia el rol). Renovar el token NO vuelve a sincronizar:
+    // los datos son los mismos, solo cambia la "llave".
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usuario?.token]);
+  }, [usuario?.id, usuario?.tipo]);
 
   // El interceptor de api.js avisa cuando renovó el token o cuando la sesión ya no es válida.
   useEffect(() => {
