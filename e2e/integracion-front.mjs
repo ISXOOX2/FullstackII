@@ -133,15 +133,13 @@ try {
   const criticos = await conToken(`${CATALOGO}/insumos/criticos`);
   comprobar(criticos.some((i) => i.nombre === 'Agujas 5RL E2E'), 'insumo creado en la API y en stock crítico');
 
-  const run = runConDv(20111222);
+  const run = runConDv(20111222); // en el panel no hay campos de confirmación (solo en el registro)
   await pagina.goto(`${BASE}/admin/usuarios/nuevo`);
   await pagina.getByLabel('RUN').fill(run);
   await pagina.getByLabel('Nombre', { exact: true }).fill('Vale');
   await pagina.getByLabel('Apellidos').fill('Prueba E2E');
   await pagina.getByLabel('Correo electrónico').fill('vale.e2e@gmail.com');
-  await pagina.getByLabel('Confirmar correo').fill('vale.e2e@gmail.com');
   await pagina.getByLabel('Contraseña', { exact: true }).fill('Clave12');
-  await pagina.getByLabel('Confirmar contraseña').fill('Clave12');
   await pagina.getByLabel('Fecha de nacimiento').fill('1999-04-10');
   await pagina.getByLabel('Teléfono').fill('+56987654321');
   await pagina.getByLabel('Tipo de usuario').selectOption('Vendedor');
