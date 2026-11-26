@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/reservas/horas").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/reservas/proyectos", "/api/v1/reservas/mensajes").permitAll()
                         .anyRequest().authenticated())
                 .headers(h -> h.frameOptions(f -> f.sameOrigin()))
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
