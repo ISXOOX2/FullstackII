@@ -10,6 +10,7 @@ import { NOMBRE_SOLICITUD, TIPOS_SOLICITUD, crearSolicitud, puedeSolicitar } fro
 import { formatoCLP, formatoFecha } from '../../utils/formato.js';
 import { mensajeDeError, USAR_API } from '../../services/api.js';
 import { solicitarApi } from '../../services/reservasApi.js';
+import { guardarUsuarioApi } from '../../services/adminApi.js';
 import { sincronizarOrdenes } from '../../services/sincronizacion.js';
 
 /** El cliente puede gestionar una reserva si al menos uno de los dos tipos de solicitud está permitido. */
@@ -23,10 +24,19 @@ export default function Perfil({ usuario, actualizarSesion, mostrarAviso }) {
   const completo = obtenerUsuario(usuario.id);
   const historial = historialDeCompras(usuario.id);
 
-  const guardar = (datos) => {
-    const resultado = actualizarUsuario(usuario.id, { ...datos, tipo: usuario.tipo });
-    if (!resultado.ok) return resultado.error;
-    actualizarSesion(usuarioPublico(resultado.usuario));
+  const guardar = async (datos) => {
+    if (USAR_API) {
+      // Con backend: PUT /usuarios/{id} en ms-usuarios (cada usuario solo puede editar su propia cuenta)
+      try {
+        actualizarSesion(await guardarUsuarioApi(usuario, { ...datos, tipo: null }));
+      } catch (e) {
+        return mensajeDeError(e);
+      }
+    } else {
+      const resultado = actualizarUsuario(usuario.id, { ...datos, tipo: usuario.tipo });
+      if (!resultado.ok) return resultado.error;
+      actualizarSesion(usuarioPublico(resultado.usuario));
+    }
     mostrarAviso('Tus datos se actualizaron correctamente.');
     return '';
   };

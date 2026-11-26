@@ -3,6 +3,8 @@ import FormularioProducto from '../../components/organismos/FormularioProducto.j
 import MensajeVacio from '../../components/moleculas/MensajeVacio.jsx';
 import { listarCategorias } from '../../services/categoriasService.js';
 import { actualizarProducto, crearProducto, obtenerProducto } from '../../services/productosService.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { guardarDisenoApi } from '../../services/adminApi.js';
 
 /** Página para crear (/admin/productos/nuevo) o editar (/admin/productos/:id/editar) un diseño. */
 export default function FormularioProductoPagina({ mostrarAviso }) {
@@ -18,9 +20,18 @@ export default function FormularioProductoPagina({ mostrarAviso }) {
     );
   }
 
-  const guardar = (valores) => {
-    const resultado = existente ? actualizarProducto(existente.id, valores) : crearProducto(valores);
-    if (!resultado.ok) return resultado.error;
+  const guardar = async (valores) => {
+    if (USAR_API) {
+      // Con backend: POST (crear) o PUT (editar) en ms-catalogo
+      try {
+        await guardarDisenoApi(existente, valores);
+      } catch (e) {
+        return mensajeDeError(e);
+      }
+    } else {
+      const resultado = existente ? actualizarProducto(existente.id, valores) : crearProducto(valores);
+      if (!resultado.ok) return resultado.error;
+    }
     mostrarAviso(existente ? 'Diseño actualizado.' : 'Diseño creado.');
     navegar('/admin/productos');
     return '';

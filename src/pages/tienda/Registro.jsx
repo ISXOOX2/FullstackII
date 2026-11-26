@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import FormularioUsuario from '../../components/organismos/FormularioUsuario.jsx';
 import { registrarCliente } from '../../services/usuariosService.js';
 import { apiUsuarios, mensajeDeError, USAR_API } from '../../services/api.js';
+import { usuarioParaApi } from '../../services/adminApi.js';
 
 export default function Registro({ iniciarSesion, mostrarAviso }) {
   const navegar = useNavigate();
@@ -11,8 +12,7 @@ export default function Registro({ iniciarSesion, mostrarAviso }) {
     if (USAR_API) {
       // Con backend: ms-usuarios valida (mayor de 18, RUN, correo único...) y crea la cuenta
       try {
-        const { confirmarPassword, confirmarCorreo, ...cuenta } = datos;
-        await apiUsuarios.post('/auth/registro', cuenta);
+        await apiUsuarios.post('/auth/registro', usuarioParaApi(datos));
       } catch (error) {
         return mensajeDeError(error);
       }

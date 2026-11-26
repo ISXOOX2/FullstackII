@@ -3,17 +3,28 @@ import { Link } from 'react-router-dom';
 import { Badge, Button, Table } from 'react-bootstrap';
 import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
 import { eliminarUsuario, listarUsuarios } from '../../services/usuariosService.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { eliminarUsuarioApi } from '../../services/adminApi.js';
 
 export default function Usuarios({ usuario: actual, mostrarAviso }) {
   const [, setVersion] = useState(0);
   const [aEliminar, setAEliminar] = useState(null);
   const [errorEliminar, setErrorEliminar] = useState('');
 
-  const confirmar = () => {
-    const resultado = eliminarUsuario(aEliminar.id, actual.id);
-    if (!resultado.ok) {
-      setErrorEliminar(resultado.error);
-      return;
+  const confirmar = async () => {
+    if (USAR_API) {
+      try {
+        await eliminarUsuarioApi(aEliminar.id); // DELETE en ms-usuarios (no deja borrarse a sí mismo)
+      } catch (e) {
+        setErrorEliminar(mensajeDeError(e));
+        return;
+      }
+    } else {
+      const resultado = eliminarUsuario(aEliminar.id, actual.id);
+      if (!resultado.ok) {
+        setErrorEliminar(resultado.error);
+        return;
+      }
     }
     mostrarAviso('Usuario eliminado.', 'secondary');
     setAEliminar(null);

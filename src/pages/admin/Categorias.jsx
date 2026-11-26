@@ -5,6 +5,8 @@ import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx'
 import {
   actualizarCategoria, contarProductosDeCategoria, crearCategoria, eliminarCategoria, listarCategorias,
 } from '../../services/categoriasService.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { eliminarCategoriaApi, guardarCategoriaApi } from '../../services/adminApi.js';
 
 /** Mantenedor de categorías (estilos). El formulario se abre en una ventana modal. */
 export default function Categorias({ mostrarAviso }) {
@@ -14,20 +16,37 @@ export default function Categorias({ mostrarAviso }) {
   const [aEliminar, setAEliminar] = useState(null);
   const [errorEliminar, setErrorEliminar] = useState('');
 
-  const guardar = (valores) => {
-    const resultado = editando.id ? actualizarCategoria(editando.id, valores) : crearCategoria(valores);
-    if (!resultado.ok) return resultado.error;
+  const guardar = async (valores) => {
+    if (USAR_API) {
+      try {
+        await guardarCategoriaApi(editando, valores); // POST o PUT en ms-catalogo
+      } catch (e) {
+        return mensajeDeError(e);
+      }
+    } else {
+      const resultado = editando.id ? actualizarCategoria(editando.id, valores) : crearCategoria(valores);
+      if (!resultado.ok) return resultado.error;
+    }
     mostrarAviso(editando.id ? 'Categoría actualizada.' : 'Categoría creada.');
     setEditando(null);
     refrescar();
     return '';
   };
 
-  const confirmarEliminar = () => {
-    const resultado = eliminarCategoria(aEliminar.id);
-    if (!resultado.ok) {
-      setErrorEliminar(resultado.error);
-      return;
+  const confirmarEliminar = async () => {
+    if (USAR_API) {
+      try {
+        await eliminarCategoriaApi(aEliminar.id); // el backend no deja borrar un estilo con diseños
+      } catch (e) {
+        setErrorEliminar(mensajeDeError(e));
+        return;
+      }
+    } else {
+      const resultado = eliminarCategoria(aEliminar.id);
+      if (!resultado.ok) {
+        setErrorEliminar(resultado.error);
+        return;
+      }
     }
     mostrarAviso('Categoría eliminada.', 'secondary');
     setAEliminar(null);

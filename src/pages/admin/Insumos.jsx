@@ -6,6 +6,8 @@ import FormularioInsumo from '../../components/organismos/FormularioInsumo.jsx';
 import {
   actualizarInsumo, crearInsumo, eliminarInsumo, esInsumoCritico, insumosCriticos, listarInsumos,
 } from '../../services/insumosService.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { eliminarInsumoApi, guardarInsumoApi } from '../../services/adminApi.js';
 import { formatoCLP } from '../../utils/formato.js';
 
 /**
@@ -20,8 +22,17 @@ export default function Insumos({ mostrarAviso }) {
 
   const insumos = listarInsumos().filter((i) => !soloCriticos || esInsumoCritico(i));
 
-  const guardar = (valores) => {
-    if (editando) {
+  const guardar = async (valores) => {
+    if (USAR_API) {
+      // Con backend: POST o PUT en ms-catalogo (el código IN-### lo asigna el servidor)
+      try {
+        await guardarInsumoApi(editando, valores);
+      } catch (e) {
+        mostrarAviso(mensajeDeError(e), 'danger');
+        return;
+      }
+      mostrarAviso(editando ? `«${valores.nombre}» se actualizó.` : `«${valores.nombre}» se agregó al inventario.`);
+    } else if (editando) {
       actualizarInsumo(editando.id, valores);
       mostrarAviso(`«${valores.nombre}» se actualizó.`);
     } else {
@@ -32,8 +43,18 @@ export default function Insumos({ mostrarAviso }) {
     setVersion(version + 1);
   };
 
-  const confirmarEliminar = () => {
-    eliminarInsumo(aEliminar.id);
+  const confirmarEliminar = async () => {
+    if (USAR_API) {
+      try {
+        await eliminarInsumoApi(aEliminar.id);
+      } catch (e) {
+        mostrarAviso(mensajeDeError(e), 'danger');
+        setAEliminar(null);
+        return;
+      }
+    } else {
+      eliminarInsumo(aEliminar.id);
+    }
     mostrarAviso(`«${aEliminar.nombre}» fue eliminado.`, 'secondary');
     setAEliminar(null);
     setVersion(version + 1);

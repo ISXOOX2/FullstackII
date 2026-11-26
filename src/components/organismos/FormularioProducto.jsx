@@ -26,10 +26,10 @@ export default function FormularioProducto({ inicial = null, categorias, onEnvia
   );
   const [errorGeneral, setErrorGeneral] = useState('');
 
-  const enviar = (evento) => {
+  const enviar = async (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    setErrorGeneral(onEnviar(f.valores) || '');
+    setErrorGeneral((await onEnviar(f.valores)) || ''); // await: puede ir a la API
   };
 
   const p = (campo) => ({

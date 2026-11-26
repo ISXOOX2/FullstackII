@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button, Table } from 'react-bootstrap';
 import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
 import { eliminarProducto, listarProductos } from '../../services/productosService.js';
+import { mensajeDeError, USAR_API } from '../../services/api.js';
+import { eliminarDisenoApi } from '../../services/adminApi.js';
 import { nombreCategoria } from '../../services/categoriasService.js';
 import { formatoCLP } from '../../utils/formato.js';
 import images from '../../assets/images.js';
@@ -15,8 +17,19 @@ export default function Productos({ usuario, mostrarAviso }) {
 
   const productos = listarProductos();
 
-  const confirmarEliminar = () => {
-    eliminarProducto(aEliminar.id);
+  const confirmarEliminar = async () => {
+    if (USAR_API) {
+      // Con backend: DELETE en ms-catalogo
+      try {
+        await eliminarDisenoApi(aEliminar.id);
+      } catch (e) {
+        mostrarAviso(mensajeDeError(e), 'danger');
+        setAEliminar(null);
+        return;
+      }
+    } else {
+      eliminarProducto(aEliminar.id);
+    }
     mostrarAviso(`«${aEliminar.nombre}» fue eliminado.`, 'secondary');
     setAEliminar(null);
     setVersion(version + 1);

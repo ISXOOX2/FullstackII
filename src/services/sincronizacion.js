@@ -7,11 +7,12 @@
 // ───────────────────────────────────────────────────────────────────────────
 import { listar, reemplazarColeccion } from '../data/db.js';
 import { apiCatalogo, apiReservas, apiUsuarios, USAR_API } from './api.js';
+import { leerSesion } from './sesionService.js';
 
 const esPersonal = (usuario) => usuario?.tipo === 'Administrador' || usuario?.tipo === 'Vendedor';
 
 /** Catálogo (ms-catalogo): diseños, estilos y los artículos de la Tienda (todos los insumos si es admin). */
-export async function sincronizarCatalogo(usuario) {
+export async function sincronizarCatalogo(usuario = leerSesion()) {
   const [disenos, categorias] = await Promise.all([apiCatalogo.get('/disenos'), apiCatalogo.get('/categorias')]);
   reemplazarColeccion('productos', disenos.data);
   reemplazarColeccion('categorias', categorias.data);
@@ -27,7 +28,7 @@ export async function sincronizarCatalogo(usuario) {
 }
 
 /** Usuarios (ms-usuarios): el administrador ve la lista real; los demás solo su propia cuenta. */
-export async function sincronizarUsuarios(usuario) {
+export async function sincronizarUsuarios(usuario = leerSesion()) {
   if (!usuario?.token) return;
   if (usuario.tipo === 'Administrador') {
     const respuesta = await apiUsuarios.get('');
@@ -82,7 +83,7 @@ export function ordenDesdeApi(o, solicitudes = [], historial = []) {
 }
 
 /** Órdenes (ms-reservas): el personal ve todas; el cliente, las suyas. Trae el detalle de cada una. */
-export async function sincronizarOrdenes(usuario) {
+export async function sincronizarOrdenes(usuario = leerSesion()) {
   if (!usuario?.token) {
     reemplazarColeccion('ordenes', []);
     return;
