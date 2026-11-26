@@ -44,7 +44,7 @@ export default function Header({ usuario, onCerrarSesion, total, cantidad }) {
           <InputGroup>
             <Form.Control
               type="search"
-              placeholder="Buscar diseños (ej. neko, tribal, luna)"
+              placeholder="Buscar diseños (ej. panda, tribal, luna)"
               aria-label="Buscar diseños"
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}

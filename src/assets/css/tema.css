@@ -380,6 +380,13 @@ img {
   background: var(--tf-papel);
 }
 
+/* El enlace que envuelve la imagen ocupa todo el marco: sin esto "contain" no aplica y la foto se recorta */
+.marco-imagen > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .marco-imagen img {
   width: 100%;
   height: 100%;

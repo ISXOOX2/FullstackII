@@ -55,7 +55,7 @@ saldría en blanco. Para usar Live Server:
 ## Catálogo y diseño visual
 
 - **5 estilos con 5 diseños cada uno (25 en total):** Kawaii, Anime, Tribal Y2K, Celestial y Cybersigilism.
-  Todos los dibujos son **originales** (SVG en `src/assets/images/disenos`), cada uno con su vista a escala en el cuerpo.
+  Las imágenes de los diseños están en `src/assets/images/disenos` (JPG optimizados, referenciados desde `src/assets/images.js`). Son material de referencia: antes de publicar, confirma su autoría o reemplázalas por arte propio o con licencia.
   No se usan personajes ni marcas de series existentes.
 - **Estética manga** (`src/assets/css/tema.css`): tinta negra, trama de puntos de fondo, tarjetas como viñetas con
   borde grueso y sombra dura, portada con líneas de velocidad, acento rojo y tipografías Dela Gothic One + Jost.

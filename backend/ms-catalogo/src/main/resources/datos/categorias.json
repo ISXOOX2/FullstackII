@@ -2,31 +2,31 @@
   {
     "id": 1,
     "nombre": "Kawaii",
-    "descripcion": "Personajes tiernos y adorables: animalitos, comida con carita y mucha ternura.",
-    "imagen": "neko-chibi"
+    "descripcion": "Personajes tiernos y adorables: animalitos, fantasmitas y mucha ternura.",
+    "imagen": "panda-globo-corazon"
   },
   {
     "id": 2,
     "nombre": "Anime",
-    "descripcion": "Escenas y estética de series japonesas: miradas expresivas, katanas, máscaras y paisajes.",
-    "imagen": "katana-sakura"
+    "descripcion": "Escenas y estética de series japonesas: personajes, máscaras hannya, kitsunes y katanas.",
+    "imagen": "sukuna"
   },
   {
     "id": 3,
     "nombre": "Tribal Y2K",
-    "descripcion": "Corazones, flores y diseños tribales gruesos, con el look de los 2000.",
-    "imagen": "corazon-tribal"
+    "descripcion": "Diseños tribales gruesos y simétricos, cromo y estrellas, con el look de los 2000.",
+    "imagen": "cruz-cromada"
   },
   {
     "id": 4,
     "nombre": "Celestial",
-    "descripcion": "Estrellas, lunas, soles y destellos.",
-    "imagen": "fases-lunares"
+    "descripcion": "Lunas, soles, estrellas, alas y ángeles de línea fina.",
+    "imagen": "sol-y-luna-nubes"
   },
   {
     "id": 5,
     "nombre": "Cybersigilism",
     "descripcion": "Líneas finas, afiladas y simétricas, con un aire más oscuro y futurista.",
-    "imagen": "sigilo-espina"
+    "imagen": "espada-telarana"
   }
 ]

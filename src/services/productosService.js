@@ -45,7 +45,7 @@ export function normalizarProducto(datos) {
     nivelDolor: aNumeroONulo(datos.nivelDolor),
     colorTinta: String(datos.colorTinta || 'Negro').trim(),
     destacado: Boolean(datos.destacado),
-    imagen: String(datos.imagen || 'neko-chibi').trim(),
+    imagen: String(datos.imagen || 'panda-globo-corazon').trim(),
   };
 }
 
