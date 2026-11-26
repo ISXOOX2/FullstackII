@@ -142,7 +142,12 @@ export default function App() {
     let activo = true;
     sincronizarTodo(usuario)
       .then(() => activo && setVersionDatos((v) => v + 1))
-      .catch((error) => activo && mostrarAviso(`No pudimos conectar con el servidor: ${mensajeDeError(error)}`, 'danger'));
+      .catch((error) => {
+        // Un 401 ya lo avisa el evento "sesion-expirada"; aquí solo los demás problemas
+        if (activo && error.response?.status !== 401) {
+          mostrarAviso(`No pudimos conectar con el servidor: ${mensajeDeError(error)}`, 'danger');
+        }
+      });
     return () => { activo = false; };
     // Solo al iniciar o cerrar sesión (o si cambia el rol). Renovar el token NO vuelve a sincronizar:
     // los datos son los mismos, solo cambia la "llave".
