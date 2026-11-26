@@ -2,7 +2,10 @@
 
 Proyecto de la asignatura **Desarrollo Fullstack II (DSY1104)** · DuocUC · Evaluación Final Transversal.
 
-![Backend](https://github.com/ISXOOX2/FullstackII/actions/workflows/backend.yml/badge.svg)
+![CI](https://github.com/ISXOOX2/Forever_Ink/actions/workflows/ci.yml/badge.svg)
+
+**Repositorios:** frontend (este) · backend en [ISXOOX2/Forever_Ink_Backend](https://github.com/ISXOOX2/Forever_Ink_Backend)
+
 Sitio web de un estudio de tatuajes con estética manga: el cliente elige diseños del catálogo, agenda su cita
 (tatuador, fecha y hora) y paga en línea (pago simulado). El personal del estudio administra el catálogo,
 las órdenes y los usuarios desde un panel.
@@ -100,7 +103,7 @@ test/
   ayudas.jsx, setup.js     Funciones de apoyo y configuración inicial de Vitest (matchers de jest-dom)
 docs/                      ERS, documento de cobertura de testing, guía de defensa y plan de estudio
 e2e/                       Prueba de punta a punta del frontend con el backend (Playwright, la corre el CI)
-backend/                   Los 3 microservicios Spring Boot (ms-auth, ms-catalogo, ms-reservas)
+backend/                   (no se sube) Copia local del repo Forever_Ink_Backend, la usa docker-compose
   pruebas/integracion.sh   Prueba de integración de la API completa
 despliegue/                nginx.conf, .env.example y GUIA_AWS.md (EC2 paso a paso)
 Dockerfile                 Imagen del frontend (Vite -> Nginx)
@@ -129,7 +132,7 @@ docker-compose.yml         MySQL + 3 microservicios + frontend: todo el sistema 
   `vite.config.js` con `environment: 'jsdom'`, archivos `*.test.jsx`, `describe` / `it` / `expect`, mocks con `vi.fn()`,
   `renderHook`, `MemoryRouter` y comprobaciones `toBe` / `toBeTruthy` / `toContain`. Cobertura con `@vitest/coverage-v8`.
 
-## Backend: microservicios Spring Boot (`backend/`)
+## Backend: microservicios Spring Boot ([Forever_Ink_Backend](https://github.com/ISXOOX2/Forever_Ink_Backend))
 
 | Microservicio | Puerto | Ruta base | Qué hace | Swagger local |
 |---|---|---|---|---|
@@ -167,8 +170,12 @@ Buenas prácticas de las clases de Spring Boot (2.2.1, 2.3.1 y 2.3.2):
 
 Requisitos: Java 17, Maven (o IntelliJ) y MySQL de XAMPP o Laragon encendido (usuario `root` sin contraseña).
 
+El backend está en su propio repositorio. Lo más cómodo es abrirlo en **IntelliJ IDEA** (File → Open sobre la
+carpeta del repo: el `pom.xml` principal importa los 3 microservicios).
+
 ```bash
-cd backend/ms-catalogo && mvn spring-boot:run     # repetir en otra terminal para cada microservicio
+git clone https://github.com/ISXOOX2/Forever_Ink_Backend.git
+cd Forever_Ink_Backend/ms-catalogo && mvn spring-boot:run   # repetir en otra terminal para cada microservicio
 ```
 
 Sin MySQL, con base en memoria: `mvn spring-boot:run -Dspring-boot.run.profiles=h2`.
@@ -180,6 +187,7 @@ direcciones `http://localhost:808X/api/v1/...`, y ejecuta `npm run dev`.
 ### Todo junto con Docker (igual que en AWS)
 
 ```bash
+git clone https://github.com/ISXOOX2/Forever_Ink_Backend.git backend   # el backend dentro de la carpeta backend/
 cp despliegue/.env.example .env
 docker compose up -d --build      # luego abre http://localhost
 ```
@@ -188,13 +196,13 @@ El paso a paso para **AWS EC2** está en [`despliegue/GUIA_AWS.md`](despliegue/G
 
 ### Pruebas automáticas en GitHub Actions
 
-Cada cambio se prueba solo (`.github/workflows/backend.yml`):
+Cada cambio se prueba solo (`.github/workflows/ci.yml`), descargando el backend desde su repositorio:
 
-1. Compila los 3 microservicios y revisa que Swagger responda.
-2. `backend/pruebas/integracion.sh` recorre la API completa: roles, compra, stock entre microservicios,
-   reembolso y blog.
-3. `e2e/integracion-front.mjs` (Playwright) usa el frontend real conectado al backend.
-4. `despliegue-docker` levanta el `docker-compose.yml` y revisa el link único y los 3 Swagger.
+1. Pruebas unitarias del front (Vitest).
+2. `e2e/integracion-front.mjs` (Playwright) usa el frontend real conectado a los 3 microservicios.
+3. `despliegue-docker` levanta el `docker-compose.yml` y revisa el link único y los 3 Swagger.
+
+El repositorio del backend tiene su propio CI, que compila los 3 microservicios y recorre la API completa.
 
 ## Persistencia y modo sin backend
 

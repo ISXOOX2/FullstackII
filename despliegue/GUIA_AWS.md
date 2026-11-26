@@ -84,8 +84,9 @@ echo '/swapfile swap swap defaults 0 0' | sudo tee -a /etc/fstab
 ## 4. Descargar el proyecto y configurar
 
 ```bash
-git clone https://github.com/ISXOOX2/FullstackII.git
-cd FullstackII
+git clone https://github.com/ISXOOX2/Forever_Ink.git
+cd Forever_Ink
+git clone https://github.com/ISXOOX2/Forever_Ink_Backend.git backend
 cp despliegue/.env.example .env
 nano .env
 ```
@@ -130,8 +131,9 @@ Para probar en Swagger una ruta protegida: ejecuta `POST /api/v1/usuarios/auth/l
 ## 7. Actualizar después de un cambio
 
 ```bash
-cd ~/FullstackII
+cd ~/Forever_Ink
 git pull
+git -C backend pull
 docker compose up -d --build
 ```
 

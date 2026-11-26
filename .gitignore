@@ -8,3 +8,6 @@ dist
 # Variables de entorno locales (las direcciones del backend). Se sube solo .env.example
 .env
 .env.local
+
+# El backend vive en su propio repositorio (Forever_Ink_Backend); aquí solo se clona para docker compose
+backend/

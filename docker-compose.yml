@@ -1,5 +1,6 @@
 # Forever Ink completo: MySQL + 3 microservicios Spring Boot (ms-auth, ms-catalogo, ms-reservas) + frontend con Nginx.
 # Uso (en tu PC o en la instancia EC2):
+#   git clone https://github.com/ISXOOX2/Forever_Ink_Backend.git backend   (el backend va en ./backend)
 #   cp despliegue/.env.example .env   (y cambia las claves)
 #   docker compose up -d --build
 # Luego abre http://localhost (o http://IP-PUBLICA-DE-EC2).
