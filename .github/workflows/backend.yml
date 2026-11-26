@@ -39,7 +39,8 @@ jobs:
         run: |
           java -jar target/${{ matrix.servicio }}-1.0.0.jar --spring.profiles.active=h2 --server.port=9000 > app.log 2>&1 &
           for i in $(seq 1 60); do curl -sf http://localhost:9000/v3/api-docs > /dev/null && break; sleep 2; done
-          curl -sf http://localhost:9000/v3/api-docs | head -c 400 || (cat app.log; exit 1)
+          curl -sf http://localhost:9000/v3/api-docs -o api-docs.json || (tail -80 app.log; exit 1)
+          head -c 400 api-docs.json
 
   integracion:
     # Levanta los 3 microservicios juntos y prueba el flujo completo (login, compra, pago, stock, reembolso y blog)
