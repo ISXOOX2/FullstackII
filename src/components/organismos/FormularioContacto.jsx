@@ -8,11 +8,11 @@ import { validarFormularioContacto } from '../../utils/validaciones.js';
 export default function FormularioContacto({ onEnviar }) {
   const f = useFormulario({ nombre: '', correo: '', comentario: '' }, validarFormularioContacto);
 
-  const enviar = (evento) => {
+  const enviar = async (evento) => {
     evento.preventDefault();
     if (!f.intentarEnviar()) return;
-    onEnviar(f.valores);
-    f.reiniciar();
+    const guardado = await onEnviar(f.valores); // false = no llegó al servidor: se mantiene lo escrito
+    if (guardado !== false) f.reiniciar();
   };
 
   return (

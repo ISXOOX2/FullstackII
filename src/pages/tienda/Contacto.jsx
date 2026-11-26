@@ -1,14 +1,22 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import FormularioContacto from '../../components/organismos/FormularioContacto.jsx';
 import Migas from '../../components/moleculas/Migas.jsx';
-import { guardarMensaje } from '../../services/contactoService.js';
+import { enviarMensaje } from '../../services/contactoService.js';
+import { mensajeDeError } from '../../services/api.js';
 import { ESTUDIO } from '../../data/estudio.js';
 
 export default function Contacto({ mostrarAviso }) {
 
-  const enviar = (valores) => {
-    guardarMensaje(valores);
-    mostrarAviso('Mensaje enviado. Te responderemos pronto.');
+  // Devuelve true si se guardó: así el formulario solo se limpia cuando el mensaje llegó.
+  const enviar = async (valores) => {
+    try {
+      await enviarMensaje(valores);
+      mostrarAviso('Mensaje enviado. Te responderemos pronto.');
+      return true;
+    } catch (error) {
+      mostrarAviso(mensajeDeError(error), 'danger');
+      return false;
+    }
   };
 
   return (

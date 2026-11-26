@@ -253,7 +253,7 @@ export default function App() {
           <Route path="/" element={<Home onAgregar={agregarAlCarrito} />} />
           <Route path="/productos" element={<Productos onAgregar={agregarAlCarrito} />} />
           <Route path="/productos/:id" element={<DetalleProducto onAgregar={agregarAlCarrito} />} />
-          <Route path="/mi-proyecto" element={<MiProyecto usuario={usuario} />} />
+          <Route path="/mi-proyecto" element={<MiProyecto usuario={usuario} mostrarAviso={mostrarAviso} />} />
           <Route path="/tienda" element={<Tienda onAgregar={agregarArticuloAlCarrito} />} />
           <Route path="/resenas" element={<Resenas usuario={usuario} mostrarAviso={mostrarAviso} />} />
           <Route path="/ofertas" element={<Ofertas onAgregar={agregarAlCarrito} />} />

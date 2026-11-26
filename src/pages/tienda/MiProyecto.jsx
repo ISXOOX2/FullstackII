@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { Alert, Col, Container, Row } from 'react-bootstrap';
 import Migas from '../../components/moleculas/Migas.jsx';
 import FormularioProyecto from '../../components/organismos/FormularioProyecto.jsx';
-import { crearProyecto } from '../../services/proyectosService.js';
+import { enviarProyecto } from '../../services/proyectosService.js';
+import { mensajeDeError } from '../../services/api.js';
 import { DIAS_HABILES_CONTACTO } from '../../data/estudio.js';
 import { formatoFechaLarga, nombreCompleto } from '../../utils/formato.js';
 
@@ -11,10 +12,16 @@ import { formatoFechaLarga, nombreCompleto } from '../../utils/formato.js';
  * Mi proyecto: para el cliente que ya tiene una idea propia (si no la tiene, elige un diseño
  * del catálogo). Envía su idea y el estudio lo contacta en 3 días hábiles.
  */
-export default function MiProyecto({ usuario }) {
+export default function MiProyecto({ usuario, mostrarAviso }) {
   const [enviado, setEnviado] = useState(null);
 
-  const enviar = (datos) => setEnviado(crearProyecto(datos, usuario?.id ?? null));
+  const enviar = async (datos) => {
+    try {
+      setEnviado(await enviarProyecto(datos, usuario?.id ?? null));
+    } catch (error) {
+      mostrarAviso?.(mensajeDeError(error), 'danger');
+    }
+  };
 
   return (
     <Container className="py-4">

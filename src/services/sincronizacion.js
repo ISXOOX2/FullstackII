@@ -27,6 +27,24 @@ export async function sincronizarCatalogo(usuario = leerSesion()) {
   }
 }
 
+/** Reseñas (ms-catalogo /resenas): públicas, las ve cualquiera. */
+export async function sincronizarResenas() {
+  const respuesta = await apiCatalogo.get('/resenas');
+  reemplazarColeccion('resenas', respuesta.data);
+}
+
+/** Proyectos de clientes y mensajes de contacto (ms-reservas): solo los ve el personal. */
+export async function sincronizarSolicitudesClientes(usuario = leerSesion()) {
+  if (!esPersonal(usuario)) {
+    reemplazarColeccion('proyectos', []);
+    reemplazarColeccion('mensajes', []);
+    return;
+  }
+  const [proyectos, mensajes] = await Promise.all([apiReservas.get('/proyectos'), apiReservas.get('/mensajes')]);
+  reemplazarColeccion('proyectos', proyectos.data);
+  reemplazarColeccion('mensajes', mensajes.data);
+}
+
 /** Usuarios (ms-usuarios): el administrador ve la lista real; los demás solo su propia cuenta. */
 export async function sincronizarUsuarios(usuario = leerSesion()) {
   if (!usuario?.token) return;
@@ -97,5 +115,8 @@ export async function sincronizarOrdenes(usuario = leerSesion()) {
 export async function sincronizarTodo(usuario) {
   if (!USAR_API) return;
   await sincronizarCatalogo(usuario);
-  await Promise.all([sincronizarUsuarios(usuario), sincronizarOrdenes(usuario)]);
+  await Promise.all([
+    sincronizarUsuarios(usuario), sincronizarOrdenes(usuario),
+    sincronizarResenas(), sincronizarSolicitudesClientes(usuario),
+  ]);
 }

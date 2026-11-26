@@ -7,8 +7,9 @@ import TarjetaResena from '../../components/moleculas/TarjetaResena.jsx';
 import ModalConfirmacion from '../../components/moleculas/ModalConfirmacion.jsx';
 import FormularioResena from '../../components/organismos/FormularioResena.jsx';
 import {
-  distribucionEstrellas, eliminarResena, guardarResena, listarResenas, promedioEstrellas, resenaDeUsuario,
+  distribucionEstrellas, listarResenas, promedioEstrellas, publicarResena, quitarResena, resenaDeUsuario,
 } from '../../services/resenasService.js';
+import { mensajeDeError } from '../../services/api.js';
 
 /**
  * Reseñas de clientes: promedio, cuántas hay de cada nota y la lista.
@@ -24,17 +25,25 @@ export default function Resenas({ usuario, mostrarAviso }) {
   const esAdmin = usuario?.tipo === 'Administrador';
   const mia = esCliente ? resenaDeUsuario(usuario.id) : null;
 
-  const publicar = (datos) => {
-    guardarResena(usuario, datos);
-    mostrarAviso(mia ? 'Tu reseña se actualizó.' : '¡Gracias! Tu reseña ya está publicada.');
-    setVersion(version + 1);
+  const publicar = async (datos) => {
+    try {
+      await publicarResena(usuario, datos);
+      mostrarAviso(mia ? 'Tu reseña se actualizó.' : '¡Gracias! Tu reseña ya está publicada.');
+      setVersion((v) => v + 1);
+    } catch (error) {
+      mostrarAviso(mensajeDeError(error), 'danger');
+    }
   };
 
-  const confirmarEliminar = () => {
-    eliminarResena(aEliminar.id);
-    mostrarAviso('La reseña fue eliminada.', 'secondary');
+  const confirmarEliminar = async () => {
+    try {
+      await quitarResena(aEliminar.id);
+      mostrarAviso('La reseña fue eliminada.', 'secondary');
+      setVersion((v) => v + 1);
+    } catch (error) {
+      mostrarAviso(mensajeDeError(error), 'danger');
+    }
     setAEliminar(null);
-    setVersion(version + 1);
   };
 
   return (

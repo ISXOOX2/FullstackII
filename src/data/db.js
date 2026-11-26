@@ -40,7 +40,7 @@ function semillaInicial() {
   if (!CON_BACKEND) return SEMILLA;
   return {
     categorias: [], productos: [], insumos: [], usuarios: [], ordenes: [],
-    resenas: SEMILLA.resenas, proyectos: [], mensajes: [],
+    resenas: [], proyectos: [], mensajes: [],
   };
 }
 
