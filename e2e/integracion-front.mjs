@@ -27,6 +27,9 @@ const conToken = async (url) => {
   const token = await pagina.evaluate(() => JSON.parse(sessionStorage.getItem('foreverInk_sesion')).token);
   return (await fetch(url, { headers: { Authorization: `Bearer ${token}` } })).json();
 };
+const RESERVAS = 'http://localhost:8083/api/v1/reservas';
+const PNG = { name: 'referencia.png', mimeType: 'image/png',
+  buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64') };
 const stockCrema = async () => (await (await fetch(`${CATALOGO}/tienda`)).json()).find((a) => a.id === 8).stock;
 
 const navegador = await chromium.launch();
@@ -95,6 +98,36 @@ try {
   ok('pago aprobado: página de compra exitosa con la boleta');
   comprobar(await stockCrema() === stockAntes - 1, 'el stock de la crema bajó en ms-catalogo');
 
+  console.log('▶ Reseña, Mi proyecto y contacto quedan en el servidor (no en el navegador)');
+  await pagina.goto(`${BASE}/resenas`);
+  const resenasAntes = (await (await fetch(`${CATALOGO}/resenas`)).json()).length;
+  await pagina.locator('input[name="estrellas"][value="5"]').check({ force: true });
+  await pagina.getByLabel('Tu comentario').fill('Quedó precioso, súper recomendado el estudio');
+  await pagina.getByRole('form', { name: 'Escribir una reseña' }).locator('input[type=file]').setInputFiles(PNG);
+  await pagina.getByAltText('Vista previa de tu foto').waitFor();
+  await pagina.getByRole('button', { name: 'Publicar reseña' }).click();
+  await pagina.getByText('¡Gracias! Tu reseña ya está publicada.').waitFor();
+  const resenasApi = await (await fetch(`${CATALOGO}/resenas`)).json();
+  comprobar(resenasApi.length === resenasAntes + 1 && resenasApi[0].imagen.startsWith('data:image/png'),
+    'la reseña con foto se guardó en ms-catalogo');
+
+  await pagina.goto(`${BASE}/mi-proyecto`);
+  await pagina.getByLabel('Zona del cuerpo').selectOption({ index: 1 });
+  await pagina.getByLabel('Tu idea').fill('Un dragón pequeño enrollado en una luna, en línea fina');
+  await pagina.getByRole('form', { name: 'Enviar mi proyecto' }).locator('input[type=file]').setInputFiles(PNG);
+  await pagina.getByRole('button', { name: 'Enviar mi proyecto' }).click();
+  await pagina.getByText('¡Recibimos tu proyecto!').waitFor();
+  ok('el cliente envió su proyecto con imagen');
+
+  await pagina.goto(`${BASE}/contacto`);
+  const contacto = pagina.getByRole('form', { name: 'Formulario de contacto' });
+  await contacto.getByLabel('Nombre').fill('Cliente Demo');
+  await contacto.getByLabel('Correo electrónico').fill('cliente.demo@gmail.com');
+  await contacto.getByLabel('Comentario').fill('¿Puedo llevar a una amiga a mi sesión?');
+  await contacto.getByRole('button', { name: 'Enviar mensaje' }).click();
+  await pagina.getByText('Mensaje enviado. Te responderemos pronto.').waitFor();
+  ok('el mensaje de contacto se envió');
+
   console.log('▶ Reembolso: lo pide el cliente y lo aprueba el administrador');
   await pagina.goto(`${BASE}/perfil`);
   await pagina.getByRole('button', { name: 'Cambiar o reembolsar' }).first().click();
@@ -116,6 +149,18 @@ try {
   await pagina.goto(`${BASE}/admin/ordenes`);
   await pagina.locator('table').getByText('Reembolsada').first().waitFor(); // en la tabla (el filtro también tiene esa opción)
   ok('la orden aparece Reembolsada en el panel');
+
+  console.log('▶ El administrador ve el proyecto y el mensaje desde el panel (vienen de ms-reservas)');
+  await pagina.goto(`${BASE}/admin/proyectos`);
+  await pagina.getByText('Un dragón pequeño enrollado en una luna').waitFor();
+  comprobar(await pagina.getByAltText(/Referencia de/).first().getAttribute('src').then((src) => src.startsWith('data:image/png')),
+    'el proyecto aparece en el panel con la imagen del cliente');
+  await pagina.getByText('¿Puedo llevar a una amiga a mi sesión?').waitFor();
+  ok('el mensaje de contacto aparece en el panel');
+  await pagina.getByRole('combobox', { name: /Estado del proyecto de/ }).first().selectOption('Contactado');
+  await pagina.getByText(/quedó «Contactado»/).waitFor();
+  const proyectosApi = await conToken(`${RESERVAS}/proyectos`);
+  comprobar(proyectosApi[0].estado === 'Contactado', 'el cambio de estado quedó guardado en ms-reservas');
 
   console.log('▶ CRUD del panel: diseños (ms-catalogo)');
   await pagina.goto(`${BASE}/admin/productos/nuevo`);

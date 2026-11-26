@@ -69,6 +69,30 @@ RESP=$(json -X PUT -H "Authorization: Bearer $ADMIN" $R/$ID/solicitudes/$SID -d 
 [[ $(json -X PUT -H "Authorization: Bearer $ADMIN" $R/$ID/estado -d '{"estado":"Pagada","motivo":"Prueba de transición"}' | jq -r .mensaje) == *"no puede pasar"* ]] && ok "Reembolsada es un estado final" || falla "transiciones"
 [[ $(json -H "Authorization: Bearer $ADMIN" $R/agenda | jq length) == 3 ]] && ok "alerta de agenda de los 3 tatuadores" || falla "agenda"
 
+echo "▶ Reseñas (ms-catalogo), Mi proyecto y contacto (ms-reservas)"
+[[ $(json $C/resenas | jq length) == 4 ]] && ok "4 reseñas de ejemplo, públicas" || falla "listar reseñas"
+FOTO='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
+MIA=$(json -X PUT -H "Authorization: Bearer $CLIENTE" $C/resenas/mia -d "{\"nombre\":\"Cliente D.\",\"estrellas\":5,\"comentario\":\"Excelente atención en el estudio\",\"imagen\":\"$FOTO\"}")
+[[ $(echo "$MIA" | jq -r .estrellas) == 5 && $(json $C/resenas | jq length) == 5 ]] && ok "el cliente publica su reseña con foto" || falla "publicar reseña: $MIA"
+json -X PUT -H "Authorization: Bearer $CLIENTE" $C/resenas/mia -d '{"nombre":"Cliente D.","estrellas":4,"comentario":"Cambié de opinión, igual muy bien"}' >/dev/null
+[[ $(json $C/resenas | jq length) == 5 && $(json $C/resenas | jq '[.[] | select(.estrellas==4 and .nombre=="Cliente D.")] | length') == 1 ]] && ok "volver a opinar actualiza la misma reseña (una por cliente)" || falla "actualizar reseña"
+[[ $(codigo -X PUT $C/resenas/mia -d '{"nombre":"X","estrellas":5,"comentario":"sin sesión no debería"}') == 401 ]] && ok "reseña sin sesión: 401" || falla "reseña sin sesión"
+[[ $(codigo -X PUT -H "Authorization: Bearer $CLIENTE" $C/resenas/mia -d '{"nombre":"X","estrellas":9,"comentario":"nueve estrellas"}') == 400 ]] && ok "9 estrellas: 400" || falla "validar estrellas"
+[[ $(codigo -X PUT -H "Authorization: Bearer $CLIENTE" $C/resenas/mia -d '{"nombre":"X","estrellas":5,"comentario":"imagen falsa aquí","imagen":"javascript:alert(1)"}') == 400 ]] && ok "imagen que no es JPG/PNG/WEBP: 400" || falla "validar imagen"
+RID=$(json $C/resenas | jq '.[0].id')
+[[ $(codigo -X DELETE -H "Authorization: Bearer $CLIENTE" $C/resenas/$RID) == 403 ]] && ok "un cliente no puede borrar reseñas: 403" || falla "borrar reseña cliente"
+[[ $(codigo -X DELETE -H "Authorization: Bearer $ADMIN" $C/resenas/$RID) == 204 ]] && ok "el administrador borra una reseña" || falla "borrar reseña admin"
+
+PROY=$(json -X POST $R/proyectos -d "{\"nombre\":\"Visita Sin Cuenta\",\"correo\":\"visita@gmail.com\",\"zonaCuerpo\":\"Muñeca\",\"lado\":\"Izquierdo\",\"idea\":\"Una luna pequeña con estrellas finas alrededor\",\"imagen\":\"$FOTO\"}")
+[[ $(echo "$PROY" | jq -r .estado) == Nuevo && $(echo "$PROY" | jq -r .contactarAntesDe) > $(echo "$PROY" | jq -r .fecha) ]] && ok "Mi proyecto sin cuenta: estado Nuevo y plazo calculado por el servidor" || falla "crear proyecto: $PROY"
+[[ $(codigo -X POST $R/proyectos -d '{"nombre":"A","correo":"no-es-correo","zonaCuerpo":"Pie","idea":"corta"}') == 400 ]] && ok "proyecto con datos inválidos: 400" || falla "validar proyecto"
+[[ $(codigo -H "Authorization: Bearer $CLIENTE" $R/proyectos) == 403 ]] && ok "un cliente no puede ver los proyectos de otros: 403" || falla "proyectos rol"
+PID=$(echo "$PROY" | jq -r .id)
+[[ $(json -X PUT -H "Authorization: Bearer $ADMIN" $R/proyectos/$PID/estado -d '{"estado":"Contactado"}' | jq -r .estado) == Contactado ]] && ok "el personal cambia el estado del proyecto" || falla "estado proyecto"
+[[ $(json -H "Authorization: Bearer $ADMIN" $R/proyectos | jq -r '.[0].imagen') == "$FOTO" ]] && ok "el administrador ve la imagen enviada" || falla "imagen del proyecto"
+[[ $(codigo -X POST $R/mensajes -d '{"nombre":"Visita","correo":"visita@gmail.com","comentario":"¿Atienden los domingos?"}') == 201 ]] && ok "mensaje de contacto sin cuenta" || falla "enviar mensaje"
+[[ $(codigo $R/mensajes) == 401 && $(json -H "Authorization: Bearer $ADMIN" $R/mensajes | jq length) == 1 ]] && ok "los mensajes solo los lee el personal" || falla "listar mensajes"
+
 echo "▶ ms-blog: el front lee la lista y ve los artículos nuevos"
 [[ $(json $BL | jq length) == 2 ]] && ok "2 artículos iniciales" || falla "blog"
 json -X POST -H "Authorization: Bearer $ADMIN" $BL -d '{"titulo":"Nuevo artículo","resumen":"Publicado desde la API","imagen":"cuidados","contenido":[{"tipo":"p","texto":"Hola"}]}' >/dev/null
