@@ -1,15 +1,15 @@
 package cl.foreverink.catalogo.config;
 
+import cl.foreverink.catalogo.modelo.Articulo;
 import cl.foreverink.catalogo.modelo.Categoria;
 import cl.foreverink.catalogo.modelo.Diseno;
 import cl.foreverink.catalogo.modelo.Insumo;
 import cl.foreverink.catalogo.modelo.Resena;
-import cl.foreverink.catalogo.modelo.Tatuador;
+import cl.foreverink.catalogo.repositorio.ArticuloRepository;
 import cl.foreverink.catalogo.repositorio.CategoriaRepository;
 import cl.foreverink.catalogo.repositorio.DisenoRepository;
 import cl.foreverink.catalogo.repositorio.InsumoRepository;
 import cl.foreverink.catalogo.repositorio.ResenaRepository;
-import cl.foreverink.catalogo.repositorio.TatuadorRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -19,24 +19,24 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-/** Si las tablas estan vacias, carga el catalogo y las resenas de ejemplo del frontend desde src/main/resources/datos/*.json. */
+/** Si las tablas estan vacias, carga el catalogo, las resenas y los articulos del blog de ejemplo del frontend desde src/main/resources/datos/*.json. */
 @Component
 public class DatosIniciales implements CommandLineRunner {
 
     private final CategoriaRepository categorias;
     private final DisenoRepository disenos;
     private final InsumoRepository insumos;
-    private final TatuadorRepository tatuadores;
     private final ResenaRepository resenas;
+    private final ArticuloRepository articulos;
     private final ObjectMapper mapper;
 
     public DatosIniciales(CategoriaRepository categorias, DisenoRepository disenos, InsumoRepository insumos,
-                          TatuadorRepository tatuadores, ResenaRepository resenas, ObjectMapper mapper) {
+                          ResenaRepository resenas, ArticuloRepository articulos, ObjectMapper mapper) {
         this.categorias = categorias;
         this.disenos = disenos;
         this.insumos = insumos;
-        this.tatuadores = tatuadores;
         this.resenas = resenas;
+        this.articulos = articulos;
         this.mapper = mapper;
     }
 
@@ -60,16 +60,17 @@ public class DatosIniciales implements CommandLineRunner {
                 insumos.save(i);
             }
         }
-        if (tatuadores.count() == 0) {
-            for (Tatuador t : leer("datos/tatuadores.json", new TypeReference<List<Tatuador>>() { })) {
-                t.setId(null);
-                tatuadores.save(t);
-            }
-        }
+        // Los tatuadores los inserta Flyway (db/migration/V2__datos_iniciales_tatuadores.sql)
         if (resenas.count() == 0) {
             for (Resena r : leer("datos/resenas.json", new TypeReference<List<Resena>>() { })) {
                 r.setId(null);
                 resenas.save(r);
+            }
+        }
+        if (articulos.count() == 0) {
+            for (Articulo a : leer("datos/articulos.json", new TypeReference<List<Articulo>>() { })) {
+                a.setId(null);
+                articulos.save(a);
             }
         }
     }
