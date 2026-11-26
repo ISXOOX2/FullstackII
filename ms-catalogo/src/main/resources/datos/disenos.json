@@ -1,0 +1,602 @@
+[
+  {
+    "id": 1,
+    "codigo": "FI-001",
+    "nombre": "Panda con globo",
+    "categoriaId": 1,
+    "descripcion": "Pandita sentado que sostiene un globo en forma de corazón. Tierno, simple y perfecto para un primer tatuaje.",
+    "precio": 12000,
+    "precioOferta": null,
+    "anchoCm": 6,
+    "altoCm": 9,
+    "duracionHoras": 1.5,
+    "zonas": "Antebrazo, tobillo, hombro",
+    "nivelDolor": 2,
+    "colorTinta": "Negro",
+    "destacado": true,
+    "imagen": "panda-globo-corazon",
+    "imagenes": [
+      "panda-globo-corazon"
+    ]
+  },
+  {
+    "id": 2,
+    "codigo": "FI-002",
+    "nombre": "Gato hada",
+    "categoriaId": 1,
+    "descripcion": "Gatito sentado con alas de hada y destellos a su alrededor, en trazo punteado.",
+    "precio": 15000,
+    "precioOferta": 12000,
+    "anchoCm": 9,
+    "altoCm": 9,
+    "duracionHoras": 2,
+    "zonas": "Antebrazo, muslo, costillas",
+    "nivelDolor": 2,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "gato-hada",
+    "imagenes": [
+      "gato-hada"
+    ]
+  },
+  {
+    "id": 3,
+    "codigo": "FI-003",
+    "nombre": "Trío fantasma",
+    "categoriaId": 1,
+    "descripcion": "Tres fantasmitas apilados con sonrisa traviesa, en sombreado suave. Va muy bien en vertical.",
+    "precio": 15000,
+    "precioOferta": null,
+    "anchoCm": 5,
+    "altoCm": 10,
+    "duracionHoras": 1.5,
+    "zonas": "Pantorrilla, antebrazo, muslo",
+    "nivelDolor": 2,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "trio-fantasma",
+    "imagenes": [
+      "trio-fantasma"
+    ]
+  },
+  {
+    "id": 4,
+    "codigo": "FI-004",
+    "nombre": "Sukuna",
+    "categoriaId": 2,
+    "descripcion": "Retrato de Sukuna (Jujutsu Kaisen) con sonrisa amplia, garras y llamas, en línea gruesa.",
+    "precio": 32000,
+    "precioOferta": null,
+    "anchoCm": 16,
+    "altoCm": 20,
+    "duracionHoras": 4,
+    "zonas": "Espalda, muslo, costillas",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": true,
+    "imagen": "sukuna",
+    "imagenes": [
+      "sukuna"
+    ]
+  },
+  {
+    "id": 5,
+    "codigo": "FI-005",
+    "nombre": "Choso",
+    "categoriaId": 2,
+    "descripcion": "Retrato de Choso (Jujutsu Kaisen) con capucha, marcas en el rostro y pose serena, en línea fina.",
+    "precio": 22000,
+    "precioOferta": null,
+    "anchoCm": 12,
+    "altoCm": 14,
+    "duracionHoras": 3,
+    "zonas": "Antebrazo, muslo, hombro",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "choso",
+    "imagenes": [
+      "choso"
+    ]
+  },
+  {
+    "id": 6,
+    "codigo": "FI-006",
+    "nombre": "Zorro kitsune",
+    "categoriaId": 2,
+    "descripcion": "Mano en forma de zorro con ojos en espiral y colmillos, en negros sólidos de alto contraste.",
+    "precio": 20000,
+    "precioOferta": 18000,
+    "anchoCm": 12,
+    "altoCm": 10,
+    "duracionHoras": 2.5,
+    "zonas": "Antebrazo, hombro, muslo",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "zorro-kitsune",
+    "imagenes": [
+      "zorro-kitsune"
+    ]
+  },
+  {
+    "id": 7,
+    "codigo": "FI-007",
+    "nombre": "Mano hannya",
+    "categoriaId": 2,
+    "descripcion": "Máscara hannya con katana entre los dientes sobre una mano con tribales gruesos.",
+    "precio": 25000,
+    "precioOferta": null,
+    "anchoCm": 10,
+    "altoCm": 17,
+    "duracionHoras": 3.5,
+    "zonas": "Antebrazo, mano, pantorrilla",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "mano-hannya",
+    "imagenes": [
+      "mano-hannya"
+    ]
+  },
+  {
+    "id": 8,
+    "codigo": "FI-008",
+    "nombre": "Hannya con katana",
+    "categoriaId": 2,
+    "descripcion": "Boceto de demonio hannya con cuernos, katana entre los dientes y rosario entre las manos.",
+    "precio": 28000,
+    "precioOferta": null,
+    "anchoCm": 12,
+    "altoCm": 22,
+    "duracionHoras": 4,
+    "zonas": "Espalda, muslo, antebrazo",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "hannya-katana",
+    "imagenes": [
+      "hannya-katana"
+    ]
+  },
+  {
+    "id": 9,
+    "codigo": "FI-009",
+    "nombre": "Ace (One Piece)",
+    "categoriaId": 2,
+    "descripcion": "Lettering vertical «ASCE» inspirado en el tatuaje de Ace, de One Piece.",
+    "precio": 12000,
+    "precioOferta": null,
+    "anchoCm": 4,
+    "altoCm": 12,
+    "duracionHoras": 1,
+    "zonas": "Antebrazo, costillas, pierna",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "ace-lettering",
+    "imagenes": [
+      "ace-lettering"
+    ]
+  },
+  {
+    "id": 10,
+    "codigo": "FI-010",
+    "nombre": "Cruz cromada",
+    "categoriaId": 3,
+    "descripcion": "Cruz rodeada de tribal cromado con brillo metálico, muy del estilo 2000.",
+    "precio": 22000,
+    "precioOferta": null,
+    "anchoCm": 8,
+    "altoCm": 16,
+    "duracionHoras": 3,
+    "zonas": "Espalda baja, antebrazo, pantorrilla",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": true,
+    "imagen": "cruz-cromada",
+    "imagenes": [
+      "cruz-cromada"
+    ]
+  },
+  {
+    "id": 11,
+    "codigo": "FI-011",
+    "nombre": "Tribal con cruz",
+    "categoriaId": 3,
+    "descripcion": "Tribal simétrico con una cruz al centro. Pensado para espalda baja.",
+    "precio": 25000,
+    "precioOferta": 21000,
+    "anchoCm": 16,
+    "altoCm": 10,
+    "duracionHoras": 3,
+    "zonas": "Espalda baja, esternón, nuca",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "tribal-cruz-lumbar",
+    "imagenes": [
+      "tribal-cruz-lumbar"
+    ]
+  },
+  {
+    "id": 12,
+    "codigo": "FI-012",
+    "nombre": "Estrellas tribales",
+    "categoriaId": 3,
+    "descripcion": "Cascada de estrellas dentro de tribal grueso y líquido. Negros sólidos.",
+    "precio": 24000,
+    "precioOferta": null,
+    "anchoCm": 12,
+    "altoCm": 16,
+    "duracionHoras": 3,
+    "zonas": "Hombro, antebrazo, muslo",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "estrellas-tribales",
+    "imagenes": [
+      "estrellas-tribales"
+    ]
+  },
+  {
+    "id": 13,
+    "codigo": "FI-013",
+    "nombre": "Alas tribales",
+    "categoriaId": 3,
+    "descripcion": "Alas tribales finas y simétricas con una estrella de destello al costado. Clásico lumbar.",
+    "precio": 28000,
+    "precioOferta": null,
+    "anchoCm": 20,
+    "altoCm": 10,
+    "duracionHoras": 3.5,
+    "zonas": "Espalda baja, esternón, nuca",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "alas-tribales",
+    "imagenes": [
+      "alas-tribales"
+    ]
+  },
+  {
+    "id": 14,
+    "codigo": "FI-014",
+    "nombre": "Araña tribal",
+    "categoriaId": 3,
+    "descripcion": "Araña viuda negra sobre una telaraña de líneas tribales afiladas.",
+    "precio": 24000,
+    "precioOferta": null,
+    "anchoCm": 12,
+    "altoCm": 18,
+    "duracionHoras": 3,
+    "zonas": "Espalda, pantorrilla, muslo",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "arana-tribal",
+    "imagenes": [
+      "arana-tribal"
+    ]
+  },
+  {
+    "id": 15,
+    "codigo": "FI-015",
+    "nombre": "Gatos y luna",
+    "categoriaId": 4,
+    "descripcion": "Dos gatos, uno negro y uno claro, entre estrellas y arabescos que forman una luna.",
+    "precio": 30000,
+    "precioOferta": null,
+    "anchoCm": 10,
+    "altoCm": 28,
+    "duracionHoras": 4,
+    "zonas": "Espalda, columna, muslo",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "gatos-luna",
+    "imagenes": [
+      "gatos-luna"
+    ]
+  },
+  {
+    "id": 16,
+    "codigo": "FI-016",
+    "nombre": "Sol y luna entre nubes",
+    "categoriaId": 4,
+    "descripcion": "Luna creciente con un sol en el centro, rodeados de nubes ondulantes y estrellas.",
+    "precio": 28000,
+    "precioOferta": null,
+    "anchoCm": 14,
+    "altoCm": 26,
+    "duracionHoras": 4,
+    "zonas": "Espalda, costillas, muslo",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": true,
+    "imagen": "sol-y-luna-nubes",
+    "imagenes": [
+      "sol-y-luna-nubes"
+    ]
+  },
+  {
+    "id": 17,
+    "codigo": "FI-017",
+    "nombre": "Alas, luna y espada",
+    "categoriaId": 4,
+    "descripcion": "Alas con ojos, una espada vertical y una luna creciente arriba, en línea fina.",
+    "precio": 30000,
+    "precioOferta": 25000,
+    "anchoCm": 16,
+    "altoCm": 22,
+    "duracionHoras": 4,
+    "zonas": "Espalda, esternón, columna",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "alas-luna-espada",
+    "imagenes": [
+      "alas-luna-espada"
+    ]
+  },
+  {
+    "id": 18,
+    "codigo": "FI-018",
+    "nombre": "Ángel de estrellas",
+    "categoriaId": 4,
+    "descripcion": "Ángel con alas y halo de estrellas rodeado de ornamentos puntiagudos.",
+    "precio": 32000,
+    "precioOferta": null,
+    "anchoCm": 14,
+    "altoCm": 22,
+    "duracionHoras": 4,
+    "zonas": "Espalda, muslo, antebrazo",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "angel-estrellas",
+    "imagenes": [
+      "angel-estrellas"
+    ]
+  },
+  {
+    "id": 19,
+    "codigo": "FI-019",
+    "nombre": "Alas y espada",
+    "categoriaId": 4,
+    "descripcion": "Alas de pluma delicadas con una espada al centro, en trazo fino y degradado.",
+    "precio": 26000,
+    "precioOferta": null,
+    "anchoCm": 18,
+    "altoCm": 12,
+    "duracionHoras": 3,
+    "zonas": "Espalda alta, esternón, nuca",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "alas-espada",
+    "imagenes": [
+      "alas-espada"
+    ]
+  },
+  {
+    "id": 20,
+    "codigo": "FI-020",
+    "nombre": "Espada telaraña",
+    "categoriaId": 5,
+    "descripcion": "Espada con telaraña de espinas que se abre como un abanico. Muy vertical.",
+    "precio": 30000,
+    "precioOferta": null,
+    "anchoCm": 12,
+    "altoCm": 26,
+    "duracionHoras": 4,
+    "zonas": "Columna, espalda, antebrazo",
+    "nivelDolor": 5,
+    "colorTinta": "Negro",
+    "destacado": true,
+    "imagen": "espada-telarana",
+    "imagenes": [
+      "espada-telarana"
+    ]
+  },
+  {
+    "id": 21,
+    "codigo": "FI-021",
+    "nombre": "Manos fluidas",
+    "categoriaId": 5,
+    "descripcion": "Dos manos de líneas líquidas y retorcidas con un punto de polvo en el centro.",
+    "precio": 26000,
+    "precioOferta": null,
+    "anchoCm": 10,
+    "altoCm": 20,
+    "duracionHoras": 3,
+    "zonas": "Antebrazo, muslo, costillas",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "manos-fluidas",
+    "imagenes": [
+      "manos-fluidas"
+    ]
+  },
+  {
+    "id": 22,
+    "codigo": "FI-022",
+    "nombre": "Murciélagos espinosos",
+    "categoriaId": 5,
+    "descripcion": "Tres murciélagos entre ramas afiladas que forman un corazón.",
+    "precio": 26000,
+    "precioOferta": null,
+    "anchoCm": 14,
+    "altoCm": 18,
+    "duracionHoras": 3,
+    "zonas": "Espalda, muslo, antebrazo",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "murcielagos-espinosos",
+    "imagenes": [
+      "murcielagos-espinosos"
+    ]
+  },
+  {
+    "id": 23,
+    "codigo": "FI-023",
+    "nombre": "Alas y ojo",
+    "categoriaId": 5,
+    "descripcion": "Cruz alada que baja por una columna de ornamentos hasta un ojo con alas de murciélago.",
+    "precio": 35000,
+    "precioOferta": 30000,
+    "anchoCm": 14,
+    "altoCm": 30,
+    "duracionHoras": 4.5,
+    "zonas": "Columna, esternón, espalda",
+    "nivelDolor": 5,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "alas-ojo",
+    "imagenes": [
+      "alas-ojo"
+    ]
+  },
+  {
+    "id": 24,
+    "codigo": "FI-024",
+    "nombre": "Guerrera con lanza",
+    "categoriaId": 5,
+    "descripcion": "Figura entre redes de espinas, con alas y una lanza vertical. Muy alargada.",
+    "precio": 24000,
+    "precioOferta": null,
+    "anchoCm": 6,
+    "altoCm": 20,
+    "duracionHoras": 3,
+    "zonas": "Antebrazo, pantorrilla, costillas",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "guerrera-lanza",
+    "imagenes": [
+      "guerrera-lanza"
+    ]
+  },
+  {
+    "id": 25,
+    "codigo": "FI-025",
+    "nombre": "Ojos espinosos",
+    "categoriaId": 5,
+    "descripcion": "Dos ojos realistas encerrados en una malla de espinas negras.",
+    "precio": 28000,
+    "precioOferta": null,
+    "anchoCm": 12,
+    "altoCm": 20,
+    "duracionHoras": 3.5,
+    "zonas": "Antebrazo, muslo, espalda",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "ojos-espinosos",
+    "imagenes": [
+      "ojos-espinosos"
+    ]
+  },
+  {
+    "id": 26,
+    "codigo": "FI-026",
+    "nombre": "Gato esqueleto",
+    "categoriaId": 1,
+    "descripcion": "Gatito negro que salta con la mitad del cuerpo convertida en esqueleto, en sombreado suave. Tierno y un poco oscuro.",
+    "precio": 15000,
+    "precioOferta": null,
+    "anchoCm": 7,
+    "altoCm": 12,
+    "duracionHoras": 2,
+    "zonas": "Antebrazo, pantorrilla, costillas",
+    "nivelDolor": 2,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "gato-esqueleto",
+    "imagenes": [
+      "gato-esqueleto"
+    ]
+  },
+  {
+    "id": 27,
+    "codigo": "FI-027",
+    "nombre": "Luna chorreante",
+    "categoriaId": 4,
+    "descripcion": "Luna creciente en negro sólido que gotea hilos de tinta. Minimalista y muy vertical.",
+    "precio": 20000,
+    "precioOferta": null,
+    "anchoCm": 8,
+    "altoCm": 20,
+    "duracionHoras": 2.5,
+    "zonas": "Antebrazo, columna, pantorrilla",
+    "nivelDolor": 3,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "luna-chorreante",
+    "imagenes": [
+      "luna-chorreante"
+    ]
+  },
+  {
+    "id": 28,
+    "codigo": "FI-028",
+    "nombre": "Espada y alas afiladas",
+    "categoriaId": 5,
+    "descripcion": "Espada central con alas de línea fina y puntas afiladas. Ideal para espalda alta o esternón.",
+    "precio": 28000,
+    "precioOferta": null,
+    "anchoCm": 18,
+    "altoCm": 12,
+    "duracionHoras": 3,
+    "zonas": "Espalda alta, esternón, nuca",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "espada-alas-afiladas",
+    "imagenes": [
+      "espada-alas-afiladas"
+    ]
+  },
+  {
+    "id": 29,
+    "codigo": "FI-029",
+    "nombre": "Corazón de espinas",
+    "categoriaId": 3,
+    "descripcion": "Corazón rodeado de espinas y ornamentos simétricos, con el look gótico de los 2000.",
+    "precio": 26000,
+    "precioOferta": null,
+    "anchoCm": 10,
+    "altoCm": 18,
+    "duracionHoras": 3.5,
+    "zonas": "Espalda baja, esternón, muslo",
+    "nivelDolor": 4,
+    "colorTinta": "Negro",
+    "destacado": true,
+    "imagen": "corazon-espinas",
+    "imagenes": [
+      "corazon-espinas"
+    ]
+  },
+  {
+    "id": 30,
+    "codigo": "FI-030",
+    "nombre": "Muerte con gatito",
+    "categoriaId": 1,
+    "descripcion": "Pequeña Parca con guadaña que abraza a un gatito blanco, con un corazón al lado. Tierno y un poco oscuro.",
+    "precio": 16000,
+    "precioOferta": null,
+    "anchoCm": 8,
+    "altoCm": 10,
+    "duracionHoras": 2,
+    "zonas": "Antebrazo, pantorrilla, muslo",
+    "nivelDolor": 2,
+    "colorTinta": "Negro",
+    "destacado": false,
+    "imagen": "muerte-con-gatito",
+    "imagenes": [
+      "muerte-con-gatito"
+    ]
+  }
+]

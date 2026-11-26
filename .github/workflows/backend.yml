@@ -1,0 +1,53 @@
+# Cada cambio se compila y se prueba solo en GitHub Actions.
+name: Backend (compilar y probar)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compilar:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        servicio: [ms-auth, ms-catalogo, ms-reservas]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: ${{ matrix.servicio }}/pom.xml
+      - name: Compilar y empaquetar
+        working-directory: ${{ matrix.servicio }}
+        run: mvn -B -q package -DskipTests
+      - name: Arrancar con H2 (Flyway crea las tablas) y revisar Swagger
+        working-directory: ${{ matrix.servicio }}
+        run: |
+          java -jar target/${{ matrix.servicio }}-1.0.0.jar --spring.profiles.active=h2 --server.port=9000 > app.log 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:9000/v3/api-docs > /dev/null && break; sleep 2; done
+          curl -sf http://localhost:9000/v3/api-docs -o api-docs.json || (tail -80 app.log; exit 1)
+          head -c 400 api-docs.json
+
+  integracion:
+    # Levanta los 3 microservicios juntos y recorre la API completa (roles, compra, stock, reembolso, blog...)
+    needs: compilar
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          cache-dependency-path: '*/pom.xml'
+      - name: Compilar los 3 microservicios
+        run: mvn -B -q package -DskipTests
+      - name: Prueba de integración
+        env:
+          TZ: America/Santiago
+        run: bash pruebas/integracion.sh

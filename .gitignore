@@ -1,0 +1,13 @@
+# Compilados de Maven
+target/
+# IntelliJ
+.idea/
+*.iml
+out/
+# VS Code
+.vscode/
+# Variables con contraseñas (nunca se suben)
+.env
+# Registros de pruebas locales
+*.log
+api-docs.json
