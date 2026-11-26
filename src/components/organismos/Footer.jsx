@@ -12,8 +12,7 @@ export default function Footer({ mostrarAviso }) {
         <Row className="g-4">
           <Col md={4}>
             <Logo />
-            <p className="mt-3 text-muted small">{ESTUDIO.eslogan}</p>
-            <address className="small mb-0">
+            <address className="small mb-0 mt-3">
               {ESTUDIO.direccion}<br />
               {ESTUDIO.horario}<br />
               {ESTUDIO.telefono} · {ESTUDIO.correo}<br />
