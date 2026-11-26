@@ -133,7 +133,7 @@ jobs:
           for i in $(seq 1 60); do curl -sf http://localhost/api/v1/catalogo/disenos >/dev/null && break; sleep 5; done
           revisar "frontend servido por Nginx" "curl -sf http://localhost/ | grep -q 'id=\"root\"'"
           revisar "rutas de React (BrowserRouter) funcionan al recargar" "curl -sf http://localhost/blogs | grep -q 'id=\"root\"'"
-          revisar "ms-catalogo con MySQL" "test \"\$(curl -sf http://localhost/api/v1/catalogo/disenos | jq length)\" = 25"
+          revisar "ms-catalogo con MySQL" "test \"\$(curl -sf http://localhost/api/v1/catalogo/disenos | jq length)\" = 30"
           revisar "blog (en ms-catalogo) con MySQL" "test \"\$(curl -sf http://localhost/api/v1/blog | jq length)\" = 2"
           CODIGO=$(curl -s -o /dev/null -w '%{http_code}' -H 'Content-Type: application/json' -d '{"correo":"admin.foreverink@gmail.com","password":"Admin#123"}' http://localhost/api/v1/usuarios/auth/login)
           revisar "la contraseña de ejemplo del repositorio NO sirve en el servidor (401)" "test $CODIGO = 401"
