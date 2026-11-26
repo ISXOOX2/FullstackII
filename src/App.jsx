@@ -72,6 +72,8 @@ export default function App() {
   // ─── ESTADO 1: sesión ──────────────────────────────────────────────────────
   // Se recupera de sessionStorage para no perder la sesión al recargar la página.
   // La sesión sobrevive a una recarga (sessionStorage). Si el token ya venció, se descarta.
+  // OJO: lo guardado en el navegador se puede editar (F12). Por eso, con backend, el rol NO se toma
+  // de ahí: al abrir la app se le pregunta al servidor (ver "verificandoSesion" más abajo).
   const [usuario, setUsuario] = useState(() => {
     const sesion = leerSesion();
     if (USAR_API && sesion?.token && tokenVencido(sesion.token)) {
@@ -80,6 +82,26 @@ export default function App() {
     }
     return sesion;
   });
+
+  // ─── Seguridad: el servidor confirma quién es el usuario ────────────────────
+  // Con backend, al abrir la app se llama a GET /usuarios/yo con el token (que va firmado y no se
+  // puede falsificar). Se usan los datos y el ROL que responde el servidor, no los del navegador.
+  // Si alguien editó su rol en Session Storage, aquí se corrige; si alteró el token, el servidor
+  // responde 401 y el interceptor de api.js cierra la sesión.
+  const [verificandoSesion, setVerificandoSesion] = useState(() => USAR_API && Boolean(leerSesion()?.token));
+  useEffect(() => {
+    if (!verificandoSesion) return;
+    apiUsuarios.get('/yo')
+      .then((respuesta) => {
+        const sesion = { ...respuesta.data, token: leerSesion()?.token };
+        guardarSesion(sesion);
+        setUsuario(sesion);
+      })
+      .catch(() => {}) // 401: ya lo maneja el interceptor; sin conexión: se mantiene la sesión
+      .finally(() => setVerificandoSesion(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   /**
    * Devuelve { ok, usuario } o { ok: false, error } para que el formulario muestre el mensaje.
@@ -138,7 +160,7 @@ export default function App() {
   // ─── Backend: al abrir la app y al cambiar la sesión, se traen los datos de los microservicios ───
   const [, setVersionDatos] = useState(0); // al cambiar, las páginas vuelven a leer la copia local
   useEffect(() => {
-    if (!USAR_API) return undefined;
+    if (!USAR_API || verificandoSesion) return undefined; // primero se confirma quién es
     let activo = true;
     sincronizarTodo(usuario)
       .then(() => activo && setVersionDatos((v) => v + 1))
@@ -152,7 +174,7 @@ export default function App() {
     // Solo al iniciar o cerrar sesión (o si cambia el rol). Renovar el token NO vuelve a sincronizar:
     // los datos son los mismos, solo cambia la "llave".
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usuario?.id, usuario?.tipo]);
+  }, [usuario?.id, usuario?.tipo, verificandoSesion]);
 
   // El interceptor de api.js avisa cuando renovó el token o cuando la sesión ya no es válida.
   useEffect(() => {
@@ -209,7 +231,9 @@ export default function App() {
   };
 
   /** Atajo: envuelve una página del panel en su protección por rol. */
-  const soloAdmin = (pagina) => <RutaProtegida usuario={usuario} roles={SOLO_ADMIN}>{pagina}</RutaProtegida>;
+  const soloAdmin = (pagina) => (
+    <RutaProtegida usuario={usuario} roles={SOLO_ADMIN} verificando={verificandoSesion}>{pagina}</RutaProtegida>
+  );
 
   return (
     <LimiteDeErrores>
@@ -246,7 +270,7 @@ export default function App() {
           <Route
             path="/perfil"
             element={(
-              <RutaProtegida usuario={usuario}>
+              <RutaProtegida usuario={usuario} verificando={verificandoSesion}>
                 <Perfil usuario={usuario} actualizarSesion={actualizarSesion} mostrarAviso={mostrarAviso} />
               </RutaProtegida>
             )}
@@ -257,7 +281,7 @@ export default function App() {
         <Route
           path="/admin"
           element={(
-            <RutaProtegida usuario={usuario} roles={PERSONAL}>
+            <RutaProtegida usuario={usuario} roles={PERSONAL} verificando={verificandoSesion}>
               <LayoutAdmin usuario={usuario} onCerrarSesion={cerrarSesion} />
             </RutaProtegida>
           )}
