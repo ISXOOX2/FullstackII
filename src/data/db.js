@@ -23,7 +23,37 @@ import { SEMILLA } from './seed.js';
 // v5: el tamaño pasa de texto ('7 x 6 cm') a dos números: anchoCm y altoCm.
 // v6: los diseños ya no tienen stock; se agrega la colección de insumos con su stock crítico.
 // v7: insumos a la venta (cuidado y gift cards), reseñas y proyectos de los clientes.
-export const CLAVE_BD = 'foreverInk_bd_v7';
+// v8: con backend la copia local parte vacía (sin usuarios, contraseñas ni órdenes de ejemplo).
+export const CLAVE_BD = 'foreverInk_bd_v8';
+
+/** true cuando el frontend usa los microservicios (VITE_USAR_API=true en el .env). */
+const CON_BACKEND = import.meta.env.VITE_USAR_API === 'true';
+
+/**
+ * Datos con que parte la base local.
+ *  - Sin backend: la semilla completa (es la "base de datos" simulada del proyecto).
+ *  - Con backend: SEGURIDAD — nada de usuarios, contraseñas, órdenes ni insumos internos en el
+ *    navegador (cualquiera puede verlos con F12 → Application). Esos datos llegan de la API y solo
+ *    los que el usuario tiene permiso de ver.
+ */
+function semillaInicial() {
+  if (!CON_BACKEND) return SEMILLA;
+  return {
+    categorias: [], productos: [], insumos: [], usuarios: [], ordenes: [],
+    resenas: SEMILLA.resenas, proyectos: [], mensajes: [],
+  };
+}
+
+/** Borra las copias de versiones anteriores (podían tener contraseñas de ejemplo). */
+function borrarVersionesAnteriores() {
+  try {
+    Object.keys(localStorage)
+      .filter((clave) => clave.startsWith('foreverInk_bd_') && clave !== CLAVE_BD)
+      .forEach((clave) => localStorage.removeItem(clave));
+  } catch {
+    // localStorage bloqueado: no hay nada que borrar
+  }
+}
 
 function clonar(objeto) {
   return JSON.parse(JSON.stringify(objeto));
@@ -50,7 +80,8 @@ function escribirAlmacenamiento(bd) {
 function leerBD() {
   const guardada = leerAlmacenamiento();
   if (guardada) return guardada;
-  const nueva = clonar(SEMILLA);
+  borrarVersionesAnteriores();
+  const nueva = clonar(semillaInicial());
   escribirAlmacenamiento(nueva);
   return nueva;
 }
@@ -116,7 +147,7 @@ export function reemplazarColeccion(coleccion, registros) {
 
 /** Vuelve a dejar la base tal como viene en seed.js (útil para demostraciones y pruebas). */
 export function reiniciarBD() {
-  escribirAlmacenamiento(clonar(SEMILLA));
+  escribirAlmacenamiento(clonar(semillaInicial()));
 }
 
 /** Borra la base del navegador; en el próximo acceso se vuelve a sembrar. */
