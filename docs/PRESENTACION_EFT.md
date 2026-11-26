@@ -37,7 +37,7 @@
 4. Inicia sesión como **cliente** (`cliente.demo@gmail.com` / `Cliente#1`). Agrega un diseño y una crema, y
    paga eligiendo tatuador, fecha y hora. Abre la boleta.
 5. Ve a **Mi perfil**, abre "Cambiar o reembolsar" y pide el reembolso.
-6. Cierra sesión y entra como **admin** (`admin.foreverink@gmail.com` / `Admin#123`). Muestra el Dashboard con
+6. Cierra sesión y entra como **admin** (`admin.foreverink@gmail.com` / la `ADMIN_PASSWORD` que pusieron en el `.env` de AWS). Muestra el Dashboard con
    las alertas, abre la orden y aprueba el reembolso.
 7. Abre un **Swagger**: `http://IP/docs/reservas/swagger-ui.html`.
 
@@ -50,6 +50,7 @@
 | ¿Cómo funciona la seguridad? | ms-usuarios entrega un token JWT al iniciar sesión. El interceptor de axios lo envía en cada petición y cada microservicio lo verifica y revisa el rol con `@PreAuthorize`. Las contraseñas se guardan con BCrypt. |
 | ¿Cómo se renueva el token? | Al iniciar sesión, ms-usuarios entrega un JWT de 8 horas. Antes de cada petición, el interceptor de axios revisa el vencimiento (`exp`): si quedan menos de 15 minutos, llama a `POST /auth/renovar` y guarda el token nuevo. Si el backend responde 401, se cierra la sesión. Para mostrarlo en vivo: `JWT_EXPIRACION_MS=840000` (14 min) hace que se renueve en la primera petición. |
 | ¿Dónde está el CRUD? | En el panel: diseños, estilos e insumos van a ms-catalogo, y usuarios a ms-usuarios, con POST, GET, PUT y DELETE (`src/services/adminApi.js`). Se puede probar también en Swagger. |
+| ¿Y si alguien cambia su rol con F12? | No sirve: al abrir la página el front le pregunta al servidor quién es (`GET /usuarios/yo`) y usa ese rol, y cada microservicio vuelve a revisar el rol del token firmado. Si edita el token, la firma deja de calzar y responde 401. |
 | ¿Por qué el precio no lo manda el front? | Porque se podría modificar desde el navegador: el backend lo toma siempre del catálogo. |
 | ¿Cómo se despliega? | Docker Compose en EC2: MySQL, los 4 microservicios y Nginx, que sirve el front y redirige `/api/v1/...` a cada servicio. Ver `despliegue/GUIA_AWS.md`. |
 | ¿Por qué springdoc y no springfox? | springfox (el de la guía 3.1.2) no es compatible con Spring Boot 3; springdoc es su reemplazo y genera el mismo Swagger UI. |
