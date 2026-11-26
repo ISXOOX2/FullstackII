@@ -24,7 +24,7 @@ public class Resena {
     @Column(nullable = false, length = 400)
     private String comentario;
 
-    @Lob
+    // Texto largo (data URL de la imagen). LONGTEXT en MySQL; sin @Lob para que H2 y MySQL validen igual
     @Column(columnDefinition = "LONGTEXT")
     private String imagen;
 

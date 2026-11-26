@@ -27,7 +27,7 @@ public class Proyecto {
     @Column(nullable = false, length = 600)
     private String idea;
 
-    @Lob
+    // Texto largo (data URL de la imagen). LONGTEXT en MySQL; sin @Lob para que H2 y MySQL validen igual
     @Column(columnDefinition = "LONGTEXT")
     private String imagen;
 
