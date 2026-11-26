@@ -57,6 +57,16 @@ public class UsuarioService {
         return sesion(repositorio.save(nuevo));
     }
 
+    /**
+     * Renovacion del token: con un token VALIDO (aun no vencido) entrega uno nuevo con 8 horas mas.
+     * Se vuelve a leer el usuario de la base, asi un cambio de rol o una cuenta eliminada se notan al renovar.
+     */
+    public SesionRespuesta renovar(UsuarioAutenticado yo) {
+        Usuario usuario = repositorio.findById(yo.id())
+                .orElseThrow(() -> new ReglaNegocioException(HttpStatus.UNAUTHORIZED, "Tu cuenta ya no existe."));
+        return sesion(usuario);
+    }
+
     private SesionRespuesta sesion(Usuario u) {
         return new SesionRespuesta(jwtUtil.generarToken(u.getId(), u.getCorreo(), u.getTipo()), UsuarioRespuesta.de(u));
     }

@@ -23,7 +23,7 @@ import ScrollArriba from './components/utilidades/ScrollArriba.jsx';
 import LimiteDeErrores from './components/utilidades/LimiteDeErrores.jsx';
 import { autenticar } from './services/usuariosService.js';
 import { borrarSesion, guardarSesion, leerSesion } from './services/sesionService.js';
-import { apiUsuarios, mensajeDeError, USAR_API } from './services/api.js';
+import { apiUsuarios, mensajeDeError, tokenVencido, USAR_API } from './services/api.js';
 import { sincronizarTodo } from './services/sincronizacion.js';
 import {
   agregarArticulo, agregarItem, cambiarCantidad as cambiarCantidadItem, cantidadTotal, guardarCarrito, leerCarrito,
@@ -71,7 +71,15 @@ const PERSONAL = ['Administrador', 'Vendedor'];
 export default function App() {
   // ─── ESTADO 1: sesión ──────────────────────────────────────────────────────
   // Se recupera de sessionStorage para no perder la sesión al recargar la página.
-  const [usuario, setUsuario] = useState(() => leerSesion());
+  // La sesión sobrevive a una recarga (sessionStorage). Si el token ya venció, se descarta.
+  const [usuario, setUsuario] = useState(() => {
+    const sesion = leerSesion();
+    if (USAR_API && sesion?.token && tokenVencido(sesion.token)) {
+      borrarSesion();
+      return null;
+    }
+    return sesion;
+  });
 
   /**
    * Devuelve { ok, usuario } o { ok: false, error } para que el formulario muestre el mensaje.
@@ -104,8 +112,11 @@ export default function App() {
 
   /** Se usa al editar el perfil, para que la cabecera muestre los datos nuevos. */
   const actualizarSesion = (usuarioActualizado) => {
-    guardarSesion(usuarioActualizado);
-    setUsuario(usuarioActualizado);
+    // Se conserva el token JWT de la sesión (los datos editados no lo traen)
+    const token = leerSesion()?.token;
+    const sesion = token ? { ...usuarioActualizado, token } : usuarioActualizado;
+    guardarSesion(sesion);
+    setUsuario(sesion);
   };
 
   // ─── ESTADO 2: carrito ─────────────────────────────────────────────────────
@@ -135,6 +146,22 @@ export default function App() {
     return () => { activo = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usuario?.token]);
+
+  // El interceptor de api.js avisa cuando renovó el token o cuando la sesión ya no es válida.
+  useEffect(() => {
+    const alRenovar = () => setUsuario(leerSesion());
+    const alExpirar = () => {
+      setUsuario(null);
+      mostrarAviso('Tu sesión expiró. Vuelve a iniciar sesión.', 'danger');
+    };
+    window.addEventListener('sesion-renovada', alRenovar);
+    window.addEventListener('sesion-expirada', alExpirar);
+    return () => {
+      window.removeEventListener('sesion-renovada', alRenovar);
+      window.removeEventListener('sesion-expirada', alExpirar);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const cerrarAviso = (id) => {
     setAvisos((actuales) => actuales.filter((a) => a.id !== id));

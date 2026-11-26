@@ -29,6 +29,10 @@ CLIENTE=$(json -X POST $U/auth/login -d '{"correo":"cliente.demo@gmail.com","pas
 [[ $ADMIN == ey* && $CLIENTE == ey* ]] && ok "login de administrador y cliente devuelve token" || falla "login"
 [[ $(codigo -X POST $U/auth/login -d '{"correo":"admin.foreverink@gmail.com","password":"mala1"}') == 401 ]] && ok "contraseña incorrecta: 401" || falla "login incorrecto"
 [[ $(codigo $U) == 401 ]] && ok "sin token: 401" || falla "sin token"
+NUEVO_TOKEN=$(json -X POST -H "Authorization: Bearer $CLIENTE" $U/auth/renovar | jq -r .token)
+[[ $NUEVO_TOKEN == ey* && $(codigo -H "Authorization: Bearer $NUEVO_TOKEN" $U/yo) == 200 ]] && ok "renovación: el token nuevo funciona" || falla "renovar token"
+[[ $(codigo -X POST $U/auth/renovar) == 401 ]] && ok "renovar sin token: 401" || falla "renovar sin token"
+[[ $(codigo -X POST -H "Authorization: Bearer ${CLIENTE}x" $U/auth/renovar) == 401 ]] && ok "token alterado: 401" || falla "token alterado"
 [[ $(codigo -H "Authorization: Bearer $CLIENTE" $U) == 403 ]] && ok "cliente no puede listar usuarios: 403" || falla "rol cliente"
 [[ $(json -H "Authorization: Bearer $ADMIN" $U | jq length) -ge 3 ]] && ok "administrador lista usuarios" || falla "listar usuarios"
 MENOR=$(date -d '-15 years' +%F)
